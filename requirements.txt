@@ -1,0 +1,5 @@
+Pandas version: 1.5.3
+NumPy version: 1.23.5
+Scikit-learn version: 1.2.2
+TensorFlow version: 2.13.0
+Matplotlib version: 3.7.1
