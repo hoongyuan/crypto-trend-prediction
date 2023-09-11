@@ -100,35 +100,26 @@ def extract_features(data):
 
 # Create a Streamlit app
 def main():
-  st.title("Cryptocurrency Price Prediction")
+   st.title("Cryptocurrency Price Prediction")
 
-  # Load model
-  model = load_model()
+    # Load model
+    model = load_model()
 
-  # User uploads data
-  user_uploaded_data = st.file_uploader("Upload your cryptocurrency data (CSV file):", type=["csv"])
+    # User uploads data
+    user_uploaded_data = st.file_uploader("Upload your cryptocurrency data (CSV file):", type=["csv"])
 
-  if user_uploaded_data is not None:
-      # Display user-uploaded data
-      st.write("User-uploaded data:")
-      crypto_data = load_data(user_uploaded_data)
+    if user_uploaded_data is not None:
+        # Display user-uploaded data
+        st.write("User-uploaded data:")
+        crypto_data = load_data(user_uploaded_data)
 
-      if crypto_data is not None:
-          # Preprocess and extract features from user data
-          preprocessed_data = preprocess_data(crypto_data)
-          user_features = extract_features(preprocessed_data)
+        if crypto_data is not None:
+            # Preprocess user data
+            preprocessed_data = preprocess_data(crypto_data)
 
-          # Input widgets for making predictions
-          st.sidebar.header("User Input")
-          user_input = st.sidebar.text_input("Enter relevant data for prediction:")
-
-          # Make predictions
-          if user_input:
-              # Combine user input with extracted features if needed
-              user_input_features = np.array(user_input)  # Modify as per your feature extraction
-              input_data = np.concatenate([user_features, user_input_features], axis=1)  # Combine user input and features
-              prediction = model.predict(input_data)
-              st.write("Predicted Price:", prediction)
+            # Make predictions
+            prediction = model.predict(preprocessed_data)
+            st.write("Predicted Price:", prediction)
 
 if __name__ == "__main__":
     main()
