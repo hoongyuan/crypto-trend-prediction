@@ -96,7 +96,7 @@ def preprocess_data(data):
   return df
 
 def extract_features(data):
-  feature_columns = ['timestamp', 'Up Trend', 'Down Trend', 'Tenkan', 'Kijun', 'Chikou',
+    feature_columns = ['timestamp', 'Up Trend', 'Down Trend', 'Tenkan', 'Kijun', 'Chikou',
               'SenkouA', 'SenkouB', 'Basis', 'Upper', 'Lower', 'Volume',
               'Volume MA', '%K', '%D', 'Aroon Up', 'Aroon Down', 'RSI', 'RSI-based MA', 'Upper Bollinger Band',
               'Lower Bollinger Band', 'OnBalanceVolume', 'Smoothing Line', 'Histogram', 'MACD', 'Signal']
