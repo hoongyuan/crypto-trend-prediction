@@ -100,7 +100,7 @@ def extract_features(data):
 
 # Create a Streamlit app
 def main():
- st.title("Cryptocurrency Price Prediction")
+    st.title("Cryptocurrency Price Prediction")
 
     # Load model
     model = load_model()
