@@ -12,30 +12,26 @@ Original file is located at
 import streamlit as st
 import pandas as pd
 import numpy as np
-import pickle
-import requests
-import tensorflow as tf
-from tensorflow import keras
 
-# Load your trained deep learning model from GitHub
+#for loading model
+import pickle
+
+#for modeling
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+from keras.models import Sequential
+from keras.layers import LSTM, Dense
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+#for plotting
+import matplotlib.pyplot as plt
+
+# Load your trained deep learning model
 def load_model():
     try:
-        # Define the raw URL of the model file on GitHub
-        model_url = 'https://raw.githubusercontent.com/hoongyuan/crypto-trend-prediction/main/crypto_prediction_model.pkl'
-
-        # Send an HTTP GET request to fetch the model file
-        response = requests.get(model_url)
-
-        # Check if the request was successful (status code 200)
-        if response.status_code == 200:
-            model = pickle.loads(response.content)
-            return model
-        else:
-            st.error(f"Failed to fetch the model file from GitHub (Status code: {response.status_code})")
-
-        # Check the content of the response
-        print("Response Content Length:", len(response.content))
-        print("Response Content:", response.content)
+        with open('crypto_prediction_model.pkl', 'rb') as model_file:
+            model = pickle.load(model_file)
+        return model
     except Exception as e:
         st.error(f"Error loading the model: {str(e)}")
     return None
