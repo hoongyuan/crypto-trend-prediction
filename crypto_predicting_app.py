@@ -16,9 +16,10 @@ import pickle
 
 # Load your trained deep learning model
 def load_model():
+    model_url = 'https://raw.githubusercontent.com/hoongyuan/crypto-trend-prediction/main/crypto_prediction_model.pkl'
     try:
-        with open('crypto_prediction_model.pkl', 'rb') as model_file:
-            model = pickle.load(model_file)
+        response = requests.get(model_url)
+        model = pickle.load(reponse.content)
         return model
     except Exception as e:
         st.error(f"Error loading the model: {str(e)}")
