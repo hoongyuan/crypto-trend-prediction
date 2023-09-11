@@ -7,4 +7,4 @@ tensorboard-plugin-wit
 tensorflow
 tensorflow-estimator
 scipy
-sklearn
+scikit-learn
