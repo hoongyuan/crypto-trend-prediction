@@ -114,7 +114,10 @@ def main():
 
     # Load model
     model = load_model()
-
+    
+    # Print the loaded model to verify it's not None
+    print("Model:", model)
+    
     # User uploads data
     user_uploaded_data = st.file_uploader("Upload your cryptocurrency data (CSV file):", type=["csv"])
 
