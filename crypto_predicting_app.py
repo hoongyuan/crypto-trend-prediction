@@ -100,23 +100,23 @@ def extract_features(data):
 
 # Create a Streamlit app
 def main():
-   st.title("Cryptocurrency Price Prediction")
-
+    st.title("Cryptocurrency Price Prediction")
+    
     # Load model
     model = load_model()
-
+    
     # User uploads data
     user_uploaded_data = st.file_uploader("Upload your cryptocurrency data (CSV file):", type=["csv"])
-
+    
     if user_uploaded_data is not None:
         # Display user-uploaded data
         st.write("User-uploaded data:")
         crypto_data = load_data(user_uploaded_data)
-
+    
         if crypto_data is not None:
             # Preprocess user data
             preprocessed_data = preprocess_data(crypto_data)
-
+    
             # Make predictions
             prediction = model.predict(preprocessed_data)
             st.write("Predicted Price:", prediction)
