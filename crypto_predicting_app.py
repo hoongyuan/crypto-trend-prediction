@@ -37,7 +37,7 @@ def load_data(user_uploaded_data):
 
 # Preprocess cryptocurrency data
 def preprocess_data(data):
-  df = pd.read_csv(data)
+  df = data        
   # Convert the "time" column to datetime format
   df['time'] = pd.to_datetime(df['time'])
 
