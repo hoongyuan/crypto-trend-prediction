@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 # import sklearn
-# import tensorflow as tf
+import tensorflow as tf
 # import matplotlib
 
 # #for modeling
