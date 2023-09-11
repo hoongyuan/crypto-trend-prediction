@@ -1,5 +1,5 @@
 # crypto_price_app.py
-pip install tensorflow
+!pip install tensorflow
 
 import streamlit as st
 import pandas as pd
