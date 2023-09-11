@@ -114,16 +114,16 @@ def main():
         crypto_data = load_data(user_uploaded_data)
     
         if crypto_data is not None:
-        try:
-            # Preprocess user data
-            preprocessed_data = preprocess_data(crypto_data)
-
-            # Make predictions
-            prediction = model.predict(preprocessed_data)
-            st.write("Predicted Price:", prediction)
-
-        except Exception as e:
-            st.error(f"Error making predictions: {str(e)}")
+            try:
+                # Preprocess user data
+                preprocessed_data = preprocess_data(crypto_data)
+    
+                # Make predictions
+                prediction = model.predict(preprocessed_data)
+                st.write("Predicted Price:", prediction)
+    
+            except Exception as e:
+                st.error(f"Error making predictions: {str(e)}")
 
 if __name__ == "__main__":
     main()
