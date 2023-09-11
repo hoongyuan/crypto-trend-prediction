@@ -16,9 +16,6 @@ import numpy as np
 #for loading model
 import pickle
 
-#for plotting
-import matplotlib.pyplot as plt
-
 # Load your trained deep learning model
 def load_model():
     try:
