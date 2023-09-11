@@ -136,7 +136,7 @@ def main():
                 input = extract_features(preprocessed_data)
 
                 # Reshape to 3D tensor with shape (batch_size, time_steps, features)
-                input_data_3d = input_data_2d.reshape(None, 5, 26)
+                input = input.reshape(None, 5, 26)
                 
                 # Make predictions
                 prediction = model.predict(input)
