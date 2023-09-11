@@ -123,15 +123,15 @@ def main():
         st.write("User-uploaded data:")
         crypto_data = load_data(user_uploaded_data)
         st.write("Preview of uploaded Crypto Data")
-        st.write(crypto_data.head())
+        st.dataframe(crypto_data, height=400)
 
         if crypto_data is not None:
             try:
                 # Preprocess user data
                 preprocessed_data = preprocess_data(crypto_data)
                 st.write("Preview of preprocessed Crypto Data")
-                st.write(preprocessed_data.head())
-
+                st.dataframe(preprocessed_data, height=400)
+                
                 # Make predictions
                 prediction = model.predict(preprocessed_data)
                 st.write("Predicted Price:", prediction)
