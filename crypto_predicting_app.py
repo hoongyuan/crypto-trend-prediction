@@ -14,6 +14,8 @@ import pandas as pd
 import numpy as np
 import pickle
 import requests
+import tensorflow as tf
+from tensorflow import keras
 
 # Load your trained deep learning model from GitHub
 def load_model():
