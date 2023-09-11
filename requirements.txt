@@ -1,7 +1,5 @@
 matplotlib
 streamlit
 numpy
-Keras
-tensorboard
 tensorflow
 scikit-learn
