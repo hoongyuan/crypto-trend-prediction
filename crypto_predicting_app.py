@@ -1,11 +1,9 @@
 # crypto_price_app.py
-!pip install tensorflow
-
 import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
-import tensorflow as tf
+# import tensorflow as tf
 # import sklearn
 
 # import matplotlib
