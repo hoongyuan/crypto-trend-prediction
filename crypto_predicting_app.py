@@ -101,9 +101,7 @@ def extract_features(data):
               'Volume MA', '%K', '%D', 'Aroon Up', 'Aroon Down', 'RSI', 'RSI-based MA', 'Upper Bollinger Band',
               'Lower Bollinger Band', 'OnBalanceVolume', 'Smoothing Line', 'Histogram', 'MACD', 'Signal']
     features = data[feature_columns].values
-    scaler = MinMaxScaler()
-    scaled_features = scaler.fit_transform(features)
-    return scaled_features
+    return features
 
 
 # Create a Streamlit app
