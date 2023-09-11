@@ -134,9 +134,6 @@ def main():
 
                 # Extract features from preprocessed data
                 input = extract_features(preprocessed_data)
-
-                # Reshape to 3D tensor with shape (batch_size, time_steps, features)
-                input = input.reshape(None, 5, 26)
                 
                 # Make predictions
                 prediction = model.predict(input)
