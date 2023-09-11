@@ -119,6 +119,8 @@ def main():
             try:
                 # Preprocess user data
                 preprocessed_data = preprocess_data(crypto_data)
+                st.write("Preview of preprocessed Crypto Data")
+                st.write(preprocessed_data.head())
 
                 # Make predictions
                 prediction = model.predict(preprocessed_data)
