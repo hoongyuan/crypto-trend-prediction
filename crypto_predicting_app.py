@@ -30,6 +30,10 @@ def load_model():
             return model
         else:
             st.error(f"Failed to fetch the model file from GitHub (Status code: {response.status_code})")
+
+        # Check the content of the response
+        print("Response Content Length:", len(response.content))
+        print("Response Content:", response.content)
     except Exception as e:
         st.error(f"Error loading the model: {str(e)}")
     return None
