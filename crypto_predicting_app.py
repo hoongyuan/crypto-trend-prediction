@@ -131,9 +131,12 @@ def main():
                 preprocessed_data = preprocess_data(crypto_data)
                 st.write("Preview of preprocessed Crypto Data")
                 st.dataframe(preprocessed_data, height=400)
+
+                # Extract features from preprocessed data
+                input = extract_features(preprocessed_data)
                 
                 # Make predictions
-                prediction = model.predict(preprocessed_data)
+                prediction = model.predict(input)
                 st.write("Predicted Price:", prediction)
 
             except Exception as e:
