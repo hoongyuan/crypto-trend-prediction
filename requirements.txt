@@ -3,3 +3,4 @@ streamlit
 numpy
 tensorflow
 scikit-learn
+keras
