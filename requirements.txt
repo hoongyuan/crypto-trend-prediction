@@ -1,6 +1,6 @@
 matplotlib
 streamlit
 numpy
-tensorflow
-scikit-learn
-keras
+tensorflow==2.13.0
+scikit-learn==1.2.2
+keras==2.13.1
