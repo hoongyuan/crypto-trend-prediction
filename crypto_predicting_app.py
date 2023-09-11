@@ -14,12 +14,21 @@ import pandas as pd
 import numpy as np
 import pickle
 
-# Load your trained deep learning model
+# Load your trained deep learning model from GitHub
 def load_model():
     try:
-        with open('crypto_prediction_model.pkl', 'rb') as model_file:
-            model = pickle.load(model_file)
-        return model
+        # Define the raw URL of the model file on GitHub
+        model_url = 'https://raw.githubusercontent.com/hoongyuan/crypto-trend-prediction/main/crypto_prediction_model.pkl'
+
+        # Send an HTTP GET request to fetch the model file
+        response = requests.get(model_url)
+
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            model = pickle.loads(response.content)
+            return model
+        else:
+            st.error(f"Failed to fetch the model file from GitHub (Status code: {response.status_code})")
     except Exception as e:
         st.error(f"Error loading the model: {str(e)}")
     return None
