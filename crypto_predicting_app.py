@@ -101,6 +101,8 @@ def extract_features(data):
               'Volume MA', '%K', '%D', 'Aroon Up', 'Aroon Down', 'RSI', 'RSI-based MA', 'Upper Bollinger Band',
               'Lower Bollinger Band', 'OnBalanceVolume', 'Smoothing Line', 'Histogram', 'MACD', 'Signal']
     features = data[feature_columns].values
+    scaler = MinMaxScaler()
+    scaled_features = scaler.fit_transform(features)
     return features
 
 
@@ -133,6 +135,7 @@ def main():
 
                 # Extract features from preprocessed data
                 input = extract_features(preprocessed_data)
+                st.write(input)
                 
                 # Make predictions
                 prediction = model.predict(input)
