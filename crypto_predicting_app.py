@@ -147,13 +147,18 @@ def main():
                 st.write(input)
                 
                 # Make predictions
-                prediction = model.predict(input)
+                prediction_scaled = model.predict(input)
 
-                # scaler = MinMaxScaler()
+                min_value = preprocessed_data['Close_5th'].min()
+                max_value = preprocessed_data['Close_5th'].max()
+
+                st.write("min value: ", min_value)
+                st.write("max value: ", max_value)
                 
                 # # Inverse transform the scaled predictions using the scaler
-                # prediction_actual = scaler.inverse_transform(prediction_scaled)
-                st.write("Predicted Price:", prediction)
+                prediction_actual = prediction_scaled * (max_value - min_value) + min_value
+                
+                st.write("Predicted Price:", prediction_actual)
 
             except Exception as e:
                 st.error(f"Error making predictions: {str(e)}")
