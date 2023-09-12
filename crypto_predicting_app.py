@@ -147,8 +147,10 @@ def main():
                 st.write(input)
                 
                 # Make predictions
-                prediction = model.predict(input)
-                st.write("Predicted Price:", prediction)
+                prediction_scaled = model.predict(input)
+                # Inverse transform the scaled predictions using the scaler
+                prediction_actual = scaler.inverse_transform(prediction_scaled)
+                st.write("Predicted Price:", prediction_actual)
 
             except Exception as e:
                 st.error(f"Error making predictions: {str(e)}")
