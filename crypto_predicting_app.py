@@ -158,7 +158,7 @@ def main():
                 prediction_actual = prediction_scaled * (max_value - min_value) + min_value
 
                 # Create a DataFrame to display actual and predicted prices
-                result_df = pd.DataFrame({'Actual Price': crypto_data['Close'], 'Predicted Price': prediction_actual})
+                result_df = pd.DataFrame({'Actual Price': crypto_data['Close_5th'], 'Predicted Price': prediction_actual})
 
                 st.write("Actual vs. Predicted Prices:")
                 st.dataframe(result_df, height=400)
