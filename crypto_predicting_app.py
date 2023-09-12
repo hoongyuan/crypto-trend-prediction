@@ -148,8 +148,8 @@ def main():
                 # Make predictions
                 prediction_scaled = model.predict(input)
 
-                min_value = preprocessed_data['Close_5th'].min()
-                max_value = preprocessed_data['Close_5th'].max()
+                min_value = crypto_data['Close_5th'].min()
+                max_value = crypto_data['Close_5th'].max()
 
                 st.write("min value: ", min_value)
                 st.write("max value: ", max_value)
