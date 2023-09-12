@@ -132,7 +132,7 @@ def main():
     user_input = st.text_input("Enter the n-th future candle you would like to predict:")
     # Button to perform modelling with the input
     submit_button = st.button("Train Model")
-    future_candle = user_input
+    future_candle = int(user_input)
 
     if user_uploaded_data is not None :
         # Display user-uploaded data
