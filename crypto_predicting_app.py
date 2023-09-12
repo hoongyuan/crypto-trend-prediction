@@ -102,7 +102,7 @@ def extract_features(data):
               'Lower Bollinger Band', 'OnBalanceVolume', 'Smoothing Line', 'Histogram', 'MACD', 'Signal']
     features = data[feature_columns].values
     scaler = MinMaxScaler()
-    scaled_features = scaler.fit_transform(features)
+    X_scaled = scaler.fit_transform(features)
 
     sequence_length = 5
     X_sequences = []
