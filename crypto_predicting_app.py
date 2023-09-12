@@ -156,8 +156,12 @@ def main():
                 
                 # # Inverse transform the scaled predictions using the scaler
                 prediction_actual = prediction_scaled * (max_value - min_value) + min_value
-                
-                st.write("Predicted Price:", prediction_actual)
+
+                # Create a DataFrame to display actual and predicted prices
+                result_df = pd.DataFrame({'Actual Price': crypto_data['Close'], 'Predicted Price': prediction_actual})
+
+                st.write("Actual vs. Predicted Prices:")
+                st.dataframe(result_df, height=400)
 
             except Exception as e:
                 st.error(f"Error making predictions: {str(e)}")
