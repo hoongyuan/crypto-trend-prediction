@@ -148,6 +148,9 @@ def main():
                 
                 # Make predictions
                 prediction_scaled = model.predict(input)
+
+                scaler = MinMaxScaler()
+                
                 # Inverse transform the scaled predictions using the scaler
                 prediction_actual = scaler.inverse_transform(prediction_scaled)
                 st.write("Predicted Price:", prediction_actual)
