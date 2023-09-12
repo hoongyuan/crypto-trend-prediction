@@ -43,7 +43,7 @@ def load_data(user_uploaded_data):
     return None
 
 # Preprocess cryptocurrency data
-def preprocess_data(data):
+def preprocess_data(data,future_candle):
   df = data        
   # Convert the "time" column to datetime format
   df['time'] = pd.to_datetime(df['time'])
@@ -59,7 +59,7 @@ def preprocess_data(data):
   df.insert(0,'date',date_column)
   del df['time']
 
-  future_candles = 5;
+  future_candles = future_candle;
   target_col = 'Close_' + str(future_candles) + 'th';
 
   # Loop through all rows in the DataFrame
@@ -128,17 +128,23 @@ def main():
     # User uploads data
     user_uploaded_data = st.file_uploader("Upload your cryptocurrency data (CSV file):", type=["csv"])
 
-    if user_uploaded_data is not None:
+    # User input the n-th future candle
+    user_input = st.text_input("Enter the n-th future candle you would like to predict:")
+    # Button to perform modelling with the input
+    submit_button = st.button("Train Model")
+    future_candle = user_input
+
+    if user_uploaded_data is not None :
         # Display user-uploaded data
         st.write("User-uploaded data:")
         crypto_data = load_data(user_uploaded_data)
         st.write("Preview of uploaded Crypto Data")
         st.dataframe(crypto_data, height=400)
 
-        if crypto_data is not None:
+        if crypto_data is not None and submit_button:
             try:
                 # Preprocess user data
-                preprocessed_data = preprocess_data(crypto_data)
+                preprocessed_data = preprocess_data(crypto_data,future_candle)
                 st.write("Preview of preprocessed Crypto Data")
                 st.dataframe(preprocessed_data, height=400)
 
@@ -153,15 +159,17 @@ def main():
 
                 st.write("min value: ", min_value)
                 st.write("max value: ", max_value)
+
+                st.write("Predicted Result:", prediction_scaled)
                 
-                # # Inverse transform the scaled predictions using the scaler
-                prediction_actual = prediction_scaled * (max_value - min_value) + min_value
+                # # # Inverse transform the scaled predictions using the scaler
+                # prediction_actual = prediction_scaled * (max_value - min_value) + min_value
 
-                # Create a DataFrame to display actual and predicted prices
-                result_df = pd.DataFrame({'Actual Price': crypto_data['Close_5th'], 'Predicted Price': prediction_actual})
+                # # Create a DataFrame to display actual and predicted prices
+                # result_df = pd.DataFrame({'Actual Price': crypto_data['Close_5th'], 'Predicted Price': prediction_actual})
 
-                st.write("Actual vs. Predicted Prices:")
-                st.dataframe(result_df, height=400)
+                # st.write("Actual vs. Predicted Prices:")
+                # st.dataframe(result_df, height=400)
 
             except Exception as e:
                 st.error(f"Error making predictions: {str(e)}")
