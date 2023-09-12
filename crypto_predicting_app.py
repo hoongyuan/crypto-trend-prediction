@@ -103,7 +103,16 @@ def extract_features(data):
     features = data[feature_columns].values
     scaler = MinMaxScaler()
     scaled_features = scaler.fit_transform(features)
-    return features
+
+    sequence_length = 5
+    X_sequences = []
+    
+    for i in range(len(X_scaled) - sequence_length + 1):
+        X_sequences.append(X_scaled[i : i + sequence_length])
+
+    X_sequences = np.array(X_sequences)
+    
+    return X_sequences
 
 
 # Create a Streamlit app
