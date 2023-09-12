@@ -144,7 +144,6 @@ def main():
 
                 # Extract features from preprocessed data
                 input = extract_features(preprocessed_data)
-                st.write(input)
                 
                 # Make predictions
                 prediction_scaled = model.predict(input)
