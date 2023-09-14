@@ -136,7 +136,7 @@ def preprocess_data(data,future_candle):
   df = df.drop(columns=['time_of_day'])
   return df
 
-def extract_features(data):
+def extract_features(data_rows,future_candle,data):
     feature_columns = ['timestamp', 'Up Trend', 'Down Trend', 'Tenkan', 'Kijun', 'Chikou',
               'SenkouA', 'SenkouB', 'Basis', 'Upper', 'Lower', 'Volume',
               'Volume MA', '%K', '%D', 'Aroon Up', 'Aroon Down', 'RSI', 'RSI-based MA', 'Upper Bollinger Band',
@@ -145,7 +145,16 @@ def extract_features(data):
     scaler = MinMaxScaler()
     X_scaled = scaler.fit_transform(features)
 
-    sequence_length = 5
+    if data_rows > 10000:
+      sequence_length = 20
+    else:
+      if future_candle == 1 or future_candle == 2:
+        sequence_length = 10
+      elif future_candle == 5:
+        sequence_length = 15
+      elif future_candle == 10:
+        sequence_length = 20
+        
     X_sequences = []
 
     for i in range(len(X_scaled) - sequence_length + 1):
@@ -173,8 +182,6 @@ def main():
 
     if user_uploaded_data is not None and submit_button and selected_option is not None:
 
-
-
         # Display user-uploaded data
         st.write("User-uploaded data:")
         crypto_data = load_data(user_uploaded_data)
@@ -197,7 +204,7 @@ def main():
                 st.dataframe(preprocessed_data, height=400)
 
                 # Extract features from preprocessed data
-                input = extract_features(preprocessed_data)
+                input = extract_features(data_rows,future_candle,preprocessed_data)
 
                 # Make predictions
                 prediction_scaled = model.predict(input)
