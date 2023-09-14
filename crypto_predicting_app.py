@@ -25,56 +25,47 @@ import pickle
 def load_model(data_rows, future_candles):
     try:
         # for large dataset
-        if data_rows > 10000
+        if data_rows > 10000:
 
-          if future_candles = 1
+          if future_candles = 1:
             with open('big_data_model_fc1.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles = 2
+          else if future_candles = 2:
             with open('big_data_model_fc2.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles = 5
+          else if future_candles = 5:
             with open('big_data_model_fc5.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles = 10
+          else if future_candles = 10:
             with open('big_data_model_fc10.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles = 15
-            with open('big_data_model_fc15.pkl', 'rb') as model_file:
-                model = pickle.load(model_file)
-            return model
         # for small dataset
-        else
-          if future_candles = 1
+        else:
+          if future_candles = 1:
             with open('small_data_model_fc1.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles = 2
+          else if future_candles = 2:
             with open('small_data_model_fc2.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles = 5
+          else if future_candles = 5:
             with open('small_data_model_fc5.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles = 10
+          else if future_candles = 10:
             with open('small_data_model_fc10.pkl', 'rb') as model_file:
-                model = pickle.load(model_file)
-            return model
-
-          else if future_candles = 15
-            with open('small_data_model_fc15.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
