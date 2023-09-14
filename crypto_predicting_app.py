@@ -31,17 +31,17 @@ def load_model(data_rows, future_candles):
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles == 2:
+          elif future_candles == 2:
             with open('big_data_model_fc2.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles == 5:
+          elif future_candles == 5:
             with open('big_data_model_fc5.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles == 10:
+          elif future_candles == 10:
             with open('big_data_model_fc10.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
@@ -53,17 +53,17 @@ def load_model(data_rows, future_candles):
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles == 2:
+          elif future_candles == 2:
             with open('small_data_model_fc2.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles == 5:
+          elif future_candles == 5:
             with open('small_data_model_fc5.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles == 10:
+          elif future_candles == 10:
             with open('small_data_model_fc10.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
