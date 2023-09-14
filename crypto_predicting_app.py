@@ -198,9 +198,6 @@ def main():
     if user_uploaded_data is not None and submit_button and selected_option is not None:
         crypto_data = load_data(user_uploaded_data)
 
-        # Display dashboard of uploaded data
-        show_dashboard(crypto_data)
-
         # Display user-uploaded data
         st.write("Preview of uploaded Crypto Data")
         st.dataframe(crypto_data, height=400)
@@ -219,6 +216,9 @@ def main():
                 preprocessed_data = preprocess_data(crypto_data,future_candle)
                 st.write("Preview of preprocessed Crypto Data")
                 st.dataframe(preprocessed_data, height=400)
+
+                # Display dashboard of uploaded data
+                show_dashboard(crypto_data)
 
                 # Extract features from preprocessed data
                 input = extract_features(data_rows,future_candle,preprocessed_data)
