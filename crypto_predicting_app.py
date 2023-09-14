@@ -218,7 +218,7 @@ def main():
                 st.dataframe(preprocessed_data, height=400)
 
                 # Display dashboard of uploaded data
-                show_dashboard(crypto_data)
+                show_dashboard(preprocessed_data)
 
                 # Extract features from preprocessed data
                 input = extract_features(data_rows,future_candle,preprocessed_data)
