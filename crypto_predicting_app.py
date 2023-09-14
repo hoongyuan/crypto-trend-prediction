@@ -22,11 +22,62 @@ import pickle
 # import matplotlib.pyplot as plt
 
 # Load your trained deep learning model
-def load_model():
+def load_model(data_rows, future_candles):
     try:
-        with open('crypto_prediction_model.pkl', 'rb') as model_file:
-            model = pickle.load(model_file)
-        return model
+        # for large dataset
+        if data_rows > 10000
+
+          if future_candles = 1
+            with open('big_data_model_fc1.pkl', 'rb') as model_file:
+                model = pickle.load(model_file)
+            return model
+
+          else if future_candles = 2
+            with open('big_data_model_fc2.pkl', 'rb') as model_file:
+                model = pickle.load(model_file)
+            return model
+
+          else if future_candles = 5
+            with open('big_data_model_fc5.pkl', 'rb') as model_file:
+                model = pickle.load(model_file)
+            return model
+
+          else if future_candles = 10
+            with open('big_data_model_fc10.pkl', 'rb') as model_file:
+                model = pickle.load(model_file)
+            return model
+
+          else if future_candles = 15
+            with open('big_data_model_fc15.pkl', 'rb') as model_file:
+                model = pickle.load(model_file)
+            return model
+        # for small dataset
+        else
+          if future_candles = 1
+            with open('small_data_model_fc1.pkl', 'rb') as model_file:
+                model = pickle.load(model_file)
+            return model
+
+          else if future_candles = 2
+            with open('small_data_model_fc2.pkl', 'rb') as model_file:
+                model = pickle.load(model_file)
+            return model
+
+          else if future_candles = 5
+            with open('small_data_model_fc5.pkl', 'rb') as model_file:
+                model = pickle.load(model_file)
+            return model
+
+          else if future_candles = 10
+            with open('small_data_model_fc10.pkl', 'rb') as model_file:
+                model = pickle.load(model_file)
+            return model
+
+          else if future_candles = 15
+            with open('small_data_model_fc15.pkl', 'rb') as model_file:
+                model = pickle.load(model_file)
+            return model
+
     except Exception as e:
         st.error(f"Error loading the model: {str(e)}")
     return None
@@ -44,7 +95,7 @@ def load_data(user_uploaded_data):
 
 # Preprocess cryptocurrency data
 def preprocess_data(data,future_candle):
-  df = data        
+  df = data
   # Convert the "time" column to datetime format
   df['time'] = pd.to_datetime(df['time'])
 
@@ -106,12 +157,12 @@ def extract_features(data):
 
     sequence_length = 5
     X_sequences = []
-    
+
     for i in range(len(X_scaled) - sequence_length + 1):
         X_sequences.append(X_scaled[i : i + sequence_length])
 
     X_sequences = np.array(X_sequences)
-    
+
     return X_sequences
 
 
@@ -119,29 +170,34 @@ def extract_features(data):
 def main():
     st.title("Cryptocurrency Price Prediction")
 
-    # Load model
-    model = load_model()
-    
-    # Print the loaded model to verify it's not None
-    print("Model:", model)
-    
     # User uploads data
     user_uploaded_data = st.file_uploader("Upload your cryptocurrency data (CSV file):", type=["csv"])
 
-    # User input the n-th future candle
-    user_input = st.text_input("Enter the n-th future candle you would like to predict:")
+    # Define a list of options for the dropdown
+    options = ["1", "2", "5", "10"]
+    # Create a dropdown select box
+    selected_option = st.selectbox("Select the n-th future you want to predict:", options)
+
     # Button to perform modelling with the input
     submit_button = st.button("Train Model")
-    future_candle = int(user_input)
 
-    if user_uploaded_data is not None :
+    if user_uploaded_data is not None and submit_button and selected_option is not None:
+
+        # get data size
+        data_rows = len(user_uploaded_data)
+
+        # Load model
+        model = load_model(data_rows, selected_option)
+
         # Display user-uploaded data
         st.write("User-uploaded data:")
         crypto_data = load_data(user_uploaded_data)
         st.write("Preview of uploaded Crypto Data")
         st.dataframe(crypto_data, height=400)
 
-        if crypto_data is not None and submit_button:
+        future_candle = int(selected_option)
+
+        if crypto_data is not None:
             try:
                 # Preprocess user data
                 preprocessed_data = preprocess_data(crypto_data,future_candle)
@@ -150,20 +206,24 @@ def main():
 
                 # Extract features from preprocessed data
                 input = extract_features(preprocessed_data)
-                
+
                 # Make predictions
                 prediction_scaled = model.predict(input)
 
-                min_value = crypto_data['Close_5th'].min()
-                max_value = crypto_data['Close_5th'].max()
+                target_col = 'Close_' + str(future_candle) + 'th';
+
+                min_value = crypto_data[target_col].min()
+                max_value = crypto_data[target_col].max()
 
                 st.write("min value: ", min_value)
                 st.write("max value: ", max_value)
 
-                st.write("Predicted Result:", prediction_scaled)
+                # # Inverse transform the scaled predictions using the scaler
+                prediction_actual = prediction_scaled * (max_value - min_value) + min_value
+
+                st.write("Predicted Result:", prediction_actual)
+
                 
-                # # # Inverse transform the scaled predictions using the scaler
-                # prediction_actual = prediction_scaled * (max_value - min_value) + min_value
 
                 # # Create a DataFrame to display actual and predicted prices
                 # result_df = pd.DataFrame({'Actual Price': crypto_data['Close_5th'], 'Predicted Price': prediction_actual})
