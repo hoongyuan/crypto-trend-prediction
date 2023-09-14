@@ -173,11 +173,7 @@ def main():
 
     if user_uploaded_data is not None and submit_button and selected_option is not None:
 
-        # get data size
-        data_rows = len(user_uploaded_data)
 
-        # Load model
-        model = load_model(data_rows, selected_option)
 
         # Display user-uploaded data
         st.write("User-uploaded data:")
@@ -186,6 +182,12 @@ def main():
         st.dataframe(crypto_data, height=400)
 
         future_candle = int(selected_option)
+
+        # get data size
+        data_rows = len(crypto_data)
+
+        # Load model
+        model = load_model(data_rows, selected_option)
 
         if crypto_data is not None:
             try:
