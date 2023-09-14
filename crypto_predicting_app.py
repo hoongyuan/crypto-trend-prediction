@@ -164,7 +164,7 @@ def extract_features(data_rows,future_candle,data):
 
     return X_sequences
 
-def dashboard(data):
+def show_dashboard(data):
     df = data
 
     # Show dataset start and end timestamp
@@ -196,10 +196,12 @@ def main():
     submit_button = st.button("Train Model")
 
     if user_uploaded_data is not None and submit_button and selected_option is not None:
+        crypto_data = load_data(user_uploaded_data)
+
+        # Display dashboard of uploaded data
+        show_dashboard(crypto_data)
 
         # Display user-uploaded data
-        st.write("User-uploaded data:")
-        crypto_data = load_data(user_uploaded_data)
         st.write("Preview of uploaded Crypto Data")
         st.dataframe(crypto_data, height=400)
 
