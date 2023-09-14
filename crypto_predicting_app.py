@@ -154,7 +154,7 @@ def extract_features(data_rows,future_candle,data):
         sequence_length = 15
       elif future_candle == 10:
         sequence_length = 20
-        
+
     X_sequences = []
 
     for i in range(len(X_scaled) - sequence_length + 1):
@@ -164,6 +164,21 @@ def extract_features(data_rows,future_candle,data):
 
     return X_sequences
 
+def dashboard(data):
+    df = data
+
+    # Show dataset start and end timestamp
+    time_start = df.loc[0, 'timestamp']
+    time_end = df.loc[df.shape[0] - 1, 'timestamp']
+
+    sentence = "Dataset Period: " + str(time_start) + " - " + str(time_end)
+    st.write(sentence)
+
+    # Show total data rows
+    st.write("Total Rows: ", len(df))
+
+    # Show dataset EDA on each column
+    st.dataframe(df.describe(), height=400)
 
 # Create a Streamlit app
 def main():
@@ -213,9 +228,6 @@ def main():
 
                 min_value = crypto_data[target_col].min()
                 max_value = crypto_data[target_col].max()
-
-                st.write("min value: ", min_value)
-                st.write("max value: ", max_value)
 
                 # # Inverse transform the scaled predictions using the scaler
                 prediction_actual = prediction_scaled * (max_value - min_value) + min_value
