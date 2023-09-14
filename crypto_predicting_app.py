@@ -187,7 +187,7 @@ def main():
         data_rows = len(crypto_data)
 
         # Load model
-        model = load_model(data_rows, selected_option)
+        model = load_model(data_rows, future_candle)
 
         if crypto_data is not None:
             try:
