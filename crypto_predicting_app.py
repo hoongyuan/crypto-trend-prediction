@@ -168,8 +168,8 @@ def show_dashboard(data):
     df = data
 
     # Show dataset start and end timestamp
-    time_start = df['timestamp'].iloc[0].strftime('%Y-%m-%d %H:%M:%S')
-    time_end = df['timestamp'].iloc[-1].strftime('%Y-%m-%d %H:%M:%S')
+    time_start = df['timestamp'].iloc[0]
+    time_end = df['timestamp'].iloc[-1]
 
     sentence = "Dataset Period: " + str(time_start) + " - " + str(time_end)
     st.write(sentence)
