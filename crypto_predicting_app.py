@@ -26,45 +26,44 @@ def load_model(data_rows, future_candles):
     try:
         # for large dataset
         if data_rows > 10000:
-
-          if future_candles = 1:
+          if future_candles == 1:
             with open('big_data_model_fc1.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles = 2:
+          else if future_candles == 2:
             with open('big_data_model_fc2.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles = 5:
+          else if future_candles == 5:
             with open('big_data_model_fc5.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles = 10:
+          else if future_candles == 10:
             with open('big_data_model_fc10.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
         # for small dataset
         else:
-          if future_candles = 1:
+          if future_candles == 1:
             with open('small_data_model_fc1.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles = 2:
+          else if future_candles == 2:
             with open('small_data_model_fc2.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles = 5:
+          else if future_candles == 5:
             with open('small_data_model_fc5.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
-          else if future_candles = 10:
+          else if future_candles == 10:
             with open('small_data_model_fc10.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
@@ -213,8 +212,6 @@ def main():
                 prediction_actual = prediction_scaled * (max_value - min_value) + min_value
 
                 st.write("Predicted Result:", prediction_actual)
-
-                
 
                 # # Create a DataFrame to display actual and predicted prices
                 # result_df = pd.DataFrame({'Actual Price': crypto_data['Close_5th'], 'Predicted Price': prediction_actual})
