@@ -192,6 +192,7 @@ def show_dashboard(data):
     st.dataframe(df.describe())
 
 def make_prediction(input):
+    model = load_model(data_rows, future_candle)
     target_scaler = load_scaler()
 
     # Make predictions
@@ -228,9 +229,6 @@ def main():
 
         # get data size
         data_rows = len(crypto_data)
-
-        # Load model
-        model = load_model(data_rows, future_candle)
 
         if crypto_data is not None:
             try:
