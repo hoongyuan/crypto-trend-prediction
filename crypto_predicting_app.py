@@ -193,7 +193,7 @@ def show_dashboard(data):
     # Show dataset EDA on each column
     st.dataframe(df.describe())
 
-def make_prediction(model, input):
+def make_prediction(model, input, sequence_length, feature_columns):
     target_scaler = load_scaler()
 
     # Reshape input data to match the model's input shape
@@ -252,7 +252,7 @@ def main():
                 # Extract features and scale input from preprocessed data
                 input, sequence_length, feature_columns = extract_features(data_rows, future_candle, preprocessed_data)
 
-                prediction = make_prediction(model, input)
+                prediction = make_prediction(model, input, sequence_length, feature_columns)
 
                 st.write("Predicted Result:", prediction)
 
