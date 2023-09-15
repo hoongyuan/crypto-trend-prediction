@@ -78,7 +78,7 @@ def load_scaler():
     try:
       with open('target_scaler.pkl', 'rb') as model_file:
                 y_scaler = pickle.load(model_file)
-            return y_scaler
+      return y_scaler
     except Exception as e:
       st.error(f"Error loading the scaler: {str(e)}")
     return None
