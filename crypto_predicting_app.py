@@ -195,12 +195,12 @@ def make_prediction(model,input):
     target_scaler = load_scaler()
 
     # Make predictions
-    prediction_scaled = model.predict(input)
+    prediction = model.predict(input)
 
     # Inverse transform the scaled predictions using the scaler
-    prediction_actual = target_scaler.inverse_transform(prediction_scaled)
+    # prediction_actual = target_scaler.inverse_transform(prediction_scaled)
 
-    return prediction_actual
+    return prediction
 
 # Create a Streamlit app
 def main():
