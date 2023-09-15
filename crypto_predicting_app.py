@@ -247,7 +247,7 @@ def main():
 
                 prediction = make_prediction(model, input)
 
-                st.write("Predicted Result:", prediction)
+                st.write("Predicted Result:", 10**prediction)
 
             except Exception as e:
                 st.error(f"Error making predictions: {str(e)}")
