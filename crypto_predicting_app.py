@@ -195,10 +195,10 @@ def make_prediction(model,input):
     target_scaler = load_scaler()
 
     # Make predictions
-    prediction = model.predict(input)
+    prediction_scaled = model.predict(input)
 
     # Inverse transform the scaled predictions using the scaler
-    # prediction_actual = target_scaler.inverse_transform(prediction_scaled)
+    prediction = target_scaler.inverse_transform(prediction_scaled)
 
     return prediction
 
