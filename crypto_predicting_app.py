@@ -191,8 +191,7 @@ def show_dashboard(data):
     # Show dataset EDA on each column
     st.dataframe(df.describe())
 
-def make_prediction(input):
-    model = load_model(data_rows, future_candle)
+def make_prediction(model,input):
     target_scaler = load_scaler()
 
     # Make predictions
@@ -230,6 +229,9 @@ def main():
         # get data size
         data_rows = len(crypto_data)
 
+        # Load model
+        model = load_model(data_rows, future_candle)
+
         if crypto_data is not None:
             try:
                 target_col = 'Close_' + str(future_candle) + 'th';
@@ -245,7 +247,7 @@ def main():
                 # Extract features and scale input from preprocessed data
                 input = extract_features(data_rows,future_candle,preprocessed_data)
 
-                prediction = make_prediction(input)
+                prediction = make_prediction(model, input)
 
                 st.write("Predicted Result:", prediction)
 
