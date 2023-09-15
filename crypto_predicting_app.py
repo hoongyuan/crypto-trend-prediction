@@ -73,6 +73,16 @@ def load_model(data_rows, future_candles):
         st.error(f"Error loading the model: {str(e)}")
     return None
 
+# Load target_scaler model
+def load_scaler(){
+    try:
+      with open('target_scaler.pkl', 'rb') as model_file:
+                y_scaler = pickle.load(model_file)
+            return y_scaler
+    except Exception as e:
+      st.error(f"Error loading the scaler: {str(e)}")
+}
+
 # Load cryptocurrency data
 def load_data(user_uploaded_data):
     if user_uploaded_data is not None:
@@ -197,13 +207,13 @@ def main():
     submit_button = st.button("Train Model")
 
     if user_uploaded_data is not None and submit_button and selected_option is not None:
+        
         crypto_data = load_data(user_uploaded_data)
+        future_candle = int(selected_option)
 
         # Display user-uploaded data
         st.write("Preview of uploaded Crypto Data")
         st.dataframe(crypto_data, height=400)
-
-        future_candle = int(selected_option)
 
         # get data size
         data_rows = len(crypto_data)
@@ -213,6 +223,9 @@ def main():
 
         if crypto_data is not None:
             try:
+                target_col = 'Close_' + str(future_candle) + 'th';
+                target_scaler = load_scaler()
+
                 # Preprocess user data
                 preprocessed_data = preprocess_data(crypto_data,future_candle)
                 st.write("Preview of preprocessed Crypto Data")
@@ -221,28 +234,16 @@ def main():
                 # Display dashboard of uploaded data
                 show_dashboard(preprocessed_data)
 
-                # Extract features from preprocessed data
+                # Extract features and scale input from preprocessed data
                 input = extract_features(data_rows,future_candle,preprocessed_data)
 
                 # Make predictions
                 prediction_scaled = model.predict(input)
 
-                target_col = 'Close_' + str(future_candle) + 'th';
-
-                # min_value = crypto_data[target_col].min()
-                # max_value = crypto_data[target_col].max()
-
-                scaler = MinMaxScaler()
-                # # Inverse transform the scaled predictions using the scaler
-                prediction_actual = scaler.inverse_transform(prediction_scaled.reshape(-1, 1))
+                # Inverse transform the scaled predictions using the scaler
+                prediction_actual = target_scaler.inverse_transform(prediction_scaled.reshape(-1, 1))
 
                 st.write("Predicted Result:", prediction_actual)
-
-                # # Create a DataFrame to display actual and predicted prices
-                # result_df = pd.DataFrame({'Actual Price': crypto_data['Close_5th'], 'Predicted Price': prediction_actual})
-
-                # st.write("Actual vs. Predicted Prices:")
-                # st.dataframe(result_df, height=400)
 
             except Exception as e:
                 st.error(f"Error making predictions: {str(e)}")
