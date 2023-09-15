@@ -194,21 +194,9 @@ def show_dashboard(data):
     st.dataframe(df.describe())
 
 def make_prediction(model,input):
-    target_scaler = load_scaler()
 
     # Make predictions
-    prediction_scaled = model.predict(input)
-
-    # Inverse transform the scaled predictions using the scaler
-    prediction = target_scaler.inverse_transform(prediction_scaled.reshape(-1, 1))
-
-    st.write("Scaler Min:", target_scaler.min_)
-    st.write("Scaler Scale:", target_scaler.scale_)
-
-    # Manually reverse scale a single value
-    scaled_value = prediction_scaled[0][0]
-    actual_value = (scaled_value - target_scaler.min_) / target_scaler.scale_
-    st.write("Manually Reverse Scaled Value:", actual_value)
+    prediction = model.predict(input)
 
     return prediction
 
