@@ -69,6 +69,8 @@ def load_model(data_rows, future_candles):
                 model = pickle.load(model_file)
             return model
 
+        # If none of the conditions match
+        st.error("Model file not found for the specified configuration.")
     except Exception as e:
         st.error(f"Error loading the model: {str(e)}")
     return None
