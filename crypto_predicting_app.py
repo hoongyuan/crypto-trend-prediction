@@ -28,7 +28,7 @@ def load_model(data_rows, future_candles):
         # for large dataset
         if data_rows > 10000:
           if future_candles == 1:
-            with open('big_data_model_fc1.pkl', 'rb') as model_file:
+            with open('big_data_model_fc1_test.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
