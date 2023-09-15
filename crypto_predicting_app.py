@@ -200,7 +200,15 @@ def make_prediction(model,input):
     prediction_scaled = model.predict(input)
 
     # Inverse transform the scaled predictions using the scaler
-    prediction = target_scaler.inverse_transform(prediction_scaled)
+    prediction = target_scaler.inverse_transform(prediction_scaled.reshape(-1, 1))
+
+    st.write("Scaler Min:", target_scaler.min_)
+    st.write("Scaler Scale:", target_scaler.scale_)
+
+    # Manually reverse scale a single value
+    scaled_value = prediction_scaled[0][0]
+    actual_value = (scaled_value - target_scaler.min_) / target_scaler.scale_
+    print("Manually Reverse Scaled Value:", actual_value)
 
     return prediction
 
@@ -252,21 +260,6 @@ def main():
                 prediction = make_prediction(model, input)
 
                 st.write("Predicted Result:", prediction)
-
-                st.write("Check!!!!!!!")
-                st.write("Input Shape:", input.shape)
-                st.write("Input Data:", input)
-                st.write("Model Summary:",model.summary())
-
-                st.write("Prediction Scaled Shape:", prediction.shape)
-                st.write("Prediction Scaled:", prediction)
-
-                # Manually reverse scale a single value
-                t_scaler = load_scaler()
-                scaled_value = prediction[0][0]
-                actual_value = scaled_value * t_scaler.scale_ + t_scaler.min_
-                print("Manually Reverse Scaled Value:", actual_value)
-
 
             except Exception as e:
                 st.error(f"Error making predictions: {str(e)}")
