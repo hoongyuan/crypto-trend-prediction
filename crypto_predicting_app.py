@@ -147,35 +147,33 @@ def preprocess_data(data,future_candle):
   df = df.drop(columns=['time_of_day'])
   return df
 
-def extract_features(data_rows, future_candle, data):
+def extract_features(data_rows,future_candle,data):
     feature_columns = ['timestamp', 'Up Trend', 'Down Trend', 'Tenkan', 'Kijun', 'Chikou',
-                   'SenkouA', 'SenkouB', 'Basis', 'Upper', 'Lower', 'Volume',
-                   'Volume MA', '%K', '%D', 'Aroon Up', 'Aroon Down', 'RSI', 'RSI-based MA', 'Upper Bollinger Band',
-                   'Lower Bollinger Band', 'OnBalanceVolume', 'Smoothing Line', 'Histogram', 'MACD', 'Signal']
-
+              'SenkouA', 'SenkouB', 'Basis', 'Upper', 'Lower', 'Volume',
+              'Volume MA', '%K', '%D', 'Aroon Up', 'Aroon Down', 'RSI', 'RSI-based MA', 'Upper Bollinger Band',
+              'Lower Bollinger Band', 'OnBalanceVolume', 'Smoothing Line', 'Histogram', 'MACD', 'Signal']
     features = data[feature_columns].values
     scaler = MinMaxScaler()
     X_scaled = scaler.fit_transform(features)
 
     if data_rows > 10000:
-        sequence_length = 20
+      sequence_length = 20
     else:
-        if future_candle == 1 or future_candle == 2:
-            sequence_length = 10
-        elif future_candle == 5:
-            sequence_length = 15
-        elif future_candle == 10:
-            sequence_length = 20
+      if future_candle == 1 or future_candle == 2:
+        sequence_length = 10
+      elif future_candle == 5:
+        sequence_length = 15
+      elif future_candle == 10:
+        sequence_length = 20
 
     X_sequences = []
 
     for i in range(len(X_scaled) - sequence_length + 1):
-        X_sequences.append(X_scaled[i: i + sequence_length])
+        X_sequences.append(X_scaled[i : i + sequence_length])
 
     X_sequences = np.array(X_sequences)
 
-    return X_sequences, sequence_length, feature_columns
-
+    return X_sequences
 
 def show_dashboard(data):
     df = data
@@ -193,11 +191,8 @@ def show_dashboard(data):
     # Show dataset EDA on each column
     st.dataframe(df.describe())
 
-def make_prediction(model, input, sequence_length, feature_columns):
+def make_prediction(model,input):
     target_scaler = load_scaler()
-
-    # Reshape input data to match the model's input shape
-    input = input.reshape(-1, sequence_length, len(feature_columns))
 
     # Make predictions
     prediction_scaled = model.predict(input)
@@ -250,11 +245,26 @@ def main():
                 show_dashboard(preprocessed_data)
 
                 # Extract features and scale input from preprocessed data
-                input, sequence_length, feature_columns = extract_features(data_rows, future_candle, preprocessed_data)
+                input = extract_features(data_rows,future_candle,preprocessed_data)
 
-                prediction = make_prediction(model, input, sequence_length, feature_columns)
+                prediction = make_prediction(model, input)
 
                 st.write("Predicted Result:", prediction)
+
+                st.write("Check!!!!!!!")
+                st.write("Input Shape:", input.shape)
+                st.write("Input Data:", input)
+                st.write("Model Summary:",model.summary())
+
+                st.write("Prediction Scaled Shape:", prediction.shape)
+                st.write("Prediction Scaled:", prediction)
+
+                # Manually reverse scale a single value
+                t_scaler = load_scaler()
+                scaled_value = prediction[0][0]
+                actual_value = scaled_value * t_scaler.scale_ + t_scaler.min_
+                print("Manually Reverse Scaled Value:", actual_value)
+
 
             except Exception as e:
                 st.error(f"Error making predictions: {str(e)}")
