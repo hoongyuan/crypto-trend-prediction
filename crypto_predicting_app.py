@@ -208,7 +208,7 @@ def make_prediction(model,input):
     # Manually reverse scale a single value
     scaled_value = prediction_scaled[0][0]
     actual_value = (scaled_value - target_scaler.min_) / target_scaler.scale_
-    print("Manually Reverse Scaled Value:", actual_value)
+    st.write("Manually Reverse Scaled Value:", actual_value)
 
     return prediction
 
