@@ -200,7 +200,7 @@ def make_prediction(model,input):
     prediction_scaled = model.predict(input)
 
     # Inverse transform the scaled predictions using the scaler
-    prediction = target_scaler.inverse_transform(prediction_scaled.reshape(-1, 1))
+    prediction = target_scaler.inverse_transform(prediction_scaled)
 
     return prediction
 
