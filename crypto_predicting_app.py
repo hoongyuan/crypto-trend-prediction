@@ -179,7 +179,7 @@ def show_dashboard(data):
     st.write("Total Rows: ", len(df))
 
     # Show dataset EDA on each column
-    st.dataframe(df.describe(), height=400)
+    st.dataframe(df.describe())
 
 # Create a Streamlit app
 def main():
@@ -229,11 +229,12 @@ def main():
 
                 target_col = 'Close_' + str(future_candle) + 'th';
 
-                min_value = crypto_data[target_col].min()
-                max_value = crypto_data[target_col].max()
+                # min_value = crypto_data[target_col].min()
+                # max_value = crypto_data[target_col].max()
 
+                scaler = MinMaxScaler()
                 # # Inverse transform the scaled predictions using the scaler
-                prediction_actual = prediction_scaled * (max_value - min_value) + min_value
+                prediction_actual = scaler.inverse_transform(prediction_scaled.reshape(-1, 1))
 
                 st.write("Predicted Result:", prediction_actual)
 
