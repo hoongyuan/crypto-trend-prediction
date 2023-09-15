@@ -191,6 +191,17 @@ def show_dashboard(data):
     # Show dataset EDA on each column
     st.dataframe(df.describe())
 
+def make_prediction(input):
+    target_scaler = load_scaler()
+
+    # Make predictions
+    prediction_scaled = model.predict(input)
+
+    # Inverse transform the scaled predictions using the scaler
+    prediction_actual = target_scaler.inverse_transform(prediction_scaled.reshape(-1, 1))
+
+    return prediction_actual
+
 # Create a Streamlit app
 def main():
     st.title("Cryptocurrency Price Prediction")
@@ -224,7 +235,6 @@ def main():
         if crypto_data is not None:
             try:
                 target_col = 'Close_' + str(future_candle) + 'th';
-                target_scaler = load_scaler()
 
                 # Preprocess user data
                 preprocessed_data = preprocess_data(crypto_data,future_candle)
@@ -237,13 +247,9 @@ def main():
                 # Extract features and scale input from preprocessed data
                 input = extract_features(data_rows,future_candle,preprocessed_data)
 
-                # Make predictions
-                prediction_scaled = model.predict(input)
+                prediction = make_prediction(input)
 
-                # Inverse transform the scaled predictions using the scaler
-                prediction_actual = target_scaler.inverse_transform(prediction_scaled.reshape(-1, 1))
-
-                st.write("Predicted Result:", prediction_actual)
+                st.write("Predicted Result:", prediction)
 
             except Exception as e:
                 st.error(f"Error making predictions: {str(e)}")
