@@ -50,7 +50,7 @@ def load_model(data_rows, future_candles):
         # for small dataset
         else:
           if future_candles == 1:
-            with open('small_data_model_fc1.pkl', 'rb') as model_file:
+            with open('small_data_model_fc1_without_scale.pkl', 'rb') as model_file:
                 model = pickle.load(model_file)
             return model
 
