@@ -223,13 +223,13 @@ def main():
                 prediction = lstm_model.predict(X_test)
 
                 st.write("Predicted Result:", 10**prediction)
-                st.write("Actual Result:", y_test)
+                st.write("Actual Result:", 10**y_test)
 
                 st.title("Actual vs. Predicted Data")
 
                 # Create a plot
                 fig, ax = plt.subplots()
-                ax.plot(y_test, label='Actual Data', marker='o')
+                ax.plot(10**y_test, label='Actual Data', marker='o')
                 ax.plot(10**prediction, label='Predicted Data', marker='x')
                 ax.set_xlabel('Time')
                 ax.set_ylabel('Value')
