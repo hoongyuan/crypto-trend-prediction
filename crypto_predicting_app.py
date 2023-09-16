@@ -4,17 +4,15 @@ import pandas as pd
 import numpy as np
 import pickle
 import datetime
-# import tensorflow as tf
-# import sklearn
+import tensorflow as tf
+import sklearn
 
-# import matplotlib
-
-# #for modeling
-# from sklearn.model_selection import train_test_split
+#for modeling
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
-# from keras.models import Sequential
-# from keras.layers import LSTM, Dense
-# from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from keras.models import Sequential
+from keras.layers import LSTM, Dense
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 #for saving model
 import pickle
@@ -107,7 +105,7 @@ def preprocess_data(data,future_candle):
   df = df.drop(columns=['time_of_day'])
   return df
 
-def extract_features(target_col,future_candle,data):
+def extract_features(target_col,future_candle,data,sequence_length_in):
     feature_columns = ['timestamp', 'Up Trend', 'Down Trend', 'Tenkan', 'Kijun', 'Chikou',
               'SenkouA', 'SenkouB', 'Basis', 'Upper', 'Lower', 'Volume',
               'Volume MA', '%K', '%D', 'Aroon Up', 'Aroon Down', 'RSI', 'RSI-based MA', 'Upper Bollinger Band',
@@ -116,8 +114,10 @@ def extract_features(target_col,future_candle,data):
     x_scaler = MinMaxScaler()
     X_scaled = x_scaler.fit_transform(X)
     y = data[target_col].values
+    y = np.where(y <= 0, 1e-10, y)
+    y = np.log10(y)
 
-    sequence_length = 20
+    sequence_length = sequence_length_in
 
     X_sequences = []
     y_sequences = []
@@ -139,7 +139,7 @@ def extract_features(target_col,future_candle,data):
     X_test = X_sequences[split_index:]
     y_test = y_sequences[split_index:]
 
-    return X_sequences, y_sequences
+    return X_train, y_train, X_test, y_test
 
 def show_dashboard(data):
     df = data
@@ -162,6 +162,14 @@ def make_prediction(model,input):
     # Make predictions
     prediction = model.predict(input)
     return prediction
+
+def train_model(X_train,y_train,epoch_in,batch_size_in,sequence_length_in):
+    # Build the LSTM model
+    model = Sequential()
+    model.add(LSTM(64, input_shape=(sequence_length, len(feature_columns))))
+    model.add(Dense(1, activation='linear'))  # Output layer
+    model.compile(loss='mean_squared_error', optimizer='adam')
+    model.fit(X_train, y_train, epochs=epoch_in, batch_size=batch_size_in, validation_split=0.1)
 
 # Create a Streamlit app
 def main():
@@ -196,8 +204,10 @@ def main():
 
         if crypto_data is not None:
             try:
+                sequence_length = 20
+
                 # Preprocess user data
-                preprocessed_data = preprocess_data(crypto_data,future_candle)
+                preprocessed_data = preprocess_data(crypto_data,future_candle,sequence_length)
                 st.write("Preview of preprocessed Crypto Data")
                 st.dataframe(preprocessed_data, height=400)
 
@@ -205,9 +215,11 @@ def main():
                 show_dashboard(preprocessed_data)
 
                 # Extract features and scale input from preprocessed data
-                input, y_test = extract_features(target_col,future_candle,preprocessed_data)
+                X_train, y_train, X_test, y_test = extract_features(target_col,future_candle,preprocessed_data)
 
-                prediction = make_prediction(model, input)
+                # prediction = make_prediction(model, input)
+                lstm_model = train_model(X_train,y_train,50,30,sequence_length)
+                prediction = lstm_model.predict(input)
 
                 st.write("Predicted Result:", 10**prediction)
                 st.write("Actual Result:", y_test)
