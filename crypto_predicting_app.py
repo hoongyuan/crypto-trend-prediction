@@ -139,7 +139,7 @@ def extract_features(target_col,future_candle,data,sequence_length_in):
     X_test = X_sequences[split_index:]
     y_test = y_sequences[split_index:]
 
-    return X_train, y_train, X_test, y_test
+    return X_train, y_train, X_test, y_test, feature_columns
 
 def show_dashboard(data):
     df = data
@@ -163,7 +163,7 @@ def make_prediction(model,input):
     prediction = model.predict(input)
     return prediction
 
-def train_model(X_train,y_train,epoch_in,batch_size_in,sequence_length_in):
+def train_model(X_train,y_train,epoch_in,batch_size_in,sequence_length_in,feature_columns):
     # Build the LSTM model
     model = Sequential()
     model.add(LSTM(64, input_shape=(sequence_length_in, len(feature_columns))))
@@ -215,10 +215,10 @@ def main():
                 show_dashboard(preprocessed_data)
 
                 # Extract features and scale input from preprocessed data
-                X_train, y_train, X_test, y_test = extract_features(target_col,future_candle,preprocessed_data,sequence_length)
+                X_train, y_train, X_test, y_test, feature_columns = extract_features(target_col,future_candle,preprocessed_data,sequence_length)
 
                 # prediction = make_prediction(model, input)
-                lstm_model = train_model(X_train,y_train,50,30,sequence_length)
+                lstm_model = train_model(X_train,y_train,50,30,sequence_length,feature_columns)
                 prediction = lstm_model.predict(input)
 
                 st.write("Predicted Result:", 10**prediction)
