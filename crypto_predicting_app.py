@@ -170,6 +170,7 @@ def train_model(X_train,y_train,epoch_in,batch_size_in,sequence_length_in,featur
     model.add(Dense(1, activation='linear'))  # Output layer
     model.compile(loss='mean_squared_error', optimizer='adam')
     model.fit(X_train, y_train, epochs=epoch_in, batch_size=batch_size_in, validation_split=0.1)
+    return model
 
 # Create a Streamlit app
 def main():
