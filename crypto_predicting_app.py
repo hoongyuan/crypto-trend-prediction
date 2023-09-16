@@ -216,7 +216,7 @@ def main():
 
                 # Create a plot
                 fig, ax = plt.subplots()
-                ax.plot(y_test, label='Actual Data', marker='o')
+                ax.plot(10**y_test, label='Actual Data', marker='o')
                 ax.plot(10**prediction, label='Predicted Data', marker='x')
                 ax.set_xlabel('Time')
                 ax.set_ylabel('Value')
