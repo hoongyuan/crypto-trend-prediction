@@ -25,7 +25,7 @@ import matplotlib.pyplot as plt
 # Load your trained deep learning model
 def load_model(data_rows, future_candles):
     try:
-        with open('model_ep100_bs30.pkl_wo', 'rb') as model_file:
+        with open('model_ep100_bs30_wo.pkl', 'rb') as model_file:
             model = pickle.load(model_file)
         return model
 
