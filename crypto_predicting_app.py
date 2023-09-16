@@ -166,7 +166,7 @@ def make_prediction(model,input):
 def train_model(X_train,y_train,epoch_in,batch_size_in,sequence_length_in):
     # Build the LSTM model
     model = Sequential()
-    model.add(LSTM(64, input_shape=(sequence_length, len(feature_columns))))
+    model.add(LSTM(64, input_shape=(sequence_length_in, len(feature_columns))))
     model.add(Dense(1, activation='linear'))  # Output layer
     model.compile(loss='mean_squared_error', optimizer='adam')
     model.fit(X_train, y_train, epochs=epoch_in, batch_size=batch_size_in, validation_split=0.1)
