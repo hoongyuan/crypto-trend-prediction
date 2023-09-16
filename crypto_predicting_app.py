@@ -20,7 +20,7 @@ from sklearn.preprocessing import MinMaxScaler
 import pickle
 
 # #for plotting
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 # Load your trained deep learning model
 def load_model(data_rows, future_candles):
@@ -209,14 +209,14 @@ def main():
 
                 prediction = make_prediction(model, input)
 
-                st.write("Predicted Result:", 10**prediction)
+                st.write("Predicted Result:", prediction)
 
                 st.title("Actual vs. Predicted Data")
 
                 # Create a plot
                 fig, ax = plt.subplots()
                 ax.plot(y_test, label='Actual Data', marker='o')
-                ax.plot(10**prediction, label='Predicted Data', marker='x')
+                ax.plot(prediction, label='Predicted Data', marker='x')
                 ax.set_xlabel('Time')
                 ax.set_ylabel('Value')
                 ax.legend()
