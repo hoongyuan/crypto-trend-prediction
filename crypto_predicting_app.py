@@ -72,7 +72,7 @@ def preprocess_data(data,future_candle):
   del df['time']
 
   future_candles = future_candle;
-  target_col = 'Close_' + str(future_candles) + 'th';
+  target_col = 'Future_' + str(future_candles) + '_Candle';
 
   # Loop through all rows in the DataFrame
   for i in range(len(df)):
@@ -107,7 +107,7 @@ def preprocess_data(data,future_candle):
   df = df.drop(columns=['time_of_day'])
   return df
 
-def extract_features(data_rows,future_candle,data):
+def extract_features(target_col,future_candle,data):
     feature_columns = ['timestamp', 'Up Trend', 'Down Trend', 'Tenkan', 'Kijun', 'Chikou',
               'SenkouA', 'SenkouB', 'Basis', 'Upper', 'Lower', 'Volume',
               'Volume MA', '%K', '%D', 'Aroon Up', 'Aroon Down', 'RSI', 'RSI-based MA', 'Upper Bollinger Band',
@@ -115,6 +115,7 @@ def extract_features(data_rows,future_candle,data):
     features = data[feature_columns].values
     scaler = MinMaxScaler()
     X_scaled = scaler.fit_transform(features)
+    y = data[target_col].values
 
     sequence_length = 20
 
@@ -194,7 +195,7 @@ def main():
 
         if crypto_data is not None:
             try:
-                target_col = 'Close_' + str(future_candle) + 'th';
+                target_col = 'Future_' + str(future_candles) + '_Candle';
 
                 # Preprocess user data
                 preprocessed_data = preprocess_data(crypto_data,future_candle)
@@ -205,7 +206,7 @@ def main():
                 show_dashboard(preprocessed_data)
 
                 # Extract features and scale input from preprocessed data
-                input, y_test = extract_features(data_rows,future_candle,preprocessed_data)
+                input, y_test = extract_features(target_col,future_candle,preprocessed_data)
 
                 prediction = make_prediction(model, input)
 
