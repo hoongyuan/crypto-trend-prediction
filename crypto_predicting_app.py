@@ -214,16 +214,16 @@ def main():
 
                 st.title("Actual vs. Predicted Data")
 
-                # # Create a plot
-                # fig, ax = plt.subplots()
-                # ax.plot(y_test, label='Actual Data', marker='o')
-                # ax.plot(10**prediction, label='Predicted Data', marker='x')
-                # ax.set_xlabel('Time')
-                # ax.set_ylabel('Value')
-                # ax.legend()
+                # Create a plot
+                fig, ax = plt.subplots()
+                ax.plot(y_test, label='Actual Data', marker='o')
+                ax.plot(10**prediction, label='Predicted Data', marker='x')
+                ax.set_xlabel('Time')
+                ax.set_ylabel('Value')
+                ax.legend()
 
-                # # Display the plot in Streamlit
-                # st.pyplot(fig)
+                # Display the plot in Streamlit
+                st.pyplot(fig)
 
             except Exception as e:
                 st.error(f"Error making predictions: {str(e)}")
