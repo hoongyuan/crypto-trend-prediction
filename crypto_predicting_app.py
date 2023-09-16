@@ -209,7 +209,7 @@ def main():
 
                 prediction = make_prediction(model, input)
 
-                st.write("Predicted Result:", 10**prediction)
+                st.write("Predicted Result:", prediction)
 
                 st.title("Actual vs. Predicted Data")
 
