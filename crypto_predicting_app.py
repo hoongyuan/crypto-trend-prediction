@@ -25,52 +25,10 @@ import pickle
 # Load your trained deep learning model
 def load_model(data_rows, future_candles):
     try:
-        # for large dataset
-        if data_rows > 10000:
-          if future_candles == 1:
-            with open('big_data_model_fc1_test.pkl', 'rb') as model_file:
-                model = pickle.load(model_file)
-            return model
+        with open('model_ep100_bs30.pkl', 'rb') as model_file:
+            model = pickle.load(model_file)
+        return model
 
-          elif future_candles == 2:
-            with open('big_data_model_fc2.pkl', 'rb') as model_file:
-                model = pickle.load(model_file)
-            return model
-
-          elif future_candles == 5:
-            with open('big_data_model_fc5.pkl', 'rb') as model_file:
-                model = pickle.load(model_file)
-            return model
-
-          elif future_candles == 10:
-            with open('big_data_model_fc10.pkl', 'rb') as model_file:
-                model = pickle.load(model_file)
-            return model
-
-        # for small dataset
-        else:
-          if future_candles == 1:
-            with open('small_data_model_fc1_without_scale.pkl', 'rb') as model_file:
-                model = pickle.load(model_file)
-            return model
-
-          elif future_candles == 2:
-            with open('small_data_model_fc2.pkl', 'rb') as model_file:
-                model = pickle.load(model_file)
-            return model
-
-          elif future_candles == 5:
-            with open('small_data_model_fc5.pkl', 'rb') as model_file:
-                model = pickle.load(model_file)
-            return model
-
-          elif future_candles == 10:
-            with open('small_data_model_fc10.pkl', 'rb') as model_file:
-                model = pickle.load(model_file)
-            return model
-
-        # If none of the conditions match
-        st.error("Model file not found for the specified configuration.")
     except Exception as e:
         st.error(f"Error loading the model: {str(e)}")
     return None
@@ -158,24 +116,29 @@ def extract_features(data_rows,future_candle,data):
     scaler = MinMaxScaler()
     X_scaled = scaler.fit_transform(features)
 
-    if data_rows > 10000:
-      sequence_length = 20
-    else:
-      if future_candle == 1 or future_candle == 2:
-        sequence_length = 10
-      elif future_candle == 5:
-        sequence_length = 15
-      elif future_candle == 10:
-        sequence_length = 20
+    sequence_length = 20
 
     X_sequences = []
+    y_sequences = []
 
     for i in range(len(X_scaled) - sequence_length + 1):
         X_sequences.append(X_scaled[i : i + sequence_length])
+        y_sequences.append(y[i + sequence_length - 1])
 
     X_sequences = np.array(X_sequences)
+    y_sequences = np.array(y_sequences)
 
-    return X_sequences
+    # Split into train and test sets
+    split_ratio = 0.8
+    split_index = int(split_ratio * len(X_sequences))
+
+    X_train = X_sequences[:split_index]
+    y_train = y_sequences[:split_index]
+
+    X_test = X_sequences[split_index:]
+    y_test = y_sequences[split_index:]
+
+    return X_sequences, y_test
 
 def show_dashboard(data):
     df = data
@@ -189,15 +152,14 @@ def show_dashboard(data):
 
     # Show total data rows
     st.write("Total Rows: ", len(df))
-
+    
     # Show dataset EDA on each column
+    st.write("Summary Statistics on the uploaded dataset")
     st.dataframe(df.describe())
 
 def make_prediction(model,input):
-
     # Make predictions
     prediction = model.predict(input)
-
     return prediction
 
 # Create a Streamlit app
@@ -216,7 +178,7 @@ def main():
     submit_button = st.button("Train Model")
 
     if user_uploaded_data is not None and submit_button and selected_option is not None:
-        
+
         crypto_data = load_data(user_uploaded_data)
         future_candle = int(selected_option)
 
@@ -243,11 +205,21 @@ def main():
                 show_dashboard(preprocessed_data)
 
                 # Extract features and scale input from preprocessed data
-                input = extract_features(data_rows,future_candle,preprocessed_data)
+                input, y_test = extract_features(data_rows,future_candle,preprocessed_data)
 
                 prediction = make_prediction(model, input)
 
                 st.write("Predicted Result:", 10**prediction)
+
+                st.title("Actual vs. Predicted Data")
+
+                # Create a plot
+                fig, ax = plt.subplots()
+                ax.plot(y_test, label='Actual Data', marker='o')
+                ax.plot(10**prediction, label='Predicted Data', marker='x')
+                ax.set_xlabel('Time')
+                ax.set_ylabel('Value')
+                ax.legend()
 
             except Exception as e:
                 st.error(f"Error making predictions: {str(e)}")
