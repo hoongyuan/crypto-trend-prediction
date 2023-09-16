@@ -182,6 +182,7 @@ def main():
 
         crypto_data = load_data(user_uploaded_data)
         future_candle = int(selected_option)
+        target_col = 'Future_' + str(future_candle) + '_Candle';
 
         # Display user-uploaded data
         st.write("Preview of uploaded Crypto Data")
@@ -195,8 +196,6 @@ def main():
 
         if crypto_data is not None:
             try:
-                target_col = 'Future_' + str(future_candles) + '_Candle';
-
                 # Preprocess user data
                 preprocessed_data = preprocess_data(crypto_data,future_candle)
                 st.write("Preview of preprocessed Crypto Data")
