@@ -115,31 +115,31 @@ def extract_features(target_col,future_candle,data):
     features = data[feature_columns].values
     scaler = MinMaxScaler()
     X_scaled = scaler.fit_transform(features)
-    y = data[target_col].values
+    # y = data[target_col].values
 
     sequence_length = 20
 
     X_sequences = []
-    y_sequences = []
+    # y_sequences = []
 
     for i in range(len(X_scaled) - sequence_length + 1):
         X_sequences.append(X_scaled[i : i + sequence_length])
-        y_sequences.append(y[i + sequence_length - 1])
+        # y_sequences.append(y[i + sequence_length - 1])
 
     X_sequences = np.array(X_sequences)
-    y_sequences = np.array(y_sequences)
+    # y_sequences = np.array(y_sequences)
 
     # Split into train and test sets
     split_ratio = 0.8
     split_index = int(split_ratio * len(X_sequences))
 
     X_train = X_sequences[:split_index]
-    y_train = y_sequences[:split_index]
+    # y_train = y_sequences[:split_index]
 
     X_test = X_sequences[split_index:]
-    y_test = y_sequences[split_index:]
+    # y_test = y_sequences[split_index:]
 
-    return X_sequences, y_test
+    return X_sequences
 
 def show_dashboard(data):
     df = data
@@ -205,24 +205,24 @@ def main():
                 show_dashboard(preprocessed_data)
 
                 # Extract features and scale input from preprocessed data
-                input, y_test = extract_features(target_col,future_candle,preprocessed_data)
+                input = extract_features(target_col,future_candle,preprocessed_data)
 
                 prediction = make_prediction(model, input)
 
-                st.write("Predicted Result:", prediction)
+                st.write("Predicted Result:", 10**prediction)
 
                 st.title("Actual vs. Predicted Data")
 
-                # Create a plot
-                fig, ax = plt.subplots()
-                ax.plot(y_test, label='Actual Data', marker='o')
-                ax.plot(prediction, label='Predicted Data', marker='x')
-                ax.set_xlabel('Time')
-                ax.set_ylabel('Value')
-                ax.legend()
+                # # Create a plot
+                # fig, ax = plt.subplots()
+                # ax.plot(y_test, label='Actual Data', marker='o')
+                # ax.plot(10**prediction, label='Predicted Data', marker='x')
+                # ax.set_xlabel('Time')
+                # ax.set_ylabel('Value')
+                # ax.legend()
 
-                # Display the plot in Streamlit
-                st.pyplot(fig)
+                # # Display the plot in Streamlit
+                # st.pyplot(fig)
 
             except Exception as e:
                 st.error(f"Error making predictions: {str(e)}")
