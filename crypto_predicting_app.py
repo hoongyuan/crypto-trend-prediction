@@ -139,7 +139,7 @@ def extract_features(target_col,future_candle,data):
     X_test = X_sequences[split_index:]
     y_test = y_sequences[split_index:]
 
-    return X_sequences, y_test
+    return X_sequences, y_sequences
 
 def show_dashboard(data):
     df = data
