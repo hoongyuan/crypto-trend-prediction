@@ -112,34 +112,34 @@ def extract_features(target_col,future_candle,data):
               'SenkouA', 'SenkouB', 'Basis', 'Upper', 'Lower', 'Volume',
               'Volume MA', '%K', '%D', 'Aroon Up', 'Aroon Down', 'RSI', 'RSI-based MA', 'Upper Bollinger Band',
               'Lower Bollinger Band', 'OnBalanceVolume', 'Smoothing Line', 'Histogram', 'MACD', 'Signal']
-    features = data[feature_columns].values
-    scaler = MinMaxScaler()
-    X_scaled = scaler.fit_transform(features)
-    # y = data[target_col].values
+    X = data[feature_columns].values
+    x_scaler = MinMaxScaler()
+    X_scaled = x_scaler.fit_transform(X)
+    y = data[target_col].values
 
     sequence_length = 20
 
     X_sequences = []
-    # y_sequences = []
+    y_sequences = []
 
     for i in range(len(X_scaled) - sequence_length + 1):
         X_sequences.append(X_scaled[i : i + sequence_length])
-        # y_sequences.append(y[i + sequence_length - 1])
+        y_sequences.append(y[i + sequence_length - 1])
 
     X_sequences = np.array(X_sequences)
-    # y_sequences = np.array(y_sequences)
+    y_sequences = np.array(y_sequences)
 
     # Split into train and test sets
     split_ratio = 0.8
     split_index = int(split_ratio * len(X_sequences))
 
     X_train = X_sequences[:split_index]
-    # y_train = y_sequences[:split_index]
+    y_train = y_sequences[:split_index]
 
     X_test = X_sequences[split_index:]
-    # y_test = y_sequences[split_index:]
+    y_test = y_sequences[split_index:]
 
-    return X_sequences
+    return X_sequences, y_test
 
 def show_dashboard(data):
     df = data
@@ -205,11 +205,12 @@ def main():
                 show_dashboard(preprocessed_data)
 
                 # Extract features and scale input from preprocessed data
-                input = extract_features(target_col,future_candle,preprocessed_data)
+                input, y_test = extract_features(target_col,future_candle,preprocessed_data)
 
                 prediction = make_prediction(model, input)
 
                 st.write("Predicted Result:", 10**prediction)
+                st.write("Actual Result:", 10**y_test)
 
                 st.title("Actual vs. Predicted Data")
 
