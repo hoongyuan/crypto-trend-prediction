@@ -25,7 +25,7 @@ import matplotlib.pyplot as plt
 # Load your trained deep learning model
 def load_model(data_rows, future_candles):
     try:
-        with open('model_ep100_bs30_1.pkl', 'rb') as model_file:
+        with open('model_ep100_bs30_2.pkl', 'rb') as model_file:
             model = pickle.load(model_file)
         return model
 
@@ -72,7 +72,7 @@ def preprocess_data(data,future_candle):
   del df['time']
 
   future_candles = future_candle;
-  target_col = 'Future_' + str(future_candles) + '_Candle';
+  target_col = 'future_candle';
 
   # Loop through all rows in the DataFrame
   for i in range(len(df)):
@@ -182,7 +182,7 @@ def main():
 
         crypto_data = load_data(user_uploaded_data)
         future_candle = int(selected_option)
-        target_col = 'Future_' + str(future_candle) + '_Candle';
+        target_col = 'future_candle';
 
         # Display user-uploaded data
         st.write("Preview of uploaded Crypto Data")
