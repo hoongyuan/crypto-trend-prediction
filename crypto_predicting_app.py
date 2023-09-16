@@ -221,6 +221,9 @@ def main():
                 ax.set_ylabel('Value')
                 ax.legend()
 
+                # Display the plot in Streamlit
+                st.pyplot(fig)
+
             except Exception as e:
                 st.error(f"Error making predictions: {str(e)}")
 
