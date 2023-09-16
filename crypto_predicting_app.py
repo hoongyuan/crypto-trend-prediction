@@ -219,7 +219,7 @@ def main():
 
                 # prediction = make_prediction(model, input)
                 lstm_model = train_model(X_train,y_train,50,30,sequence_length,feature_columns)
-                prediction = lstm_model.predict(input)
+                prediction = lstm_model.predict(X_test)
 
                 st.write("Predicted Result:", 10**prediction)
                 st.write("Actual Result:", y_test)
