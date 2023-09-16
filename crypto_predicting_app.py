@@ -207,7 +207,7 @@ def main():
                 sequence_length = 20
 
                 # Preprocess user data
-                preprocessed_data = preprocess_data(crypto_data,future_candle,sequence_length)
+                preprocessed_data = preprocess_data(crypto_data,future_candle)
                 st.write("Preview of preprocessed Crypto Data")
                 st.dataframe(preprocessed_data, height=400)
 
@@ -215,7 +215,7 @@ def main():
                 show_dashboard(preprocessed_data)
 
                 # Extract features and scale input from preprocessed data
-                X_train, y_train, X_test, y_test = extract_features(target_col,future_candle,preprocessed_data)
+                X_train, y_train, X_test, y_test = extract_features(target_col,future_candle,preprocessed_data,sequence_length)
 
                 # prediction = make_prediction(model, input)
                 lstm_model = train_model(X_train,y_train,50,30,sequence_length)
