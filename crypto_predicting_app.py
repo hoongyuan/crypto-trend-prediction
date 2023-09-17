@@ -289,7 +289,7 @@ def main():
                 st.subheader("Predicted Future Price")
                 st.write(future_prediction)
                 last_pred_price = np.atleast_1d(prediction[-1]).item()
-                last_row_price = np.atleast_1d(y_test[-1]).item()
+                last_row_price = np.atleast_1d(y_test_filtered[-1]).item()
                 price_diff = np.round(last_pred_price - last_row_price,4)
 
                 if price_diff > 0:
@@ -305,6 +305,7 @@ def main():
                 st.subheader(f"Price difference:" )
                 st.write(f"{str(last_row_price)} -> {str(last_pred_price)}")
                 st.write(str(price_diff))
+                st.write(percentage)
 
 
                 st.subheader("Trend:")
@@ -327,15 +328,15 @@ def main():
                 # Evaluate model
                 st.write("Actual vs Predicted Price")
                 results_df = pd.DataFrame({
-                    "Actual Result": 10**y_test.flatten(),
-                    "Predicted Result": 10**prediction.flatten()
+                    "Actual Result": y_test.flatten(),
+                    "Predicted Result": prediction.flatten()
                 })
                 st.write(results_df)
 
                 # Create a plot
                 fig, ax = plt.subplots()
-                ax.plot(10**y_test_filtered, label='Actual Data', color='red')
-                ax.plot(10**prediction, label='Predicted Data', color='blue')
+                ax.plot(y_test_filtered, label='Actual Data', color='red')
+                ax.plot(prediction, label='Predicted Data', color='blue')
                 ax.set_xlabel('Time')
                 ax.set_ylabel('Value')
                 ax.legend()
