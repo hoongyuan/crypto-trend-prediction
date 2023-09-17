@@ -192,19 +192,20 @@ def permutation_feature_importance(model, X, y_true, feature_names):
 def main():
     st.title("Cryptocurrency Price Prediction")
 
-    # User uploads data
-    user_uploaded_data = st.file_uploader("Upload your cryptocurrency data (CSV file):", type=["csv"])
+    with st.sidebar:
+        # User uploads data
+        user_uploaded_data = st.file_uploader("Upload your cryptocurrency data (CSV file):", type=["csv"])
 
-    # # Define a list of options for the dropdown
-    # options = ["1", "2", "5", "10"]
-    # # Create a dropdown select box
-    # selected_option = st.selectbox("Select the n-th future you want to predict:", options)
+        # # Define a list of options for the dropdown
+        # options = ["1", "2", "5", "10"]
+        # # Create a dropdown select box
+        # selected_option = st.selectbox("Select the n-th future you want to predict:", options)
 
-    # Define a slider for selecting the number of future candles
-    selected_option = st.slider("Select the n-th future you want to predict:", min_value=1, max_value=20, value=1)
+        # Define a slider for selecting the number of future candles
+        selected_option = st.slider("Select the n-th future you want to predict:", min_value=1, max_value=20, value=1)
 
-    # Button to perform modelling with the input
-    submit_button = st.button("Train Model")
+        # Button to perform modelling with the input
+        submit_button = st.button("Train Model")
 
     if user_uploaded_data is not None and submit_button and selected_option is not None:
 
