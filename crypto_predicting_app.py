@@ -180,17 +180,16 @@ def train_model(X_train,y_train,epoch_in,batch_size_in,sequence_length_in,featur
 
     return model
 
-def permutation_feature_importance(model, X, y_true, feature_names):
+def permutation_feature_importance(prediction, X, y_true, feature_names):
     perm_importance = {}
-    y_pred = model.predict(X)
     baseline_error = mean_squared_error(y_true, y_pred)
 
-    for feature_idx in range(X.shape[1]):
+    for feature_idx, feature_name in enumerate(feature_names):
         X_permuted = X.copy()
         X_permuted[:, feature_idx] = np.random.permutation(X_permuted[:, feature_idx])
-        y_pred_permuted = model.predict(X_permuted)
+        y_pred_permuted = prediction
         permuted_error = mean_squared_error(y_true, y_pred_permuted)
-        perm_importance[feature_names[feature_idx]] = baseline_error - permuted_error
+        perm_importance[feature_name] = baseline_error - permuted_error
 
     return perm_importance
 
