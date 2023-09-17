@@ -233,17 +233,15 @@ def main():
                 st.write("Preview of preprocessed Crypto Data")
                 st.dataframe(preprocessed_data, height=400)
 
-                # Display dashboard of uploaded data
-                show_dashboard(preprocessed_data)
-
                 st.title("Exploratory Data Analysis")
 
-                # Create a list to store EDA charts
-                eda_charts = []
+                # Create a list to store EDA charts and subheaders
+                eda_data = []
 
                 # Iterate through columns and create EDA charts
                 for column in preprocessed_data.columns:
-                    st.subheader(f"EDA for {column}")
+                    # Create a dictionary to store chart and subheader
+                    chart_data = {"subheader": f"EDA for {column}", "chart": None}
 
                     # Create your EDA chart (you can replace this with your actual EDA code)
                     # For example, let's create a histogram for numeric columns
@@ -253,23 +251,33 @@ def main():
                         ax.set_xlabel(column)
                         ax.set_ylabel("Frequency")
 
-                        # Save the chart as an image and append it to the list
-                        chart_image = fig
-                        eda_charts.append(chart_image)
+                        # Save the chart and subheader in the dictionary
+                        chart_data["chart"] = fig
 
-                # Create a container to display the current chart
+                    # Append the chart data to the list
+                    eda_data.append(chart_data)
+
+                # Create a container to display the current chart and subheader
                 chart_container = st.empty()
                 current_chart_idx = 0  # Index of the current chart
+
+                # Function to update the chart and subheader based on the current index
+                def update_chart(current_idx):
+                    chart_data = eda_data[current_idx]
+                    chart_container.subheader(chart_data["subheader"])
+                    chart_container.pyplot(chart_data["chart"], use_container_width=True)
+
+                # Display the initial chart and subheader
+                update_chart(current_chart_idx)
 
                 # Create navigation buttons
                 if st.button("Previous") and current_chart_idx > 0:
                     current_chart_idx -= 1
+                    update_chart(current_chart_idx)
 
-                if st.button("Next") and current_chart_idx < len(eda_charts) - 1:
+                if st.button("Next") and current_chart_idx < len(eda_data) - 1:
                     current_chart_idx += 1
-
-                # Display the current chart in the container
-                chart_container.pyplot(eda_charts[current_chart_idx], use_container_width=True)
+                    update_chart(current_chart_idx)
 
                 # Extract features and scale input from preprocessed data
                 X_train, y_train, X_test, y_test, feature_columns = extract_features(target_col,future_candle,preprocessed_data,sequence_length)
