@@ -202,11 +202,6 @@ def main():
         # User uploads data
         user_uploaded_data = st.file_uploader("Upload your cryptocurrency data (CSV file):", type=["csv"])
 
-        # # Define a list of options for the dropdown
-        # options = ["1", "2", "5", "10"]
-        # # Create a dropdown select box
-        # selected_option = st.selectbox("Select the n-th future you want to predict:", options)
-
         # Define a slider for selecting the number of future candles
         selected_option = st.slider("Select the n-th future you want to predict:", min_value=1, max_value=20, value=1)
 
@@ -291,8 +286,27 @@ def main():
                 pred_without_fc = prediction[:-future_candle]
 
                 # Show prediction of n future candle
-                st.title("Predicted Future Price")
+                st.subheader("Predicted Future Price")
                 st.write(future_prediction)
+                last_pred_price = prediction[-1:]
+                last_row_price = y_test[-1:]
+                price_diff = last_pred_price - last_row_price
+
+                if price_diff > 0:
+                  percentage = "+" + price_diff + "%"
+                  trend = "Up Trend"
+                else:
+                  percentage = price_diff + "%"
+                  trend = "Down Trend"
+
+                st.subheader(f"{last_row_price} -> {last_pred_price}")
+                st.subheader(f"Price difference: {price_diff}" )
+
+                # Define the font color (e.g., red)
+                font_color = 'red'
+
+                # Create a subheader with a specified font color
+                st.markdown(f'<h3 style="color: {font_color};">{trend}</h3>', unsafe_allow_html=True)
 
                 # Calculate evaluation metrics
                 mae = mean_absolute_error(y_test_filtered.flatten(), pred_without_fc.flatten())
@@ -301,7 +315,7 @@ def main():
                 r2 = r2_score(y_test_filtered.flatten(), pred_without_fc.flatten())
 
                 # Display evaluation metrics
-                st.write("Evaluation Metrics:")
+                st.subheader("Evaluation Metrics:")
                 st.write(f'MAE: {mae:.5f}')
                 st.write(f'MSE: {mse:.5f}')
                 st.write(f'RMSE: {rmse:.5f}')
