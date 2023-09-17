@@ -242,7 +242,7 @@ def main():
                     prediction = lstm_model.predict(X_test)
                 
                 y_test_filtered = y_test[:-future_candle]
-                future_prediction = prediction.tail(future_candle)
+                future_prediction = prediction[-future_candle:]
                 # Show prediction of n future candle
                 st.write(future_prediction)
 
