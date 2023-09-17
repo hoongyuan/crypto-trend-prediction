@@ -84,9 +84,6 @@ def preprocess_data(data,future_candle):
           # If there are not enough rows left, fill the 'Close_nth' column with NaN
           df.loc[i, target_col] = None
 
-  # Drop the rows by index labels
-  # df = df.drop(df.index[-future_candles:])
-
   # Use fillna() to replace NaN values with 0
   df = df.fillna(0)
 
@@ -245,14 +242,17 @@ def main():
                     prediction = lstm_model.predict(X_test)
                 
                 y_test_filtered = y_test[:-future_candle]
+                future_prediction = prediction.tail(future_candle)
+                # Show prediction of n future candle
+                st.write(future_prediction)
 
                 # Evaluate model
-                # st.write("Actual vs Predicted Price")
-                # results_df = pd.DataFrame({
-                #     "Actual Result": 10**y_test_filtered.flatten(),
-                #     "Predicted Result": 10**prediction.flatten()
-                # })
-                # st.write(results_df)
+                st.write("Actual vs Predicted Price")
+                results_df = pd.DataFrame({
+                    "Actual Result": 10**y_test.flatten(),
+                    "Predicted Result": 10**prediction.flatten()
+                })
+                st.write(results_df)
 
                 # Create a plot
                 fig, ax = plt.subplots()
