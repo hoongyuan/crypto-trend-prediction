@@ -180,6 +180,20 @@ def train_model(X_train,y_train,epoch_in,batch_size_in,sequence_length_in,featur
 
     return model
 
+def permutation_feature_importance(model, X, y_true, feature_names):
+    perm_importance = {}
+    y_pred = model.predict(X)
+    baseline_error = mean_squared_error(y_true, y_pred)
+
+    for feature_idx in range(X.shape[1]):
+        X_permuted = X.copy()
+        X_permuted[:, feature_idx] = np.random.permutation(X_permuted[:, feature_idx])
+        y_pred_permuted = model.predict(X_permuted)
+        permuted_error = mean_squared_error(y_true, y_pred_permuted)
+        perm_importance[feature_names[feature_idx]] = baseline_error - permuted_error
+
+    return perm_importance
+
 # Create a Streamlit app
 def main():
     st.title("Cryptocurrency Price Prediction")
@@ -228,18 +242,18 @@ def main():
                 # Extract features and scale input from preprocessed data
                 X_train, y_train, X_test, y_test, feature_columns = extract_features(target_col,future_candle,preprocessed_data,sequence_length)
 
+                # Train model and predict
                 with st.spinner("Training the model..."):
                     lstm_model = train_model(X_train,y_train,epoch,batch_size,sequence_length,feature_columns)
                     prediction = lstm_model.predict(X_test)
 
-                # # prediction = make_prediction(model, input)
-                # lstm_model = train_model(X_train,y_train,50,30,sequence_length,feature_columns)
-                # prediction = lstm_model.predict(X_test)
-
-                st.write("Predicted Result:", 10**prediction)
-                st.write("Actual Result:", 10**y_test)
-
-                st.title("Actual vs. Predicted Data")
+                # Evaluate model
+                st.write("Actual vs Predicted Price")
+                results_df = pd.DataFrame({
+                    "Actual Result": 10**y_test.flatten(),
+                    "Predicted Result": 10**prediction.flatten()
+                })
+                st.write(results_df)
 
                 # Create a plot
                 fig, ax = plt.subplots()
@@ -248,9 +262,25 @@ def main():
                 ax.set_xlabel('Time')
                 ax.set_ylabel('Value')
                 ax.legend()
-
-                # Display the plot in Streamlit
                 st.pyplot(fig)
+
+                # Visualize feature importance
+                 st.title("Permutation Feature Importance")
+
+                # Calculate permutation feature importance
+                perm_importance = permutation_feature_importance(prediction, X_test, y_test, feature_columns)
+
+                # Plot permutation feature importances
+                sorted_importance = sorted(perm_importance.items(), key=lambda x: x[1], reverse=True)
+
+                # Display the results using Streamlit
+                st.write("Permutation Feature Importance:")
+                for feature, importance in sorted_importance:
+                    st.write(f"{feature}: {importance}")
+
+                # Create a bar chart
+                importance_df = pd.DataFrame(sorted_importance, columns=["Feature", "Importance"])
+                st.bar_chart(importance_df.set_index("Feature"))
 
             except Exception as e:
                 st.error(f"Error making predictions: {str(e)}")
