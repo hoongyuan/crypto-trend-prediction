@@ -302,9 +302,9 @@ def main():
 
                 # Display evaluation metrics
                 st.write("Evaluation Metrics:")
-                st.write(f'MAE: {mae:.2f}')
-                st.write(f'MSE: {mse:.2f}')
-                st.write(f'RMSE: {rmse:.2f}')
+                st.write(f'MAE: {mae:.5f}')
+                st.write(f'MSE: {mse:.5f}')
+                st.write(f'RMSE: {rmse:.5f}')
                 st.write(f'R2 Score: {r2:.2f}')
 
                 # Evaluate model
