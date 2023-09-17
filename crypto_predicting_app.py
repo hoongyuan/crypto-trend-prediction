@@ -188,12 +188,6 @@ def train_model(X_train,y_train,epoch_in,batch_size_in,sequence_length_in,featur
 
     return model
 
-# Function to update the progress bar
-def update_progress():
-    for i in range(50):
-        progress_bar.progress(i + 1)
-        time.sleep(1)
-
 # Create a Streamlit app
 def main():
     st.title("Cryptocurrency Price Prediction")
@@ -243,16 +237,9 @@ def main():
                 X_train, y_train, X_test, y_test, feature_columns = extract_features(target_col,future_candle,preprocessed_data,sequence_length)
 
                 with st.spinner("Training the model..."):
-                    # Start training the model in a separate thread to avoid blocking the Streamlit app
-                    training_thread = threading.Thread(target=train_model, args=(X_train, y_train, epoch, batch_size, sequence_length, feature_columns))\
-                    training_thread.start()
+                    lstm_model = train_model(X_train,y_train,epoch,batch_size,sequence_length,feature_columns)
+                    prediction = lstm_model.predict(X_test)
 
-                # Display the progress bar
-                progress_text = st.empty()
-                while training_thread.is_alive():
-                    time.sleep(0.1)
-                    progress_text.text("Training in progress...")
-                
                 # # prediction = make_prediction(model, input)
                 # lstm_model = train_model(X_train,y_train,50,30,sequence_length,feature_columns)
                 # prediction = lstm_model.predict(X_test)
