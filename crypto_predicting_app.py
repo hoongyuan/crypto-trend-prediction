@@ -288,27 +288,28 @@ def main():
                 # Show prediction of n future candle
                 st.subheader("Predicted Future Price")
                 st.write(future_prediction)
-                last_pred_price = np.atleast_1d(prediction[-1])
-                last_row_price = np.atleast_1d(y_test[-1])
+                last_pred_price = np.atleast_1d(prediction[-1]).item()
+                last_row_price = np.atleast_1d(y_test[-1]).item()
                 price_diff = np.round(last_pred_price - last_row_price,4)
 
                 if price_diff > 0:
                   percentage = "+" + str(price_diff) + "%"
                   trend = "Up Trend"
+                  font_color = 'green'
                 else:
                   percentage = str(price_diff) + "%"
                   trend = "Down Trend"
+                  font_color = 'red'
+
 
                 st.subheader(f"Price difference:" )
                 st.write(f"{str(last_row_price)} -> {str(last_pred_price)}")
                 st.write(str(price_diff))
 
-                # Define the font color (e.g., red)
-                font_color = 'red'
 
                 st.subheader("Trend:")
                 # Create a subheader with a specified font color
-                st.markdown(f'<h3 style="color: {font_color};">{trend}</h3>', unsafe_allow_html=True)
+                st.markdown(f'<p style="color: {font_color};">{trend}</p>', unsafe_allow_html=True)
 
                 # Calculate evaluation metrics
                 mae = mean_absolute_error(y_test_filtered.flatten(), pred_without_fc.flatten())
