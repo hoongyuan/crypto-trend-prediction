@@ -195,10 +195,10 @@ def main():
     # User uploads data
     user_uploaded_data = st.file_uploader("Upload your cryptocurrency data (CSV file):", type=["csv"])
 
-    # Define a list of options for the dropdown
-    options = ["1", "2", "5", "10"]
-    # Create a dropdown select box
-    selected_option = st.selectbox("Select the n-th future you want to predict:", options)
+    # # Define a list of options for the dropdown
+    # options = ["1", "2", "5", "10"]
+    # # Create a dropdown select box
+    # selected_option = st.selectbox("Select the n-th future you want to predict:", options)
 
     # Define a slider for selecting the number of future candles
     selected_option = st.slider("Select the n-th future you want to predict:", min_value=1, max_value=20, value=1)
