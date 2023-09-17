@@ -153,7 +153,7 @@ def show_dashboard(data):
 
     # Show total data rows
     st.write("Total Rows: ", len(df))
-    
+
     # Show dataset EDA on each column
     st.write("Summary Statistics on the uploaded dataset")
     st.dataframe(df.describe())
@@ -220,7 +220,22 @@ def main():
 
                 # prediction = make_prediction(model, input)
                 lstm_model = train_model(X_train,y_train,50,30,sequence_length,feature_columns)
+
+                # Create a progress bar
+                progress_bar = st.progress(0)
+
+                # Simulate model training
+                for i in range(50):
+                    # Update the progress bar
+                    progress_bar.progress(i + 1)
+                    time.sleep(0.1)  # Simulate some work being done
+
+                # Notify when training is complete
+                st.success("Model training is complete!")
+
                 prediction = lstm_model.predict(X_test)
+
+
 
                 st.write("Predicted Result:", 10**prediction)
                 st.write("Actual Result:", 10**y_test)
@@ -229,8 +244,8 @@ def main():
 
                 # Create a plot
                 fig, ax = plt.subplots()
-                ax.plot(10**y_test, label='Actual Data', marker='o')
-                ax.plot(10**prediction, label='Predicted Data', marker='x')
+                ax.plot(10**y_test, label='Actual Data', color='red')
+                ax.plot(10**prediction, label='Predicted Data', color='blue')
                 ax.set_xlabel('Time')
                 ax.set_ylabel('Value')
                 ax.legend()
