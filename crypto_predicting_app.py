@@ -226,7 +226,7 @@ def main():
                 for i in range(50):
                     # Update the progress bar
                     progress_bar.progress(i + 1)
-                    time.sleep(0.1)  # Simulate some work being done
+                    time.sleep(1)  # Simulate some work being done
 
                 # Notify when training is complete
                 st.success("Model training is complete!")
