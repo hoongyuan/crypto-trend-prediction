@@ -195,26 +195,26 @@ def main():
     st.subheader("User Guide")
     st.markdown(
         """<p style="font-size: 14px;">
-        1. Select a Cryptocurrency that you would like to predict from TradingView
-        2. Apply the following technical indicators to the chart before exporting:
-        - EMA 20/50/100/200
-        - Bollinger Bands
-        - Volume
-        - Ichimoku Cloud
-        - RSI
-        - MACD
-        - Stochastic
-        - OnBalanceVolume
-        - SuperTrend
-        3. Export the chart in ISO timeframe
-        4. Upload the CSV file here
-        5. Select the number of future candles you want to predict
-        6. Evaluate the prediction result
+        1. Select a Cryptocurrency that you would like to predict from TradingView<br>
+        2. Apply the following technical indicators to the chart before exporting:<br>
+        - EMA 20/50/100/200<br>
+        - Bollinger Bands<br>
+        - Volume<br>
+        - Ichimoku Cloud<br>
+        - RSI<br>
+        - MACD<br>
+        - Stochastic<br>
+        - OnBalanceVolume<br>
+        - SuperTrend<br>
+        3. Export the chart in ISO timeframe<br>
+        4. Upload the CSV file here<br>
+        5. Select the number of future candles you want to predict<br>
+        6. Evaluate the prediction result<br>
         You may re-train the model if you are not satisfied with the result
         </p>""",
         unsafe_allow_html=True,
     )
-
+    
     with st.sidebar:
         st.title("User Input")
 
