@@ -110,7 +110,7 @@ def preprocess_data(data,future_candle):
 def extract_features(target_col,future_candle,data,sequence_length_in):
     feature_columns = ['open', 'high', 'low', 'close', 'Plot', 'Up Trend', 'Down Trend', 'Tenkan', 'Kijun', 'Chikou', 'SenkouA', 'SenkouB', 
                        'Basis', 'Upper', 'Lower', 'Plot.1', 'Plot.2', 'Plot.3', 'Plot.4', 'Volume', 'Volume MA', '%K', '%D', 'Aroon Up', 'Aroon Down', 
-                       'RSI', 'RSI-based MA', 'Upper Bollinger Band', 'Lower Bollinger Band', 'Plot.5', 'OnBalanceVolume', 'Smoothing Line', 'Histogram', 'MACD', 'Signal']
+                       'RSI', 'RSI-based MA', 'Upper Bollinger Band', 'Lower Bollinger Band', 'Plot.5', 'OnBalanceVolume', 'Smoothing Line', 'Histogram', 'MACD', 'Signal', target_col]
     X = data[feature_columns].values
     x_scaler = MinMaxScaler()
     X_scaled = x_scaler.fit_transform(X)
@@ -179,20 +179,22 @@ def train_model(X_train,y_train,epoch_in,batch_size_in,sequence_length_in,featur
 
     return model
 
-def permutation_feature_importance(prediction, X, y_true, feature_names):
+def permutation_feature_importance(model, X, y_true, feature_names):
     try:
         perm_importance = {}
-        baseline_error = mean_squared_error(y_true, prediction)
+        y_pred = model.predict(X)
+        baseline_error = mean_squared_error(y_true, y_pred)
 
         for feature_idx, feature_name in enumerate(feature_names):
             X_permuted = X.copy()
             X_permuted[:, feature_idx] = np.random.permutation(X_permuted[:, feature_idx])
-            y_pred_permuted = prediction
+            y_pred_permuted = model.predict(X_permuted)
             permuted_error = mean_squared_error(y_true, y_pred_permuted)
             perm_importance[feature_name] = baseline_error - permuted_error
+        
+        return perm_importance
     except Exception as e:
         st.error(f"Permutation error: {str(e)}")
-    return perm_importance
 
 # Create a Streamlit app
 def main():
@@ -267,10 +269,8 @@ def main():
                 # Visualize feature importance
                 st.title("Permutation Feature Importance")
 
-
-                feature_columns.append(target_col)
                 # Calculate permutation feature importance
-                perm_importance = permutation_feature_importance(prediction, X_test, y_test, feature_columns)
+                perm_importance = permutation_feature_importance(lstm_model, X_test, y_test, feature_columns)
 
                 # Plot permutation feature importances
                 sorted_importance = sorted(perm_importance.items(), key=lambda x: x[1], reverse=True)
