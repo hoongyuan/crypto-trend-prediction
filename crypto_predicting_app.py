@@ -290,7 +290,7 @@ def main():
                 st.write(future_prediction)
                 last_pred_price = prediction[-1:]
                 last_row_price = y_test[-1:]
-                price_diff = last_pred_price - last_row_price
+                price_diff = "{:.4f}".format(last_pred_price - last_row_price)
 
                 if price_diff > 0:
                   percentage = "+" + str(price_diff) + "%"
@@ -299,12 +299,14 @@ def main():
                   percentage = str(price_diff) + "%"
                   trend = "Down Trend"
 
-                st.subheader(f"{str(last_row_price)} -> {str(last_pred_price)}")
-                st.subheader(f"Price difference: {str(price_diff)}" )
+                st.subheader(f"Price difference:" )
+                st.write(f"{str(last_row_price)} -> {str(last_pred_price)}")
+                st.write(str(price_diff))
 
                 # Define the font color (e.g., red)
                 font_color = 'red'
 
+                st.subheader("Trend:")
                 # Create a subheader with a specified font color
                 st.markdown(f'<h3 style="color: {font_color};">{trend}</h3>', unsafe_allow_html=True)
 
