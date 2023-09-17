@@ -6,6 +6,7 @@ import pickle
 import datetime
 import tensorflow as tf
 import sklearn
+import time
 
 #for modeling
 from sklearn.model_selection import train_test_split
@@ -218,9 +219,6 @@ def main():
                 # Extract features and scale input from preprocessed data
                 X_train, y_train, X_test, y_test, feature_columns = extract_features(target_col,future_candle,preprocessed_data,sequence_length)
 
-                # prediction = make_prediction(model, input)
-                lstm_model = train_model(X_train,y_train,50,30,sequence_length,feature_columns)
-
                 # Create a progress bar
                 progress_bar = st.progress(0)
 
@@ -233,9 +231,9 @@ def main():
                 # Notify when training is complete
                 st.success("Model training is complete!")
 
+                # prediction = make_prediction(model, input)
+                lstm_model = train_model(X_train,y_train,50,30,sequence_length,feature_columns)
                 prediction = lstm_model.predict(X_test)
-
-
 
                 st.write("Predicted Result:", 10**prediction)
                 st.write("Actual Result:", 10**y_test)
