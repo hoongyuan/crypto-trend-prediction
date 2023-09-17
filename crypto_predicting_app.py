@@ -290,7 +290,7 @@ def main():
                 st.write(future_prediction)
                 last_pred_price = prediction[-1:]
                 last_row_price = y_test[-1:]
-                price_diff = "{:.4f}".format(last_pred_price - last_row_price)
+                price_diff = round(last_pred_price - last_row_price,4)
 
                 if price_diff > 0:
                   percentage = "+" + str(price_diff) + "%"
