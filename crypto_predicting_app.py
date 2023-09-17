@@ -190,9 +190,10 @@ def permutation_feature_importance(model, X, y_true, feature_names):
     return perm_importance
 
 def main():
-    st.title("Cryptocurrency Price Prediction")
 
     with st.sidebar:
+        st.title("Cryptocurrency Price Prediction")
+
         # User uploads data
         user_uploaded_data = st.file_uploader("Upload your cryptocurrency data (CSV file):", type=["csv"])
 
