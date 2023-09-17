@@ -254,7 +254,7 @@ def main():
                         ax.set_ylabel("Frequency")
 
                         # Save the chart as an image and append it to the list
-                        chart_image = st.pyplot(fig, use_container_width=True)
+                        chart_image = fig
                         eda_charts.append(chart_image)
 
                 # Create a container to display the current chart
@@ -262,14 +262,14 @@ def main():
                 current_chart_idx = 0  # Index of the current chart
 
                 # Create navigation buttons
-                if st.button("Previous"):
-                    current_chart_idx = (current_chart_idx - 1) % len(eda_charts)
+                if st.button("Previous") and current_chart_idx > 0:
+                    current_chart_idx -= 1
 
-                if st.button("Next"):
-                    current_chart_idx = (current_chart_idx + 1) % len(eda_charts)
+                if st.button("Next") and current_chart_idx < len(eda_charts) - 1:
+                    current_chart_idx += 1
 
                 # Display the current chart in the container
-                chart_container.pyplot(eda_charts[current_chart_idx])
+                chart_container.pyplot(eda_charts[current_chart_idx], use_container_width=True)
 
                 # Extract features and scale input from preprocessed data
                 X_train, y_train, X_test, y_test, feature_columns = extract_features(target_col,future_candle,preprocessed_data,sequence_length)
