@@ -7,6 +7,7 @@ import datetime
 import tensorflow as tf
 import sklearn
 import time
+import thread
 
 #for modeling
 from sklearn.model_selection import train_test_split
@@ -173,6 +174,12 @@ def train_model(X_train,y_train,epoch_in,batch_size_in,sequence_length_in,featur
     model.fit(X_train, y_train, epochs=epoch_in, batch_size=batch_size_in, validation_split=0.1)
     return model
 
+# Function to update the progress bar
+def update_progress():
+    for i in range(50):
+        progress_bar.progress(i + 1)
+        time.sleep(1)
+
 # Create a Streamlit app
 def main():
     st.title("Cryptocurrency Price Prediction")
@@ -222,18 +229,18 @@ def main():
                 # Create a progress bar
                 progress_bar = st.progress(0)
 
-                # Simulate model training
-                for i in range(50):
-                    # Update the progress bar
-                    progress_bar.progress(i + 1)
-                    time.sleep(1)  # Simulate some work being done
-
-                # Notify when training is complete
-                st.success("Model training is complete!")
+                progress_thread = threading.Thread(target=update_progress)
+                progress_thread.start() 
 
                 # prediction = make_prediction(model, input)
                 lstm_model = train_model(X_train,y_train,50,30,sequence_length,feature_columns)
                 prediction = lstm_model.predict(X_test)
+
+                progress_thread.join()
+
+                # Notify when training is complete
+                st.success("Model training is complete!")
+
 
                 st.write("Predicted Result:", 10**prediction)
                 st.write("Actual Result:", 10**y_test)
