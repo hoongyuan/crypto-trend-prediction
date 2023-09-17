@@ -267,6 +267,8 @@ def main():
                 # Visualize feature importance
                 st.title("Permutation Feature Importance")
 
+
+                feature_columns.append(target_col)
                 # Calculate permutation feature importance
                 perm_importance = permutation_feature_importance(prediction, X_test, y_test, feature_columns)
 
