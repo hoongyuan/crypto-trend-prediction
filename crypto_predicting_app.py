@@ -242,8 +242,9 @@ def main():
                     prediction = lstm_model.predict(X_test)
                 
                 y_test_filtered = y_test[:-future_candle]
-                future_prediction = prediction[-future_candle:]
+                future_prediction = 10**prediction[-future_candle:]
                 # Show prediction of n future candle
+                st.write("Predicted Future Price")
                 st.write(future_prediction)
 
                 # Evaluate model
