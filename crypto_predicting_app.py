@@ -293,14 +293,14 @@ def main():
                 price_diff = last_pred_price - last_row_price
 
                 if price_diff > 0:
-                  percentage = "+" + price_diff + "%"
+                  percentage = "+" + str(price_diff) + "%"
                   trend = "Up Trend"
                 else:
-                  percentage = price_diff + "%"
+                  percentage = str(price_diff) + "%"
                   trend = "Down Trend"
 
-                st.subheader(f"{last_row_price} -> {last_pred_price}")
-                st.subheader(f"Price difference: {price_diff}" )
+                st.subheader(f"{str(last_row_price)} -> {str(last_pred_price)}")
+                st.subheader(f"Price difference: {str(price_diff)}" )
 
                 # Define the font color (e.g., red)
                 font_color = 'red'
