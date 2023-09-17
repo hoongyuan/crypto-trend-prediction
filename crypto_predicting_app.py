@@ -264,27 +264,14 @@ def main():
                     # Append the chart data to the list
                     eda_data.append(chart_data)
 
-                # Create a container to display the current chart and subheader
-                chart_container = st.empty()
-                current_chart_idx = 0  # Index of the current chart
+                # Create columns for displaying charts side by side
+                columns = st.beta_columns(2)  # Adjust the number of columns as needed
 
-                # Function to update the chart and subheader based on the current index
-                def update_chart(current_idx):
-                    chart_data = eda_data[current_idx]
-                    chart_container.subheader(chart_data["subheader"])
-                    chart_container.pyplot(chart_data["chart"], use_container_width=True)
-
-                # Display the initial chart and subheader
-                update_chart(current_chart_idx)
-
-                # Create navigation buttons
-                if st.button("Previous") and current_chart_idx > 0:
-                    current_chart_idx -= 1
-                    update_chart(current_chart_idx)
-
-                if st.button("Next") and current_chart_idx < len(eda_data) - 1:
-                    current_chart_idx += 1
-                    update_chart(current_chart_idx)
+                # Display the charts and subheaders side by side
+                for i, chart_data in enumerate(eda_data):
+                    with columns[i % 2]:  # Switch to the next column after every 2 charts
+                        st.subheader(chart_data["subheader"])
+                        st.pyplot(chart_data["chart"], use_container_width=True)
 
                 # Extract features and scale input from preprocessed data
                 X_train, y_train, X_test, y_test, feature_columns = extract_features(target_col,future_candle,preprocessed_data,sequence_length)
