@@ -236,7 +236,6 @@ def main():
                 # Display dashboard of uploaded data
                 show_dashboard(preprocessed_data)
 
-                # Show EDA chart/graph of each column from preprocessed_data..
                 st.title("Exploratory Data Analysis")
 
                 # Create a list to store EDA charts
@@ -255,7 +254,7 @@ def main():
                         ax.set_ylabel("Frequency")
 
                         # Save the chart as an image and append it to the list
-                        chart_image = st.pyplot(fig, use_container_width=True, clear_on_update=False)
+                        chart_image = st.pyplot(fig, use_container_width=True)
                         eda_charts.append(chart_image)
 
                 # Create a carousel to navigate through EDA charts
