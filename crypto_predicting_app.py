@@ -257,7 +257,7 @@ def main():
                         ax.hist(preprocessed_data[column], bins=20)
                         ax.set_xlabel(column)
                         ax.set_ylabel("Frequency")
-                        ax.set_title(column)
+                        ax.set_title(column, fontsize=20)
 
                         # Save the chart and subheader in the dictionary
                         chart_data["chart"] = fig
@@ -266,11 +266,11 @@ def main():
                     eda_data.append(chart_data)
 
                 # Create columns for displaying charts side by side
-                columns = st.columns(4)  # Adjust the number of columns as needed
+                columns = st.columns(3)  # Adjust the number of columns as needed
 
                 # Display the charts and subheaders side by side
                 for i, chart_data in enumerate(eda_data):
-                    with columns[i % 4]:  # Switch to the next column after every 2 charts
+                    with columns[i % 3]:  # Switch to the next column after every 2 charts
                         # st.subheader(chart_data["subheader"])
                         st.pyplot(chart_data["chart"], use_container_width=True)
 
