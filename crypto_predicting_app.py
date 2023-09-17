@@ -200,6 +200,9 @@ def main():
     # Create a dropdown select box
     selected_option = st.selectbox("Select the n-th future you want to predict:", options)
 
+    # Define a slider for selecting the number of future candles
+    selected_option = st.slider("Select the n-th future you want to predict:", min_value=1, max_value=20, value=1)
+
     # Button to perform modelling with the input
     submit_button = st.button("Train Model")
 
