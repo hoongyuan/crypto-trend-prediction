@@ -8,6 +8,7 @@ import tensorflow as tf
 import sklearn
 import time
 import threading
+import random
 
 #for modeling
 from sklearn.model_selection import train_test_split
@@ -253,9 +254,9 @@ def main():
 
         if crypto_data is not None:
             try:
-                sequence_length = 20
-                epoch = 50
-                batch_size = 30
+                sequence_length = random.randint(10, 30)
+                epoch = random.randint(30, 150)
+                batch_size = random.randint(20, 50)
 
                 # Preprocess user data
                 preprocessed_data = preprocess_data(crypto_data,future_candle)
@@ -354,6 +355,7 @@ def main():
                     "Predicted Result": prediction.flatten()
                 })
                 st.write(results_df)
+                model.summary()
 
                 # Create a plot
                 fig, ax = plt.subplots()
