@@ -245,19 +245,19 @@ def main():
                     lstm_model = train_model(X_train,y_train,epoch,batch_size,sequence_length,feature_columns)
                     prediction = lstm_model.predict(X_test)
                 
-                y_test = y_test[:-future_candle]
+                y_test_filtered = y_test[:-future_candle]
 
                 # Evaluate model
                 st.write("Actual vs Predicted Price")
                 results_df = pd.DataFrame({
-                    "Actual Result": 10**y_test.flatten(),
+                    "Actual Result": 10**y_test_filtered.flatten(),
                     "Predicted Result": 10**prediction.flatten()
                 })
                 st.write(results_df)
 
                 # Create a plot
                 fig, ax = plt.subplots()
-                ax.plot(10**y_test, label='Actual Data', color='red')
+                ax.plot(10**y_test_filtered, label='Actual Data', color='red')
                 ax.plot(10**prediction, label='Predicted Data', color='blue')
                 ax.set_xlabel('Time')
                 ax.set_ylabel('Value')
