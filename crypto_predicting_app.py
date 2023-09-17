@@ -248,12 +248,12 @@ def main():
                 y_test_filtered = y_test[:-future_candle]
 
                 # Evaluate model
-                st.write("Actual vs Predicted Price")
-                results_df = pd.DataFrame({
-                    "Actual Result": 10**y_test_filtered.flatten(),
-                    "Predicted Result": 10**prediction.flatten()
-                })
-                st.write(results_df)
+                # st.write("Actual vs Predicted Price")
+                # results_df = pd.DataFrame({
+                #     "Actual Result": 10**y_test_filtered.flatten(),
+                #     "Predicted Result": 10**prediction.flatten()
+                # })
+                # st.write(results_df)
 
                 # Create a plot
                 fig, ax = plt.subplots()
