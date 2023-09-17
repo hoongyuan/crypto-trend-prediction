@@ -181,16 +181,18 @@ def train_model(X_train,y_train,epoch_in,batch_size_in,sequence_length_in,featur
     return model
 
 def permutation_feature_importance(prediction, X, y_true, feature_names):
-    perm_importance = {}
-    baseline_error = mean_squared_error(y_true, prediction)
+    try:
+        perm_importance = {}
+        baseline_error = mean_squared_error(y_true, prediction)
 
-    for feature_idx, feature_name in enumerate(feature_names):
-        X_permuted = X.copy()
-        X_permuted[:, feature_idx] = np.random.permutation(X_permuted[:, feature_idx])
-        y_pred_permuted = prediction
-        permuted_error = mean_squared_error(y_true, y_pred_permuted)
-        perm_importance[feature_name] = baseline_error - permuted_error
-
+        for feature_idx, feature_name in enumerate(feature_names):
+            X_permuted = X.copy()
+            X_permuted[:, feature_idx] = np.random.permutation(X_permuted[:, feature_idx])
+            y_pred_permuted = prediction
+            permuted_error = mean_squared_error(y_true, y_pred_permuted)
+            perm_importance[feature_name] = baseline_error - permuted_error
+    except Exception as e:
+        st.error(f"Permutation error: {str(e)}")
     return perm_importance
 
 # Create a Streamlit app
