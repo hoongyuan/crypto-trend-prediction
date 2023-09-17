@@ -282,11 +282,29 @@ def main():
                     lstm_model = train_model(X_train,y_train,epoch,batch_size,sequence_length,feature_columns)
                     prediction = lstm_model.predict(X_test)
                 
+                # Inverse scale to get the actual price
+                prediction = 10**prediction
+                y_test = 10**y_test
+
                 y_test_filtered = y_test[:-future_candle]
-                future_prediction = 10**prediction[-future_candle:]
+                future_prediction = prediction[-future_candle:]
+
                 # Show prediction of n future candle
-                st.write("Predicted Future Price")
+                st.title("Predicted Future Price")
                 st.write(future_prediction)
+
+                # Calculate evaluation metrics
+                mae = mean_absolute_error(y_test_filtered.flatten(), prediction.flatten())
+                mse = mean_squared_error(y_test_filtered.flatten(), prediction.flatten())
+                rmse = np.sqrt(mse)
+                r2 = r2_score(y_test_filtered.flatten(), prediction.flatten())
+
+                # Display evaluation metrics
+                st.write("Evaluation Metrics:")
+                st.write(f'MAE: {mae:.2f}')
+                st.write(f'MSE: {mse:.2f}')
+                st.write(f'RMSE: {rmse:.2f}')
+                st.write(f'R2 Score: {r2:.2f}')
 
                 # Evaluate model
                 st.write("Actual vs Predicted Price")
