@@ -269,7 +269,7 @@ def main():
 
                 # Display the charts and subheaders side by side
                 for i, chart_data in enumerate(eda_data):
-                    with columns[i % 2]:  # Switch to the next column after every 2 charts
+                    with columns[i % 5]:  # Switch to the next column after every 2 charts
                         st.subheader(chart_data["subheader"])
                         st.pyplot(chart_data["chart"], use_container_width=True)
 
