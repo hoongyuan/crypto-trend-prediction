@@ -248,7 +248,7 @@ def main():
                 # Iterate through columns and create EDA charts
                 for column in preprocessed_data.columns:
                     # Create a dictionary to store chart and subheader
-                    # chart_data = {"subheader": f"EDA for {column}", "chart": None}
+                    chart_data = {"subheader": f"EDA for {column}", "chart": None}
 
                     # Create your EDA chart (you can replace this with your actual EDA code)
                     # For example, let's create a histogram for numeric columns
@@ -271,7 +271,7 @@ def main():
                 # Display the charts and subheaders side by side
                 for i, chart_data in enumerate(eda_data):
                     with columns[i % 4]:  # Switch to the next column after every 2 charts
-                        st.subheader(chart_data["subheader"])
+                        # st.subheader(chart_data["subheader"])
                         st.pyplot(chart_data["chart"], use_container_width=True)
 
                 # Extract features and scale input from preprocessed data
