@@ -244,6 +244,8 @@ def main():
                 with st.spinner("Training the model..."):
                     lstm_model = train_model(X_train,y_train,epoch,batch_size,sequence_length,feature_columns)
                     prediction = lstm_model.predict(X_test)
+                
+                y_test = y_test[:-future_candle]
 
                 # Evaluate model
                 st.write("Actual vs Predicted Price")
