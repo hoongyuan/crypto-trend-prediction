@@ -275,6 +275,8 @@ def main():
                 for feature, importance in sorted_importance:
                     st.write(f"{feature}: {importance}")
 
+                 # Apply log transformation to importance values
+                importance_df = pd.DataFrame(sorted_importance, columns=["Feature", "Importance"])
                 importance_df["Log Importance"] = np.log1p(importance_df["Importance"])
 
                 # Create a bar chart
