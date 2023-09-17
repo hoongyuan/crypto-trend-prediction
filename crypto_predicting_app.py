@@ -7,7 +7,7 @@ import datetime
 import tensorflow as tf
 import sklearn
 import time
-import thread
+import threading
 
 #for modeling
 from sklearn.model_selection import train_test_split
