@@ -7,7 +7,7 @@ import datetime
 import tensorflow as tf
 import sklearn
 import time
-import threading
+import thread
 
 #for modeling
 from sklearn.model_selection import train_test_split
@@ -171,7 +171,21 @@ def train_model(X_train,y_train,epoch_in,batch_size_in,sequence_length_in,featur
     model.add(LSTM(64, input_shape=(sequence_length_in, len(feature_columns))))
     model.add(Dense(1, activation='linear'))  # Output layer
     model.compile(loss='mean_squared_error', optimizer='adam')
-    model.fit(X_train, y_train, epochs=epoch_in, batch_size=batch_size_in, validation_split=0.1)
+
+    # Define the progress bar
+    progress_bar = st.progress(0)
+
+    # Train the model
+    for epoch in range(epochs):
+        # Update the progress bar
+        progress_bar.progress(int((epoch + 1) / epochs * 100))
+
+        # Perform one training epoch
+        model.fit(X_train, y_train, epochs=epoch_in, batch_size=batch_size_in, validation_split=0.1)
+
+    # Notify when training is complete
+    st.success("Model training is complete!")
+
     return model
 
 # Function to update the progress bar
@@ -214,6 +228,8 @@ def main():
         if crypto_data is not None:
             try:
                 sequence_length = 20
+                epoch = 50
+                batch_size = 30
 
                 # Preprocess user data
                 preprocessed_data = preprocess_data(crypto_data,future_candle)
@@ -226,21 +242,20 @@ def main():
                 # Extract features and scale input from preprocessed data
                 X_train, y_train, X_test, y_test, feature_columns = extract_features(target_col,future_candle,preprocessed_data,sequence_length)
 
-                # Create a progress bar
-                progress_bar = st.progress(0)
+                with st.spinner("Training the model..."):
+                    # Start training the model in a separate thread to avoid blocking the Streamlit app
+                    training_thread = threading.Thread(target=train_model, args=(X_train, y_train, epoch, batch_size, sequence_length, feature_columns))\
+                    training_thread.start()
 
-                progress_thread = threading.Thread(target=update_progress)
-                progress_thread.start() 
-
-                # prediction = make_prediction(model, input)
-                lstm_model = train_model(X_train,y_train,50,30,sequence_length,feature_columns)
-                prediction = lstm_model.predict(X_test)
-
-                progress_thread.join()
-
-                # Notify when training is complete
-                st.success("Model training is complete!")
-
+                # Display the progress bar
+                progress_text = st.empty()
+                while training_thread.is_alive():
+                    time.sleep(0.1)
+                    progress_text.text("Training in progress...")
+                
+                # # prediction = make_prediction(model, input)
+                # lstm_model = train_model(X_train,y_train,50,30,sequence_length,feature_columns)
+                # prediction = lstm_model.predict(X_test)
 
                 st.write("Predicted Result:", 10**prediction)
                 st.write("Actual Result:", 10**y_test)
