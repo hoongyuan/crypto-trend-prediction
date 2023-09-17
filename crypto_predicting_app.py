@@ -275,9 +275,10 @@ def main():
                 for feature, importance in sorted_importance:
                     st.write(f"{feature}: {importance}")
 
+                importance_df["Log Importance"] = np.log1p(importance_df["Importance"])
+
                 # Create a bar chart
-                importance_df = pd.DataFrame(sorted_importance, columns=["Feature", "Importance"])
-                st.bar_chart(importance_df.set_index("Feature"))
+                st.bar_chart(importance_df.set_index("Feature")["Log Importance"])
 
 
             except Exception as e:
