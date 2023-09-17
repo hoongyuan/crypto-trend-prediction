@@ -193,22 +193,27 @@ def main():
 
     st.title("Cryptocurrency Price Prediction")
     st.subheader("User Guide")
-    st.write("1. Select a Cryptocurrecny that you would like to predict from TradingView")
-    st.write("2. Apply the following technical indicators to the chart before exporting")
-    st.write("-  EMA 20/50/100/200")
-    st.write("-  Bollinger Bands")
-    st.write("-  Volume")
-    st.write("-  Ichimoku Cloud")
-    st.write("-  RSI")
-    st.write("-  MACD")
-    st.write("-  Stochastic")
-    st.write("-  OnBalanceVolume")
-    st.write("-  SuperTrend")
-    st.write("3. Export the chart in ISO timeframe")
-    st.write("4. Upload the CSV file here")
-    st.write("5. Select the number of future candle you want to predict")
-    st.write("6. Evaluate the prediction result")
-    st.write("You may re-train the model if you are not satisfied with the result")
+    st.markdown(
+        """<p style="font-size: 14px;">
+        1. Select a Cryptocurrency that you would like to predict from TradingView
+        2. Apply the following technical indicators to the chart before exporting:
+        - EMA 20/50/100/200
+        - Bollinger Bands
+        - Volume
+        - Ichimoku Cloud
+        - RSI
+        - MACD
+        - Stochastic
+        - OnBalanceVolume
+        - SuperTrend
+        3. Export the chart in ISO timeframe
+        4. Upload the CSV file here
+        5. Select the number of future candles you want to predict
+        6. Evaluate the prediction result
+        You may re-train the model if you are not satisfied with the result
+        </p>""",
+        unsafe_allow_html=True,
+    )
 
     with st.sidebar:
         st.title("User Input")
