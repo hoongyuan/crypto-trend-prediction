@@ -192,9 +192,26 @@ def permutation_feature_importance(model, X, y_true, feature_names):
 def main():
 
     st.title("Cryptocurrency Price Prediction")
-    st.write("Read.me guide")
-    st.write("1. Upload a CSV file of a selected crypto from tradingView")
-    st.write("2. Trading Indicators - ")
+    st.write("User Guide")
+    st.write("1. Select a Cryptocurrecny that you would like to predict from TradingView")
+    st.write("2. Apply the following technical indicators to the chart before exporting")
+    st.write("   (EMA 20/50/100/200)")
+    st.write("   (Bollinger Bands)")
+    st.write("   (Volume)")
+    st.write("   (Ichimoku Cloud)")
+    st.write("   (RSI)")
+    st.write("   (MACD)")
+    st.write("   (Stochastic)")
+    st.write("   (OnBalanceVolume)")
+    st.write("   (SuperTrend))")
+    st.write("3. Export the chart in ISO timeframe")
+    st.write("4. Upload the CSV file here")
+    st.write("5. Select the number of future candle you want to predict")
+    st.write("6. Evaluate the prediction result")
+    st.write("You may re-train the model if you are not satisfied with the result")
+    st.write("")
+
+    st.write("Please note that this cryptocurrency price prediction tool is for informational purposes only and should not be considered financial advice. Trading cryptocurrencies involves inherent risks, and any losses incurred are the sole responsibility of the user. It is essential to conduct thorough research and consult with a financial advisor before making any trading decisions.")
 
     with st.sidebar:
         st.title("User Input")
@@ -235,7 +252,7 @@ def main():
                 st.write("Preview of preprocessed Crypto Data")
                 st.dataframe(preprocessed_data, height=400)
 
-                st.title("Exploratory Data Analysis")
+                st.subheader("Exploratory Data Analysis")
 
                 # Create a list to store EDA charts and subheaders
                 eda_data = []
@@ -302,13 +319,13 @@ def main():
                   font_color = 'red'
 
 
-                st.subheader(f"Price difference:" )
+                st.subheader(f"Price difference" )
                 st.write(f"{str(last_row_price)} -> {str(last_pred_price)}")
                 st.write(str(price_diff))
                 st.write(percentage)
 
 
-                st.subheader("Trend:")
+                st.subheader("Trend")
                 # Create a subheader with a specified font color
                 st.markdown(f'<p style="color: {font_color};">{trend}</p>', unsafe_allow_html=True)
 
@@ -319,14 +336,14 @@ def main():
                 r2 = r2_score(y_test_filtered.flatten(), pred_without_fc.flatten())
 
                 # Display evaluation metrics
-                st.subheader("Evaluation Metrics:")
+                st.subheader("Evaluation Metrics")
                 st.write(f'MAE: {mae:.5f}')
                 st.write(f'MSE: {mse:.5f}')
                 st.write(f'RMSE: {rmse:.5f}')
                 st.write(f'R2 Score: {r2:.2f}')
 
                 # Evaluate model
-                st.write("Actual vs Predicted Price")
+                st.subheader("Actual vs Predicted Price")
                 results_df = pd.DataFrame({
                     "Actual Result": y_test.flatten(),
                     "Predicted Result": prediction.flatten()
@@ -344,16 +361,16 @@ def main():
 
                 # Visualize feature importance
                 # Calculate permutation feature importance
-                st.title("Permutation Feature Importance")
+                st.subheader("Permutation Feature Importance")
                 perm_importance = permutation_feature_importance(lstm_model, X_test, y_test, feature_columns)
 
                 # Sort feature importance in descending order
                 sorted_importance = sorted(perm_importance.items(), key=lambda x: x[1], reverse=True)
 
                 # Display the results using Streamlit
-                st.write("Permutation Feature Importance:")
-                for feature, importance in sorted_importance:
-                    st.write(f"{feature}: {importance}")
+                # st.write("Permutation Feature Importance:")
+                # for feature, importance in sorted_importance:
+                #     st.write(f"{feature}: {importance}")
 
                  # Apply log transformation to importance values
                 importance_df = pd.DataFrame(sorted_importance, columns=["Feature", "Importance"])
