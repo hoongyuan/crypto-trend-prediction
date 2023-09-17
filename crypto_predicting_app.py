@@ -288,8 +288,8 @@ def main():
                 # Show prediction of n future candle
                 st.subheader("Predicted Future Price")
                 st.write(future_prediction)
-                last_pred_price = prediction[-1]
-                last_row_price = y_test[-1]
+                last_pred_price = np.atleast_1d(prediction[-1])
+                last_row_price = np.atleast_1d(y_test[-1])
                 price_diff = round(last_pred_price - last_row_price,4)
 
                 if price_diff > 0:
