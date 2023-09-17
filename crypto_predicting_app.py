@@ -265,7 +265,7 @@ def main():
                     eda_data.append(chart_data)
 
                 # Create columns for displaying charts side by side
-                columns = st.beta_columns(2)  # Adjust the number of columns as needed
+                columns = st.columns(2)  # Adjust the number of columns as needed
 
                 # Display the charts and subheaders side by side
                 for i, chart_data in enumerate(eda_data):
