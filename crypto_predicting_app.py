@@ -222,8 +222,13 @@ def main():
         # Button to perform modelling with the input
         submit_button = st.button("Train Model")
 
-        st.write("Please note that this cryptocurrency price prediction tool is for informational purposes only and should not be considered financial advice. Trading cryptocurrencies involves inherent risks, and any losses incurred are the sole responsibility of the user. It is essential to conduct thorough research and consult with a financial advisor before making any trading decisions.")
-
+        # Add an HTML element for the disclaimer
+        st.markdown(
+            """<p style="font-size: 12px; text-align: center; margin-top: 20px;">
+            Please note that this cryptocurrency price prediction tool is for informational purposes only and should not be considered financial advice. Trading cryptocurrencies involves inherent risks, and any losses incurred are the sole responsibility of the user. It is essential to conduct thorough research and consult with a financial advisor before making any trading decisions.
+            </p>""",
+            unsafe_allow_html=True,
+        )
 
     if user_uploaded_data is not None and submit_button and selected_option is not None:
 
