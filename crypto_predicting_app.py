@@ -356,9 +356,9 @@ def main():
                 })
                 st.write(results_df)
                 model.summary()
-                st.info(f"Sequence Length = {sequence_length}")
-                st.info(f"Epoch = {epoch}")
-                st.info(f"Batch Size = {batch_size}")
+                print(f"Sequence Length = {sequence_length}")
+                print(f"Epoch = {epoch}")
+                print(f"Batch Size = {batch_size}")
 
                 # Create a plot
                 fig, ax = plt.subplots()
