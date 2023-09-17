@@ -262,38 +262,33 @@ def main():
                 st.subheader("Preview of preprocessed Crypto Data")
                 st.dataframe(preprocessed_data, height=400)
 
+                # Show dashboard
+                show_dashboard(preprocessed_data)
+
                 st.subheader("Exploratory Data Analysis")
 
                 # Create a list to store EDA charts and subheaders
                 eda_data = []
-
-                # Iterate through columns and create EDA charts
                 for column in preprocessed_data.columns:
-                    # Create a dictionary to store chart and subheader
                     chart_data = {"subheader": f"EDA for {column}", "chart": None}
 
-                    # Create your EDA chart (you can replace this with your actual EDA code)
-                    # For example, let's create a histogram for numeric columns
                     if preprocessed_data[column].dtype in [np.float64, np.int64]:
                         fig, ax = plt.subplots()
                         ax.hist(preprocessed_data[column], bins=20)
                         ax.set_xlabel(column)
                         ax.set_ylabel("Frequency")
                         ax.set_title(column, fontsize=20)
-
-                        # Save the chart and subheader in the dictionary
                         chart_data["chart"] = fig
 
-                    # Append the chart data to the list
                     eda_data.append(chart_data)
 
                 # Create columns for displaying charts side by side
-                columns = st.columns(3)  # Adjust the number of columns as needed
+                side_by_side = 3 ## number of charts side by side
+                columns = st.columns(side_by_side)
 
                 # Display the charts and subheaders side by side
                 for i, chart_data in enumerate(eda_data):
-                    with columns[i % 3]:  # Switch to the next column after every 2 charts
-                        # st.subheader(chart_data["subheader"])
+                    with columns[i % side_by_side]:
                         st.pyplot(chart_data["chart"], use_container_width=True)
 
                 # Extract features and scale input from preprocessed data
@@ -328,7 +323,7 @@ def main():
                   trend = "Down Trend"
                   font_color = 'red'
 
-
+                # Show price different
                 st.subheader(f"Price difference" )
                 st.write(f"{str(last_row_price)} -> {str(last_pred_price)}")
                 st.write(str(price_diff))
@@ -370,19 +365,9 @@ def main():
                 st.pyplot(fig)
 
                 # Visualize feature importance
-                # Calculate permutation feature importance
                 st.subheader("Permutation Feature Importance")
                 perm_importance = permutation_feature_importance(lstm_model, X_test, y_test, feature_columns)
-
-                # Sort feature importance in descending order
                 sorted_importance = sorted(perm_importance.items(), key=lambda x: x[1], reverse=True)
-
-                # Display the results using Streamlit
-                # st.write("Permutation Feature Importance:")
-                # for feature, importance in sorted_importance:
-                #     st.write(f"{feature}: {importance}")
-
-                 # Apply log transformation to importance values
                 importance_df = pd.DataFrame(sorted_importance, columns=["Feature", "Importance"])
                 importance_df["Log Importance"] = np.log1p(importance_df["Importance"])
 
