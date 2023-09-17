@@ -275,6 +275,11 @@ def main():
                 for feature, importance in sorted_importance:
                     st.write(f"{feature}: {importance}")
 
+                # Create a bar chart
+                importance_df = pd.DataFrame(sorted_importance, columns=["Feature", "Importance"])
+                st.bar_chart(importance_df.set_index("Feature"))
+
+
             except Exception as e:
                 st.error(f"Error making predictions: {str(e)}")
 
