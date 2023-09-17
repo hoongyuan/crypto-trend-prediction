@@ -257,11 +257,19 @@ def main():
                         chart_image = st.pyplot(fig, use_container_width=True)
                         eda_charts.append(chart_image)
 
-                # Create a carousel to navigate through EDA charts
-                current_chart_index = st.slider("Select Chart", 0, len(eda_charts) - 1, 0)
+                # Create a container to display the current chart
+                chart_container = st.empty()
+                current_chart_idx = 0  # Index of the current chart
 
-                # Display the selected chart
-                st.image(eda_charts[current_chart_index].to_bytes(), use_container_width=True)
+                # Create navigation buttons
+                if st.button("Previous"):
+                    current_chart_idx = (current_chart_idx - 1) % len(eda_charts)
+
+                if st.button("Next"):
+                    current_chart_idx = (current_chart_idx + 1) % len(eda_charts)
+
+                # Display the current chart in the container
+                chart_container.pyplot(eda_charts[current_chart_idx])
 
                 # Extract features and scale input from preprocessed data
                 X_train, y_train, X_test, y_test, feature_columns = extract_features(target_col,future_candle,preprocessed_data,sequence_length)
