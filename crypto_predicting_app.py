@@ -236,6 +236,34 @@ def main():
                 # Display dashboard of uploaded data
                 show_dashboard(preprocessed_data)
 
+                # Show EDA chart/graph of each column from preprocessed_data..
+                st.title("Exploratory Data Analysis")
+
+                # Create a list to store EDA charts
+                eda_charts = []
+
+                # Iterate through columns and create EDA charts
+                for column in preprocessed_data.columns:
+                    st.subheader(f"EDA for {column}")
+
+                    # Create your EDA chart (you can replace this with your actual EDA code)
+                    # For example, let's create a histogram for numeric columns
+                    if preprocessed_data[column].dtype in [np.float64, np.int64]:
+                        fig, ax = plt.subplots()
+                        ax.hist(preprocessed_data[column], bins=20)
+                        ax.set_xlabel(column)
+                        ax.set_ylabel("Frequency")
+
+                        # Save the chart as an image and append it to the list
+                        chart_image = st.pyplot(fig, use_container_width=True, clear_on_update=False)
+                        eda_charts.append(chart_image)
+
+                # Create a carousel to navigate through EDA charts
+                current_chart_index = st.slider("Select Chart", 0, len(eda_charts) - 1, 0)
+
+                # Display the selected chart
+                st.image(eda_charts[current_chart_index].to_bytes(), use_container_width=True)
+
                 # Extract features and scale input from preprocessed data
                 X_train, y_train, X_test, y_test, feature_columns = extract_features(target_col,future_candle,preprocessed_data,sequence_length)
 
