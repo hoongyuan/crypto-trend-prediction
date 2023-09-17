@@ -209,9 +209,6 @@ def main():
     st.write("5. Select the number of future candle you want to predict")
     st.write("6. Evaluate the prediction result")
     st.write("You may re-train the model if you are not satisfied with the result")
-    st.write("")
-
-    st.write("Please note that this cryptocurrency price prediction tool is for informational purposes only and should not be considered financial advice. Trading cryptocurrencies involves inherent risks, and any losses incurred are the sole responsibility of the user. It is essential to conduct thorough research and consult with a financial advisor before making any trading decisions.")
 
     with st.sidebar:
         st.title("User Input")
@@ -225,6 +222,9 @@ def main():
         # Button to perform modelling with the input
         submit_button = st.button("Train Model")
 
+        st.write("Please note that this cryptocurrency price prediction tool is for informational purposes only and should not be considered financial advice. Trading cryptocurrencies involves inherent risks, and any losses incurred are the sole responsibility of the user. It is essential to conduct thorough research and consult with a financial advisor before making any trading decisions.")
+
+
     if user_uploaded_data is not None and submit_button and selected_option is not None:
 
         crypto_data = load_data(user_uploaded_data)
@@ -232,7 +232,7 @@ def main():
         target_col = 'future_candle';
 
         # Display user-uploaded data
-        st.write("Preview of uploaded Crypto Data")
+        st.subheader("Preview of uploaded Crypto Data")
         st.dataframe(crypto_data, height=400)
 
         # get data size
@@ -249,7 +249,7 @@ def main():
 
                 # Preprocess user data
                 preprocessed_data = preprocess_data(crypto_data,future_candle)
-                st.write("Preview of preprocessed Crypto Data")
+                st.subheader("Preview of preprocessed Crypto Data")
                 st.dataframe(preprocessed_data, height=400)
 
                 st.subheader("Exploratory Data Analysis")
