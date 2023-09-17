@@ -293,11 +293,11 @@ def main():
                 price_diff = np.round(last_pred_price - last_row_price,4)
 
                 if price_diff > 0:
-                  percentage = "+" + str(price_diff) + "%"
+                  percentage = "+" + str(price_diff/last_pred_price * 100) + "%"
                   trend = "Up Trend"
                   font_color = 'green'
                 else:
-                  percentage = str(price_diff) + "%"
+                  percentage = str(price_diff/last_pred_price * 100) + "%"
                   trend = "Down Trend"
                   font_color = 'red'
 
