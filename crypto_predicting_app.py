@@ -172,16 +172,8 @@ def train_model(X_train,y_train,epoch_in,batch_size_in,sequence_length_in,featur
     model.add(Dense(1, activation='linear'))  # Output layer
     model.compile(loss='mean_squared_error', optimizer='adam')
 
-    # Define the progress bar
-    progress_bar = st.progress(0)
-
-    # Train the model
-    for epoch in range(epoch_in):
-        # Update the progress bar
-        progress_bar.progress(int((epoch + 1) / epoch_in * 100))
-
-        # Perform one training epoch
-        model.fit(X_train, y_train, epochs=epoch_in, batch_size=batch_size_in, validation_split=0.1)
+    # Perform one training epoch
+    model.fit(X_train, y_train, epochs=epoch_in, batch_size=batch_size_in, validation_split=0.1)
 
     # Notify when training is complete
     st.success("Model training is complete!")
