@@ -288,16 +288,17 @@ def main():
 
                 y_test_filtered = y_test[:-future_candle]
                 future_prediction = prediction[-future_candle:]
+                pred_without_fc = prediction[:-future_candle]
 
                 # Show prediction of n future candle
                 st.title("Predicted Future Price")
                 st.write(future_prediction)
 
                 # Calculate evaluation metrics
-                mae = mean_absolute_error(y_test_filtered.flatten(), prediction.flatten())
-                mse = mean_squared_error(y_test_filtered.flatten(), prediction.flatten())
+                mae = mean_absolute_error(y_test_filtered.flatten(), pred_without_fc.flatten())
+                mse = mean_squared_error(y_test_filtered.flatten(), pred_without_fc.flatten())
                 rmse = np.sqrt(mse)
-                r2 = r2_score(y_test_filtered.flatten(), prediction.flatten())
+                r2 = r2_score(y_test_filtered.flatten(), pred_without_fc.flatten())
 
                 # Display evaluation metrics
                 st.write("Evaluation Metrics:")
