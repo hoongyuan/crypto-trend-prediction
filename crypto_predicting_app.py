@@ -182,7 +182,7 @@ def train_model(X_train,y_train,epoch_in,batch_size_in,sequence_length_in,featur
 
 def permutation_feature_importance(prediction, X, y_true, feature_names):
     perm_importance = {}
-    baseline_error = mean_squared_error(y_true, y_pred)
+    baseline_error = mean_squared_error(y_true, prediction)
 
     for feature_idx, feature_name in enumerate(feature_names):
         X_permuted = X.copy()
