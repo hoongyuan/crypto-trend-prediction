@@ -267,7 +267,7 @@ def main():
                 st.title("Permutation Feature Importance")
 
                 # Calculate permutation feature importance
-                perm_importance = permutation_feature_importance(prediction, X_test, y_test, feature_columns)
+                perm_importance = permutation_feature_importance(prediction, X_test, y_test, feature_columns.append(target_col))
 
                 # Plot permutation feature importances
                 sorted_importance = sorted(perm_importance.items(), key=lambda x: x[1], reverse=True)
