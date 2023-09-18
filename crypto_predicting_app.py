@@ -168,10 +168,10 @@ def show_dashboard(data):
     uptrend_count = 0
 
     for row in preprocessed_data['Up Trend']:
-      if row = 1 and found_zero = False:
+      if row == 1 and found_zero = False:
         uptrend_count += 1
         found_zero = True
-      else if row = 0:
+      else if row == 0:
         found_zero = False
 
     # Count number of downtrend
@@ -179,10 +179,10 @@ def show_dashboard(data):
     downtrend_count = 0
 
     for row in preprocessed_data['Up Trend']:
-      if row = 0 and found_non_zero = False:
+      if row == 0 and found_non_zero = False:
         downtrend_count += 1
         found_non_zero = True
-      else if row = 1:
+      else if row == 1:
         found_non_zero = False
 
     st.write("Number of trends based on SuperTrend Indicator")
