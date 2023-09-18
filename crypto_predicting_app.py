@@ -212,7 +212,7 @@ def show_dashboard(data):
     total_volume_by_day = data.groupby('day')['Volume'].sum().reset_index()
 
     # Create an Altair bar chart
-    chart = alt.Chart(total_close_by_day).mark_bar().encode(
+    chart_a = alt.Chart(total_close_by_day).mark_bar().encode(
         x='day:N',
         y='close:Q'
     ).properties(
@@ -221,7 +221,7 @@ def show_dashboard(data):
     )
 
     # Create an Altair bar chart
-    chart = alt.Chart(total_volume_by_day).mark_bar().encode(
+    chart_b = alt.Chart(total_volume_by_day).mark_bar().encode(
         x='day:N',
         y='volume:Q'
     ).properties(
@@ -230,7 +230,8 @@ def show_dashboard(data):
     )
 
     # Display the Altair chart using Streamlit
-    st.altair_chart(chart)
+    st.altair_chart(chart_a)
+    st.altair_chart(chart_b)
 
     # Show dataset EDA on each column
     st.subheader("Summary Statistics")
