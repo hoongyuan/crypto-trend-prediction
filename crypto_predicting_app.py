@@ -166,7 +166,7 @@ def show_dashboard(data):
     found_zero = False
     uptrend_count = 0
 
-    for row in preprocessed_data['Up Trend']:
+    for row in data['Up Trend']:
       if row == 1 and found_zero == False:
         uptrend_count += 1
         found_zero = True
@@ -177,7 +177,7 @@ def show_dashboard(data):
     found_non_zero = False
     downtrend_count = 0
 
-    for row in preprocessed_data['Up Trend']:
+    for row in data['Up Trend']:
       if row == 0 and found_non_zero == False:
         downtrend_count += 1
         found_non_zero = True
