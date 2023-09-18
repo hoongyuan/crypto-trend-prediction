@@ -105,8 +105,8 @@ def preprocess_data(data,future_candle):
   return df
 
 def extract_features(target_col,future_candle,data,sequence_length_in):
-    feature_columns = ['open', 'high', 'low', 'close', 'Plot', 'Up Trend', 'Down Trend', 'Tenkan', 'Kijun', 'Chikou', 'SenkouA', 'SenkouB', 
-                       'Basis', 'Upper', 'Lower', 'Plot.1', 'Plot.2', 'Plot.3', 'Plot.4', 'Volume', 'Volume MA', '%K', '%D', 'Aroon Up', 'Aroon Down', 
+    feature_columns = ['open', 'high', 'low', 'close', 'Plot', 'Up Trend', 'Down Trend', 'Tenkan', 'Kijun', 'Chikou', 'SenkouA', 'SenkouB',
+                       'Basis', 'Upper', 'Lower', 'Plot.1', 'Plot.2', 'Plot.3', 'Plot.4', 'Volume', 'Volume MA', '%K', '%D', 'Aroon Up', 'Aroon Down',
                        'RSI', 'RSI-based MA', 'Upper Bollinger Band', 'Lower Bollinger Band', 'Plot.5', 'OnBalanceVolume', 'Smoothing Line', 'Histogram', 'MACD', 'Signal', target_col]
     X = data[feature_columns].values
     x_scaler = MinMaxScaler()
@@ -146,11 +146,48 @@ def show_dashboard(data):
     time_start = datetime.datetime.fromtimestamp(df['timestamp'].iloc[0])
     time_end = datetime.datetime.fromtimestamp(df['timestamp'].iloc[-1])
 
-    sentence = "Dataset Period: " + str(time_start) + " - " + str(time_end)
+    # Calculate the date difference
+    date_difference = time_end - time_start
+
+    # Extract the number of days and hours
+    days = date_difference.days
+    hours = date_difference.seconds // 3600
+
+    # Create a formatted string to display the date difference
+    date_difference_str = f"{days} days, {hours} hours"
+
+    # Display dataset start and end timestamp along with the date difference
+    st.write(f"Dataset Period: {time_start} - {time_end} ({date_difference_str})")
     st.write(sentence)
 
     # Show total data rows
     st.write("Total Rows: ", len(df))
+
+    # Count number of uptrend
+    found_zero = False
+    uptrend_count = 0
+
+    for row in preprocessed_data['Up Trend']:
+      if row = 1 and found_zero = False:
+        uptrend_count += 1
+        found_zero = True
+      else if row = 0:
+        found_zero = False
+
+    # Count number of downtrend
+    found_non_zero = False
+    downtrend_count = 0
+
+    for row in preprocessed_data['Up Trend']:
+      if row = 0 and found_non_zero = False:
+        downtrend_count += 1
+        found_non_zero = True
+      else if row = 1:
+        found_non_zero = False
+
+    st.write("Number of trends based on SuperTrend Indicator")
+    st.write("Total uptrend: ", uptrend_count)
+    st.write("Total downtrend: ", downtrend_count)
 
     # Show dataset EDA on each column
     st.write("Summary Statistics on the uploaded dataset")
@@ -215,7 +252,7 @@ def main():
         </p>""",
         unsafe_allow_html=True,
     )
-    
+
     with st.sidebar:
         st.title("User Input")
 
@@ -299,7 +336,7 @@ def main():
                 with st.spinner("Training the model..."):
                     lstm_model = train_model(X_train,y_train,epoch,batch_size,sequence_length,feature_columns)
                     prediction = lstm_model.predict(X_test)
-                
+
                 # Inverse scale to get the actual price
                 prediction = 10**prediction
                 y_test = 10**y_test
