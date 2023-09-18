@@ -213,8 +213,8 @@ def show_dashboard(data):
         height=300
     )
 
-# Display the Altair chart using Streamlit
-st.altair_chart(chart)
+    # Display the Altair chart using Streamlit
+    st.altair_chart(chart)
 
     # Show dataset EDA on each column
     st.subheader("Summary Statistics")
