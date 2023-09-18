@@ -223,7 +223,7 @@ def show_dashboard(data):
     # Create an Altair bar chart
     chart_b = alt.Chart(total_volume_by_day).mark_bar().encode(
         x='day:N',
-        y='volume:Q'
+        y='Volume:Q'
     ).properties(
         width=600,
         height=300
