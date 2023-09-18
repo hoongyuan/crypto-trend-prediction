@@ -215,9 +215,12 @@ def show_dashboard(data):
     # Calculate the total 'volume' for each 'day'
     total_volume_by_day = data.groupby('day_str')['Volume'].sum().reset_index()
 
+    # Specify the desired order of days
+    day_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
     # Create an Altair bar chart
     chart_a = alt.Chart(total_close_by_day).mark_bar().encode(
-        x='day_str:N',
+        x=alt.X('day_str:N',sort=day_order),
         y='close:Q'
     ).properties(
         width=600,
@@ -226,7 +229,7 @@ def show_dashboard(data):
 
     # Create an Altair bar chart
     chart_b = alt.Chart(total_volume_by_day).mark_bar().encode(
-        x='day_str:N',
+        x=alt.X('day_str:N',sort=day_order),
         y='Volume:Q'
     ).properties(
         width=600,
