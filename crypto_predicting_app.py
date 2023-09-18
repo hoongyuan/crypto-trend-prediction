@@ -96,23 +96,23 @@ def preprocess_data(data,future_candle):
           # If there are not enough rows left, fill the 'Close_nth' column with NaN
           df.loc[i, target_col] = None
 
-  # Use fillna() to replace NaN values with 0
-  df = df.fillna(0)
+  # # Use fillna() to replace NaN values with 0
+  # df = df.fillna(0)
 
-  # Convert 'date' column to datetime type
-  df['date'] = pd.to_datetime(df['date'])
+  # # Convert 'date' column to datetime type
+  # df['date'] = pd.to_datetime(df['date'])
 
-  # Convert 'time_of_day' column to timedelta
-  df['time_of_day'] = pd.to_timedelta(df['time_of_day'].astype(str))
+  # # Convert 'time_of_day' column to timedelta
+  # df['time_of_day'] = pd.to_timedelta(df['time_of_day'].astype(str))
 
-  # Combine 'date' and 'time_of_day' columns to create a timestamp
-  df['timestamp'] = df['date'] + df['time_of_day']
+  # # Combine 'date' and 'time_of_day' columns to create a timestamp
+  # df['timestamp'] = df['date'] + df['time_of_day']
 
-  # Convert datetime to timestamps (datetime64[ns])
-  df['timestamp'] = df['timestamp'].astype('int64') // 10**9  # Convert to seconds
+  # # Convert datetime to timestamps (datetime64[ns])
+  # df['timestamp'] = df['timestamp'].astype('int64') // 10**9  # Convert to seconds
 
-  df = df.drop(columns=['date'])
-  df = df.drop(columns=['time_of_day'])
+  # df = df.drop(columns=['date'])
+  # df = df.drop(columns=['time_of_day'])
   return df
 
 def extract_features(target_col,future_candle,data,sequence_length_in):
@@ -153,19 +153,19 @@ def extract_features(target_col,future_candle,data,sequence_length_in):
 def show_dashboard(data):
     df = data
 
-    # Show dataset start and end timestamp
-    time_start = datetime.datetime.fromtimestamp(df['timestamp'].iloc[0])
-    time_end = datetime.datetime.fromtimestamp(df['timestamp'].iloc[-1])
+    # # Show dataset start and end timestamp
+    # time_start = datetime.datetime.fromtimestamp(df['timestamp'].iloc[0])
+    # time_end = datetime.datetime.fromtimestamp(df['timestamp'].iloc[-1])
 
-    # Calculate the date difference
-    date_difference = time_end - time_start
+    # # Calculate the date difference
+    # date_difference = time_end - time_start
 
-    # Extract the number of days and hours
-    days = date_difference.days
-    hours = date_difference.seconds // 3600
+    # # Extract the number of days and hours
+    # days = date_difference.days
+    # hours = date_difference.seconds // 3600
 
-    # Create a formatted string to display the date difference
-    date_difference_str = f"{days} days, {hours} hours"
+    # # Create a formatted string to display the date difference
+    # date_difference_str = f"{days} days, {hours} hours"
 
     # Display dataset start and end timestamp along with the date difference
     st.write(f"**Dataset Period:** {time_start} - {time_end} ({date_difference_str})")
