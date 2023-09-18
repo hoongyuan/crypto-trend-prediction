@@ -204,6 +204,18 @@ def show_dashboard(data):
     st.write("**Total uptrend:** ", uptrend_count)
     st.write("**Total downtrend:** ", downtrend_count)
 
+    # Create an Altair chart
+    chart = alt.Chart(data).mark_line().encode(
+        x='day:N',
+        y='close:Q'
+    ).properties(
+        width=600,
+        height=300
+    )
+
+# Display the Altair chart using Streamlit
+st.altair_chart(chart)
+
     # Show dataset EDA on each column
     st.subheader("Summary Statistics")
     st.dataframe(df.describe())
@@ -317,32 +329,6 @@ def main():
 
                 # Show dashboard
                 show_dashboard(preprocessed_data)
-
-                # st.subheader("Exploratory Data Analysis")
-
-                # # Create a list to store EDA charts and subheaders
-                # eda_data = []
-                # for column in preprocessed_data.columns:
-                #     chart_data = {"subheader": f"EDA for {column}", "chart": None}
-
-                #     if preprocessed_data[column].dtype in [np.float64, np.int64]:
-                #         fig, ax = plt.subplots()
-                #         ax.hist(preprocessed_data[column], bins=20)
-                #         ax.set_xlabel(column)
-                #         ax.set_ylabel("Frequency")
-                #         ax.set_title(column, fontsize=20)
-                #         chart_data["chart"] = fig
-
-                #     eda_data.append(chart_data)
-
-                # # Create columns for displaying charts side by side
-                # side_by_side = 3 ## number of charts side by side
-                # columns = st.columns(side_by_side)
-
-                # # Display the charts and subheaders side by side
-                # for i, chart_data in enumerate(eda_data):
-                #     with columns[i % side_by_side]:
-                #         st.pyplot(chart_data["chart"], use_container_width=True)
 
                 # Extract features and scale input from preprocessed data
                 X_train, y_train, X_test, y_test, feature_columns = extract_features(target_col,future_candle,preprocessed_data,sequence_length)
