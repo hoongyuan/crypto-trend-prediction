@@ -161,6 +161,13 @@ def show_dashboard(data):
 
     # Show total data rows
     st.write("**Total Rows:** ", len(df))
+    
+    # Count number of volume
+    total_volume = 0
+    for row in data['Volume']:
+      total_volume += row
+
+    st.write("**Total Volume: ",total_volume)
 
     # Count number of uptrend
     found_zero = False
@@ -189,7 +196,7 @@ def show_dashboard(data):
     st.write("**Total downtrend:** ", downtrend_count)
 
     # Show dataset EDA on each column
-    st.write("Summary Statistics on the uploaded dataset")
+    st.subheader("Summary Statistics")
     st.dataframe(df.describe())
 
 def make_prediction(model,input):
