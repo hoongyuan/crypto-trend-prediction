@@ -106,8 +106,8 @@ def preprocess_data(data,future_candle):
   # # Combine 'date' and 'time_of_day' columns to create a timestamp
   # df['timestamp'] = df['date'] + df['time_of_day']
 
-  # # Convert datetime to timestamps (datetime64[ns])
-  # df['timestamp'] = df['timestamp'].astype('int64') // 10**9  # Convert to seconds
+  # Convert datetime to timestamps (datetime64[ns])
+  df['timestamp'] = df['timestamp'].astype('int64') // 10**9  # Convert to seconds
 
   # df = df.drop(columns=['date'])
   # df = df.drop(columns=['time_of_day'])
