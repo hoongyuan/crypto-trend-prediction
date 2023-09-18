@@ -177,14 +177,14 @@ def show_dashboard(data):
     found_non_zero = False
     downtrend_count = 0
 
-    for row in data['Up Trend']:
+    for row in data['Down Trend']:
       if row == 0 and found_non_zero == False:
         downtrend_count += 1
         found_non_zero = True
       elif row == 1:
         found_non_zero = False
 
-    st.write("Number of trends based on SuperTrend Indicator")
+    st.write("Number of trends based on SuperTrend Indicator:")
     st.write("Total uptrend: ", uptrend_count)
     st.write("Total downtrend: ", downtrend_count)
 
