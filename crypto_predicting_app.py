@@ -57,20 +57,31 @@ def load_data(user_uploaded_data):
 
 # Preprocess cryptocurrency data
 def preprocess_data(data,future_candle):
+  # df = data
+  # # Convert the "time" column to datetime format
+  # df['time'] = pd.to_datetime(df['time'])
+
+  # # Extract date and time components into separate columns
+  # df['date'] = df['time'].dt.date
+  # df['time_of_day'] = df['time'].dt.time
+
+  # date_column = df.pop('date')
+  # time_column = df.pop('time_of_day')
+
+  # df.insert(0,'time_of_day',time_column)
+  # df.insert(0,'date',date_column)
+  # del df['time']
+
   df = data
   # Convert the "time" column to datetime format
   df['time'] = pd.to_datetime(df['time'])
 
   # Extract date and time components into separate columns
-  df['date'] = df['time'].dt.date
-  df['time_of_day'] = df['time'].dt.time
+  df['day'] = df['time'].dt.dayofweek + 1  # Adding 1 to make Monday start from 1
+  df['hour'] = df['time'].dt.hour + 1  # Adding 1 to make 01:00 start from 1
 
-  date_column = df.pop('date')
-  time_column = df.pop('time_of_day')
-
-  df.insert(0,'time_of_day',time_column)
-  df.insert(0,'date',date_column)
-  del df['time']
+  # Drop the original "time" column
+  df = df.drop(columns=['time'])
 
   future_candles = future_candle;
   target_col = 'future_candle';
@@ -88,26 +99,26 @@ def preprocess_data(data,future_candle):
   # Use fillna() to replace NaN values with 0
   df = df.fillna(0)
 
-  # Convert 'date' column to datetime type
-  df['date'] = pd.to_datetime(df['date'])
+  # # Convert 'date' column to datetime type
+  # df['date'] = pd.to_datetime(df['date'])
 
-  # Convert 'time_of_day' column to timedelta
-  df['time_of_day'] = pd.to_timedelta(df['time_of_day'].astype(str))
+  # # Convert 'time_of_day' column to timedelta
+  # df['time_of_day'] = pd.to_timedelta(df['time_of_day'].astype(str))
 
-  # Combine 'date' and 'time_of_day' columns to create a timestamp
-  df['timestamp'] = df['date'] + df['time_of_day']
+  # # Combine 'date' and 'time_of_day' columns to create a timestamp
+  # df['timestamp'] = df['date'] + df['time_of_day']
 
-  # Convert datetime to timestamps (datetime64[ns])
-  df['timestamp'] = df['timestamp'].astype('int64') // 10**9  # Convert to seconds
+  # # Convert datetime to timestamps (datetime64[ns])
+  # df['timestamp'] = df['timestamp'].astype('int64') // 10**9  # Convert to seconds
 
-  df = df.drop(columns=['date'])
-  df = df.drop(columns=['time_of_day'])
+  # df = df.drop(columns=['date'])
+  # df = df.drop(columns=['time_of_day'])
   return df
 
 def extract_features(target_col,future_candle,data,sequence_length_in):
     feature_columns = ['open', 'high', 'low', 'close', 'Plot', 'Up Trend', 'Down Trend', 'Tenkan', 'Kijun', 'Chikou', 'SenkouA', 'SenkouB',
                        'Basis', 'Upper', 'Lower', 'Plot.1', 'Plot.2', 'Plot.3', 'Plot.4', 'Volume', 'Volume MA', '%K', '%D', 'Aroon Up', 'Aroon Down',
-                       'RSI', 'RSI-based MA', 'Upper Bollinger Band', 'Lower Bollinger Band', 'Plot.5', 'OnBalanceVolume', 'Smoothing Line', 'Histogram', 'MACD', 'Signal', target_col]
+                       'RSI', 'RSI-based MA', 'Upper Bollinger Band', 'Lower Bollinger Band', 'Plot.5', 'OnBalanceVolume', 'Smoothing Line', 'Histogram', 'MACD', 'Signal', 'day', 'hour', target_col]
     X = data[feature_columns].values
     x_scaler = MinMaxScaler()
     X_scaled = x_scaler.fit_transform(X)
