@@ -205,15 +205,18 @@ def show_dashboard(data):
     st.write("**Total uptrend:** ", uptrend_count)
     st.write("**Total downtrend:** ", downtrend_count)
 
+    # Convert numeric days to day names
+    data['day_str'] = data['day'].apply(lambda x: calendar.day_name[x - 1])
+
     # Calculate the total 'close' for each 'day'
-    total_close_by_day = data.groupby('day')['close'].sum().reset_index()
+    total_close_by_day = data.groupby('day_str')['close'].sum().reset_index()
 
     # Calculate the total 'volume' for each 'day'
-    total_volume_by_day = data.groupby('day')['Volume'].sum().reset_index()
+    total_volume_by_day = data.groupby('day_str')['Volume'].sum().reset_index()
 
     # Create an Altair bar chart
     chart_a = alt.Chart(total_close_by_day).mark_bar().encode(
-        x='day:N',
+        x='day_str:N',
         y='close:Q'
     ).properties(
         width=600,
@@ -222,7 +225,7 @@ def show_dashboard(data):
 
     # Create an Altair bar chart
     chart_b = alt.Chart(total_volume_by_day).mark_bar().encode(
-        x='day:N',
+        x='day_str:N',
         y='Volume:Q'
     ).properties(
         width=600,
