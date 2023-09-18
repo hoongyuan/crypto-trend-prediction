@@ -70,7 +70,6 @@ def preprocess_data(data,future_candle):
 
   # df.insert(0,'time_of_day',time_column)
   # df.insert(0,'date',date_column)
-  del df['time']
 
   # Convert the "time" column to datetime format
   df['time'] = pd.to_datetime(df['time'])
