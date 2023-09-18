@@ -205,8 +205,11 @@ def show_dashboard(data):
     st.write("**Total uptrend:** ", uptrend_count)
     st.write("**Total downtrend:** ", downtrend_count)
 
-    # Create an Altair chart
-    chart = alt.Chart(data).mark_line().encode(
+    # Calculate the total 'close' for each 'day'
+    total_close_by_day = data.groupby('day')['close'].sum().reset_index()
+
+    # Create an Altair bar chart
+    chart = alt.Chart(total_close_by_day).mark_bar().encode(
         x='day:N',
         y='close:Q'
     ).properties(
