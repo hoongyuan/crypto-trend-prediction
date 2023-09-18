@@ -168,7 +168,7 @@ def show_dashboard(data):
     uptrend_count = 0
 
     for row in preprocessed_data['Up Trend']:
-      if row == 1 and found_zero = False:
+      if row == 1 and found_zero == False:
         uptrend_count += 1
         found_zero = True
       else if row == 0:
@@ -179,7 +179,7 @@ def show_dashboard(data):
     downtrend_count = 0
 
     for row in preprocessed_data['Up Trend']:
-      if row == 0 and found_non_zero = False:
+      if row == 0 and found_non_zero == False:
         downtrend_count += 1
         found_non_zero = True
       else if row == 1:
@@ -303,31 +303,31 @@ def main():
                 # Show dashboard
                 show_dashboard(preprocessed_data)
 
-                st.subheader("Exploratory Data Analysis")
+                # st.subheader("Exploratory Data Analysis")
 
-                # Create a list to store EDA charts and subheaders
-                eda_data = []
-                for column in preprocessed_data.columns:
-                    chart_data = {"subheader": f"EDA for {column}", "chart": None}
+                # # Create a list to store EDA charts and subheaders
+                # eda_data = []
+                # for column in preprocessed_data.columns:
+                #     chart_data = {"subheader": f"EDA for {column}", "chart": None}
 
-                    if preprocessed_data[column].dtype in [np.float64, np.int64]:
-                        fig, ax = plt.subplots()
-                        ax.hist(preprocessed_data[column], bins=20)
-                        ax.set_xlabel(column)
-                        ax.set_ylabel("Frequency")
-                        ax.set_title(column, fontsize=20)
-                        chart_data["chart"] = fig
+                #     if preprocessed_data[column].dtype in [np.float64, np.int64]:
+                #         fig, ax = plt.subplots()
+                #         ax.hist(preprocessed_data[column], bins=20)
+                #         ax.set_xlabel(column)
+                #         ax.set_ylabel("Frequency")
+                #         ax.set_title(column, fontsize=20)
+                #         chart_data["chart"] = fig
 
-                    eda_data.append(chart_data)
+                #     eda_data.append(chart_data)
 
-                # Create columns for displaying charts side by side
-                side_by_side = 3 ## number of charts side by side
-                columns = st.columns(side_by_side)
+                # # Create columns for displaying charts side by side
+                # side_by_side = 3 ## number of charts side by side
+                # columns = st.columns(side_by_side)
 
-                # Display the charts and subheaders side by side
-                for i, chart_data in enumerate(eda_data):
-                    with columns[i % side_by_side]:
-                        st.pyplot(chart_data["chart"], use_container_width=True)
+                # # Display the charts and subheaders side by side
+                # for i, chart_data in enumerate(eda_data):
+                #     with columns[i % side_by_side]:
+                #         st.pyplot(chart_data["chart"], use_container_width=True)
 
                 # Extract features and scale input from preprocessed data
                 X_train, y_train, X_test, y_test, feature_columns = extract_features(target_col,future_candle,preprocessed_data,sequence_length)
