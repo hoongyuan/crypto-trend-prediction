@@ -99,20 +99,20 @@ def preprocess_data(data,future_candle):
   # Use fillna() to replace NaN values with 0
   df = df.fillna(0)
 
-  # # Convert 'date' column to datetime type
-  # df['date'] = pd.to_datetime(df['date'])
+  # Convert 'date' column to datetime type
+  df['date'] = pd.to_datetime(df['date'])
 
-  # # Convert 'time_of_day' column to timedelta
-  # df['time_of_day'] = pd.to_timedelta(df['time_of_day'].astype(str))
+  # Convert 'time_of_day' column to timedelta
+  df['time_of_day'] = pd.to_timedelta(df['time_of_day'].astype(str))
 
-  # # Combine 'date' and 'time_of_day' columns to create a timestamp
-  # df['timestamp'] = df['date'] + df['time_of_day']
+  # Combine 'date' and 'time_of_day' columns to create a timestamp
+  df['timestamp'] = df['date'] + df['time_of_day']
 
-  # # Convert datetime to timestamps (datetime64[ns])
-  # df['timestamp'] = df['timestamp'].astype('int64') // 10**9  # Convert to seconds
+  # Convert datetime to timestamps (datetime64[ns])
+  df['timestamp'] = df['timestamp'].astype('int64') // 10**9  # Convert to seconds
 
-  # df = df.drop(columns=['date'])
-  # df = df.drop(columns=['time_of_day'])
+  df = df.drop(columns=['date'])
+  df = df.drop(columns=['time_of_day'])
   return df
 
 def extract_features(target_col,future_candle,data,sequence_length_in):
