@@ -57,9 +57,9 @@ def load_data(user_uploaded_data):
 
 # Preprocess cryptocurrency data
 def preprocess_data(data,future_candle):
-  # df = data
-  # # Convert the "time" column to datetime format
-  # df['time'] = pd.to_datetime(df['time'])
+  df = data
+  # Convert the "time" column to datetime format
+  df['timestamp'] = pd.to_datetime(df['time'])
 
   # # Extract date and time components into separate columns
   # df['date'] = df['time'].dt.date
@@ -70,15 +70,14 @@ def preprocess_data(data,future_candle):
 
   # df.insert(0,'time_of_day',time_column)
   # df.insert(0,'date',date_column)
-  # del df['time']
+  del df['time']
 
-  df = data
   # Convert the "time" column to datetime format
   df['time'] = pd.to_datetime(df['time'])
 
   # Extract date and time components into separate columns
   df['day'] = df['time'].dt.dayofweek + 1  # Adding 1 to make Monday start from 1
-  df['hour'] = df['time'].dt.hour + 1  # Adding 1 to make 01:00 start from 1
+  df['hour'] = df['time'].dt.hour  # Adding 1 to make 01:00 start from 1
 
   # Drop the original "time" column
   df = df.drop(columns=['time'])
@@ -97,7 +96,7 @@ def preprocess_data(data,future_candle):
           df.loc[i, target_col] = None
 
   # # Use fillna() to replace NaN values with 0
-  # df = df.fillna(0)
+  df = df.fillna(0)
 
   # # Convert 'date' column to datetime type
   # df['date'] = pd.to_datetime(df['date'])
@@ -153,16 +152,16 @@ def extract_features(target_col,future_candle,data,sequence_length_in):
 def show_dashboard(data):
     df = data
 
-    # # Show dataset start and end timestamp
-    # time_start = datetime.datetime.fromtimestamp(df['timestamp'].iloc[0])
-    # time_end = datetime.datetime.fromtimestamp(df['timestamp'].iloc[-1])
+    # Show dataset start and end timestamp
+    time_start = datetime.datetime.fromtimestamp(df['timestamp'].iloc[0])
+    time_end = datetime.datetime.fromtimestamp(df['timestamp'].iloc[-1])
 
-    # # Calculate the date difference
-    # date_difference = time_end - time_start
+    # Calculate the date difference
+    date_difference = time_end - time_start
 
-    # # Extract the number of days and hours
-    # days = date_difference.days
-    # hours = date_difference.seconds // 3600
+    # Extract the number of days and hours
+    days = date_difference.days
+    hours = date_difference.seconds // 3600
 
     # # Create a formatted string to display the date difference
     # date_difference_str = f"{days} days, {hours} hours"
@@ -199,7 +198,7 @@ def show_dashboard(data):
       if row == 0 and found_value == False:
         downtrend_count += 1
         found_value = True
-      elif row != 1:
+      elif row != 0:
         found_value = False
 
     st.write("**Number of trends based on SuperTrend Indicator:**")
