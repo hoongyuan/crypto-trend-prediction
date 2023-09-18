@@ -209,7 +209,7 @@ def show_dashboard(data):
     total_close_by_day = data.groupby('day')['close'].sum().reset_index()
 
     # Calculate the total 'volume' for each 'day'
-    total_volume_by_day = data.groupby('day')['volume'].sum().reset_index()
+    total_volume_by_day = data.groupby('day')['Volume'].sum().reset_index()
 
     # Create an Altair bar chart
     chart = alt.Chart(total_close_by_day).mark_bar().encode(
