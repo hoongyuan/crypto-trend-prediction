@@ -167,7 +167,7 @@ def show_dashboard(data):
     for row in data['Volume']:
       total_volume += row
 
-    st.write("**Total Volume: ",total_volume)
+    st.write("**Total Volume:** ",total_volume)
 
     # Count number of uptrend
     found_zero = False
