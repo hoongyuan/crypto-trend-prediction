@@ -168,7 +168,7 @@ def show_dashboard(data):
     # date_difference_str = f"{days} days, {hours} hours"
 
     # Display dataset start and end timestamp along with the date difference
-    st.write(f"**Dataset Period:** {time_start} - {time_end} ({date_difference_str})")
+    # st.write(f"**Dataset Period:** {time_start} - {time_end} ({date_difference_str})")
 
     # Show total data rows
     st.write("**Total Rows:** ", len(df))
