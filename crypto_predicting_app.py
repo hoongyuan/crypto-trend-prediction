@@ -327,9 +327,6 @@ def main():
         # get data size
         data_rows = len(crypto_data)
 
-        # Load model
-        model = load_model(data_rows, future_candle)
-
         if crypto_data is not None:
             try:
                 sequence_length = 20
