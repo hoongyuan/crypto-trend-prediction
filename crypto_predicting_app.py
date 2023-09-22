@@ -330,7 +330,7 @@ def main():
         if crypto_data is not None:
             try:
                 sequence_length = 20
-                epoch = 10
+                epoch = 100
                 batch_size = 32
 
                 # Preprocess user data
@@ -373,15 +373,13 @@ def main():
 
                 last_pred_price = np.atleast_1d(prediction[-1]).item()
                 last_row_price = np.atleast_1d(y_test_filtered[-1]).item()
-                price_diff = np.round(last_pred_price - last_row_price,4)
+                price_diff = last_pred_price - last_row_price
 
                 if price_diff > 0:
-                  # percentage = "+" + str(price_diff/last_pred_price * 100) + "%"
                   percentage = price_diff/last_pred_price * 100
                   trend = "Up Trend"
                   font_color = 'green'
                 else:
-                  # percentage = str(price_diff/last_pred_price * 100) + "%"
                   percentage = price_diff/last_pred_price * 100
                   trend = "Down Trend"
                   font_color = 'red'
@@ -422,8 +420,8 @@ def main():
                 # Create a plot
                 time_values = preprocessed_data['time']
                 fig, ax = plt.subplots()
-                ax.plot(time_values[-len(y_test):], y_test, label='Actual')
-                ax.plot(time_values[-len(prediction):], prediction, label='Predicted')
+                ax.plot(y_test, label='Actual')
+                ax.plot(prediction, label='Predicted')
                 ax.set_xlabel('Time')
                 ax.set_ylabel('Price')
                 ax.legend()
