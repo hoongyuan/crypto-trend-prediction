@@ -228,7 +228,7 @@ def show_dashboard(data):
         y='close:Q',
         color=alt.Color('day_str:N', scale=color_scale, legend=None)
     ).properties(
-        title='Total Close by Day',
+        title='**Total Close by Day**',
         width=600,
         height=300
     )
@@ -239,7 +239,7 @@ def show_dashboard(data):
         y='Volume:Q',
         color=alt.Color('day_str:N', scale=color_scale, legend=None)
     ).properties(
-        title='Total Volume by Day',
+        title='**Total Volume by Day**',
         width=600,
         height=300
     )
@@ -289,7 +289,7 @@ def permutation_feature_importance(model, X, y_true, feature_names):
 def main():
 
     st.title("Cryptocurrency Trend Prediction")
-    st.title("User Guide")
+    st.subheader("Please follow the instructions below to start using the system")
 
     # Create an expander to hold the instructions
     with st.expander("Instructions"):
@@ -297,13 +297,15 @@ def main():
 
         st.markdown("1. **Select a Cryptocurrency**: Choose the cryptocurrency you want to predict from TradingView.")
         st.markdown("2. **Apply Technical Indicators**: Apply the following technical indicators to the chart before exporting:")
+        st.write("- Volume")
         st.write("- EMA 20/50/100/200")
         st.write("- Bollinger Bands")
-        st.write("- Volume")
         st.write("- Ichimoku Cloud")
         st.write("- RSI")
         st.write("- MACD")
         st.write("- Stochastic")
+        st.write("- Aroon")
+        st.write("- ADX and DI")
         st.write("- OnBalanceVolume")
         st.write("- SuperTrend")
 
@@ -398,11 +400,16 @@ def main():
                   trend = "Down Trend"
                   font_color = 'red'
 
-                # Show price different
-                st.subheader(f"Price difference" )
-                st.write(f"{str(last_row_price)} -> {str(last_pred_price)}")
-                st.write(str(price_diff))
-                st.write(percentage)
+                # Show price difference
+                price_direction_symbol = "📈" if last_pred_price > last_row_price else "📉"
+                color = "green" if last_pred_price > last_row_price else "red"
+                st.subheader("Price Difference")
+                # Style the text with color, font-size, and bold
+                st.markdown(f"<span style='color: {color}; font-size: 18px; font-weight: bold;'>{price_direction_symbol} Actual Price: {formatted_last_row_price} -> Predicted Price: {formatted_last_pred_price}</span>", unsafe_allow_html=True)
+                # Style the price difference text with color
+                st.markdown(f"<span style='color: {color}; font-weight: bold;'>Price Difference: {formatted_price_diff}</span>")
+                # Style the percentage change text with color
+                st.markdown(f"<span style='color: {color};'>Percentage Change: {formatted_percentage}</span>")
 
 
                 st.subheader("Trend")
@@ -442,6 +449,7 @@ def main():
                 ax.set_xlabel('Time')
                 ax.set_ylabel('Price')
                 ax.legend()
+                ax.plot(time_values[-future_candle:], y_test[-future_candle:], color='white', alpha=0)
                 st.pyplot(fig)
 
                 # Plot last 100 rows
@@ -452,6 +460,10 @@ def main():
                 ax.set_ylabel('Price')
                 ax.grid(True)
                 ax.legend()
+                ax.plot(time_values[-future_candle:], y_test[-future_candle:], color='white', alpha=0)
+                ax.set_xticks(ax.get_xticks())
+                ax.set_xticklabels(time_values[-100:], rotation=45)
+                fig.tight_layout()
                 st.pyplot(fig)
 
                 # Visualize feature importance
