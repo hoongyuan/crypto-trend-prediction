@@ -376,11 +376,11 @@ def main():
                 price_diff = last_pred_price - last_row_price
 
                 if price_diff > 0:
-                  percentage = price_diff/last_pred_price * 100
+                  percentage = price_diff/last_pred_price
                   trend = "Up Trend"
                   font_color = 'green'
                 else:
-                  percentage = price_diff/last_pred_price * 100
+                  percentage = price_diff/last_pred_price
                   trend = "Down Trend"
                   font_color = 'red'
 
