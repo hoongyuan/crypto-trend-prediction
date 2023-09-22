@@ -419,9 +419,9 @@ def main():
 
                 # Create a plot
                 time_values = preprocessed_data['time']
-                fig, ax = plt.subplots()
-                ax.plot(y_test, label='Actual')
-                ax.plot(prediction, label='Predicted')
+                fig, ax = plt.subplots(figsize=(12, 8))
+                ax.plot(time_values[-len(y_test):], y_test, label='Actual')
+                ax.plot(time_values[-len(prediction):], prediction, label='Predicted')
                 ax.set_xlabel('Time')
                 ax.set_ylabel('Price')
                 ax.legend()
@@ -429,7 +429,7 @@ def main():
                 st.pyplot(fig)
 
                 # Plot last 100 rows
-                fig, ax = plt.subplots()
+                fig, ax = plt.subplots(figsize=(12, 8))
                 ax.plot(time_values[-100:], y_test[-100:], label='Actual')
                 ax.plot(time_values[-100:], prediction[-100:], label='Predicted')
                 ax.set_xlabel('Time')
