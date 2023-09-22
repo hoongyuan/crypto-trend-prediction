@@ -397,7 +397,7 @@ def main():
                 # Display the table
                 st.subheader("Predicted Future Price")
                 st.table(future_prediction_df)
-                
+
                 last_pred_price = np.atleast_1d(prediction[-1]).item()
                 last_row_price = np.atleast_1d(y_test_filtered[-1]).item()
                 price_diff = np.round(last_pred_price - last_row_price,4)
@@ -452,16 +452,16 @@ def main():
                 st.write("R2 measures the proportion of the variance in the dependent variable (actual values) that is predictable from the independent variables (predictions). An R2 score of 1 indicates a perfect fit, while 0 means the model doesn't explain any variance. Higher values are better.")
 
                 # Evaluate model
-                st.subheader("Actual vs Predicted Price")
-                results_df = pd.DataFrame({
-                    "Actual Result": y_test.flatten(),
-                    "Predicted Result": prediction.flatten()
-                })
-                st.write(results_df)
-                model.summary()
-                print(f"Sequence Length = {sequence_length}")
-                print(f"Epoch = {epoch}")
-                print(f"Batch Size = {batch_size}")
+                # st.subheader("Actual vs Predicted Price")
+                # results_df = pd.DataFrame({
+                #     "Actual Result": y_test.flatten(),
+                #     "Predicted Result": prediction.flatten()
+                # })
+                # st.write(results_df)
+                # model.summary()
+                # print(f"Sequence Length = {sequence_length}")
+                # print(f"Epoch = {epoch}")
+                # print(f"Batch Size = {batch_size}")
 
                 # Create a plot
                 time_values = preprocessed_data['time']
