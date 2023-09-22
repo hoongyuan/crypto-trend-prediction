@@ -411,9 +411,9 @@ def main():
 
                 # Display evaluation metrics
                 st.subheader("Evaluation Metrics")
-                st.write(f'MAE: {mae:.5f}')
-                st.write(f'MSE: {mse:.5f}')
-                st.write(f'RMSE: {rmse:.5f}')
+                st.write(f'Mean Absolute Error: {mae:.5f}')
+                st.write(f'Mean Squared Error: {mse:.5f}')
+                st.write(f'Root Mean Squared Error: {rmse:.5f}')
                 st.write(f'R2 Score: {r2:.2f}')
 
                 # Evaluate model
@@ -429,7 +429,7 @@ def main():
                 print(f"Batch Size = {batch_size}")
 
                 # Create a plot
-                time_values = df['time']
+                time_values = preprocessed_data['time']
                 fig, ax = plt.subplots()
                 ax.plot(time_values[-len(y_test):], y_test, label='Actual')
                 ax.plot(time_values[-len(y_result):], y_result, label='Predicted')
