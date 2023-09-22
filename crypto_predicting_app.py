@@ -288,29 +288,34 @@ def permutation_feature_importance(model, X, y_true, feature_names):
 
 def main():
 
-    st.title("Cryptocurrency Price Prediction")
-    st.subheader("User Guide")
-    st.markdown(
-        """<p style="font-size: 14px;">
-        1. Select a Cryptocurrency that you would like to predict from TradingView<br>
-        2. Apply the following technical indicators to the chart before exporting:<br>
-        - EMA 20/50/100/200<br>
-        - Bollinger Bands<br>
-        - Volume<br>
-        - Ichimoku Cloud<br>
-        - RSI<br>
-        - MACD<br>
-        - Stochastic<br>
-        - OnBalanceVolume<br>
-        - SuperTrend<br>
-        3. Export the chart in ISO timeframe<br>
-        4. Upload the CSV file here<br>
-        5. Select the number of future candles you want to predict<br>
-        6. Evaluate the prediction result<br>
-        You may re-train the model if you are not satisfied with the result
-        </p>""",
-        unsafe_allow_html=True,
-    )
+    st.title("Cryptocurrency Trend Prediction")
+    # Create a container to hold the instructions
+    user_guide_container = st.beta_container()
+
+    # Add formatted instructions
+    with user_guide_container:
+        st.write("Follow these steps to predict cryptocurrency prices using our tool:")
+
+        st.markdown("1. **Select a Cryptocurrency**: Choose the cryptocurrency you want to predict from TradingView.")
+        st.markdown("2. **Apply Technical Indicators**: Apply the following technical indicators to the chart before exporting:")
+        st.write("- EMA 20/50/100/200")
+        st.write("- Bollinger Bands")
+        st.write("- Volume")
+        st.write("- Ichimoku Cloud")
+        st.write("- RSI")
+        st.write("- MACD")
+        st.write("- Stochastic")
+        st.write("- OnBalanceVolume")
+        st.write("- SuperTrend")
+
+        st.markdown("3. **Export the Chart**: Export the chart in ISO timeframe.")
+
+        st.markdown("4. **Upload the CSV File**: Upload the exported CSV file here.")
+
+        st.markdown("5. **Select the Number of Future Candles**: Choose the number of future candles you want to predict.")
+
+        st.markdown("6. **Evaluate the Prediction Result**: Review and evaluate the prediction result. If you are not satisfied, you can re-train the model to improve the accuracy.")
+
 
     with st.sidebar:
         st.title("User Input")
