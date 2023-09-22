@@ -228,7 +228,7 @@ def show_dashboard(data):
         y='close:Q',
         color=alt.Color('day_str:N', scale=color_scale, legend=None)
     ).properties(
-        title='**Total Close by Day**',
+        title='Total Close by Day',
         width=600,
         height=300
     )
@@ -239,7 +239,7 @@ def show_dashboard(data):
         y='Volume:Q',
         color=alt.Color('day_str:N', scale=color_scale, legend=None)
     ).properties(
-        title='**Total Volume by Day**',
+        title='Total Volume by Day',
         width=600,
         height=300
     )
@@ -315,7 +315,7 @@ def main():
 
         st.markdown("5. **Select the Number of Future Candles**: Choose the number of future candles you want to predict.")
 
-        st.markdown("6. **Evaluate the Prediction Result**: Review and evaluate the prediction result. If you are not satisfied, you can re-train the model to improve the accuracy.")
+        st.markdown("6. **Evaluate the Prediction Result**: Review and evaluate the prediction result.")
 
 
     with st.sidebar:
@@ -357,7 +357,7 @@ def main():
         if crypto_data is not None:
             try:
                 sequence_length = 20
-                epoch = 50
+                epoch = 100
                 batch_size = 32
 
                 # Preprocess user data
@@ -412,11 +412,11 @@ def main():
                 color = "green" if last_pred_price > last_row_price else "red"
                 st.subheader("Price Difference")
                 # Style the text with color, font-size, and bold
-                st.markdown(f"<span style='color: {color}; font-size: 18px; font-weight: bold;'>{price_direction_symbol} Actual Price: {formatted_last_row_price} **-> Predicted Price:** {formatted_last_pred_price}</span>", unsafe_allow_html=True)
+                st.markdown(f"<span style='color: {color}; font-size: 18px;'>{price_direction_symbol} <strong>Actual Price:</strong> {formatted_last_row_price} <strong>-> Predicted Price:</strong> {formatted_last_pred_price}</span>", unsafe_allow_html=True)
                 # Style the price difference text with color
-                st.markdown(f"<span style='color: {color}; font-weight: bold;'>Price Difference: {formatted_price_diff}</span>")
+                st.markdown(f"<span style='color: {color}; font-weight: bold;'>Price Difference: {formatted_price_diff}</span>", unsafe_allow_html=True)
                 # Style the percentage change text with color
-                st.markdown(f"<span style='color: {color};'>Percentage Change: {formatted_percentage}</span>")
+                st.markdown(f"<span style='color: {color};'>Percentage Change: {formatted_percentage}</span>", unsafe_allow_html=True)
 
 
                 st.subheader("Trend")
@@ -472,8 +472,6 @@ def main():
                 ax.grid(True)
                 ax.legend()
                 ax.plot(time_values[-future_candle:], y_test[-future_candle:], color='white', alpha=0)
-                ax.set_xticks(ax.get_xticks())
-                ax.set_xticklabels(rotation=45)
                 fig.tight_layout()
                 st.pyplot(fig)
 
