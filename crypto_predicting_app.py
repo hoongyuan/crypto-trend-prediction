@@ -289,11 +289,10 @@ def permutation_feature_importance(model, X, y_true, feature_names):
 def main():
 
     st.title("Cryptocurrency Trend Prediction")
-    # Create a container to hold the instructions
-    user_guide_container = st.beta_container()
+    st.title("User Guide")
 
-    # Add formatted instructions
-    with user_guide_container:
+    # Create an expander to hold the instructions
+    with st.expander("Instructions"):
         st.write("Follow these steps to predict cryptocurrency prices using our tool:")
 
         st.markdown("1. **Select a Cryptocurrency**: Choose the cryptocurrency you want to predict from TradingView.")
