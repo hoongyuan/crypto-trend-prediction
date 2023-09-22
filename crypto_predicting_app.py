@@ -299,7 +299,9 @@ def main():
         # Add an HTML element for the disclaimer
         st.markdown(
             """<p style="font-size: 12px; text-align: left; margin-top: 20px;">
-            Please note that this cryptocurrency price prediction tool is for informational purposes only and should not be considered financial advice. Trading cryptocurrencies involves inherent risks, and any losses incurred are the sole responsibility of the user. It is essential to conduct thorough research and consult with a financial advisor before making any trading decisions.
+            Please note that this cryptocurrency price prediction tool is for informational purposes only and should not be considered financial advice. 
+            Trading cryptocurrencies involves inherent risks, and any losses incurred are the sole responsibility of the user. 
+            It is essential to conduct thorough research and consult with a financial advisor before making any trading decisions.
             </p>""",
             unsafe_allow_html=True,
         )
@@ -395,7 +397,7 @@ def main():
                 price_direction_symbol = "📈" if last_pred_price > last_row_price else "📉"
                 color = "green" if last_pred_price > last_row_price else "red"
                 st.subheader("Price Difference")
-                st.markdown(f"<p style='color: {color}; font-size: 18px; font-weight: bold;'>{price_direction_symbol} Actual Price:{formatted_last_row_price} ⇒ Predicted Price:{formatted_last_pred_price}</p>", unsafe_allow_html=True)
+                st.markdown(f"<p style='color: {color}; font-size: 18px; font-weight: bold;'>{price_direction_symbol} Latest Price:{formatted_last_row_price} ⇒ Future Price:{formatted_last_pred_price}</p>", unsafe_allow_html=True)
                 st.markdown(f"<span style='color: {color}; font-weight: bold;'>Price Difference: {formatted_price_diff}</span>", unsafe_allow_html=True)
                 st.markdown(f"<span style='color: {color}; font-weight: bold;'>Percentage Change: {formatted_percentage}</span>", unsafe_allow_html=True)
 
@@ -420,6 +422,8 @@ def main():
                 st.write(f'**R-squared (R2) Score:** {r2:.2f}')
                 st.write("R2 measures the proportion of the variance in the dependent variable (actual values) that is predictable from the independent variables (predictions). An R2 score of 1 indicates a perfect fit, while 0 means the model doesn't explain any variance. Higher values are better.")
 
+                st.subheader('**Cryptocurrency Actual Price vs Predicted Price**')
+                st.write('This chart provides a comprehensive view of the cryptocurrency historical price data alongside the predictions. The blue line represents the actual prices over time, while the orange line represents the predicted prices. By comparing these two lines, you can assess how accurately the model predicts price movements.')
                 # Create a plot
                 time_values = preprocessed_data['time']
                 fig, ax = plt.subplots(figsize=(12, 8))
@@ -431,6 +435,8 @@ def main():
                 ax.plot(time_values[-future_candle:], y_test[-future_candle:], color='white', alpha=1)
                 st.pyplot(fig)
 
+                st.subheader('**Cryptocurrency Actual Price vs Predicted Price (Last 100 Rows)**')
+                st.write('This chart zooms in on the most recent 100 data points of cryptocurrency price data and predictions. It offers a more detailed look at how well the model performs in predicting short-term price trends. Monitoring this chart can help you make informed decisions about cryptocurrency trading or investment based on recent predictions.')
                 # Plot last 100 rows
                 fig, ax = plt.subplots(figsize=(12, 8))
                 ax.plot(time_values[-100:], y_test[-100:], label='Actual')
@@ -440,11 +446,9 @@ def main():
                 ax.grid(True)
                 ax.legend()
                 ax.plot(time_values[-future_candle:], y_test[-future_candle:], color='white', alpha=1)
+                ax.plot(time_values[-future_candle:], prediction[-future_candle:], color='red', alpha=1)
                 fig.tight_layout()
                 st.pyplot(fig)
-
-                
-
 
             except Exception as e:
                 st.error(f"Error making predictions: {str(e)}")
