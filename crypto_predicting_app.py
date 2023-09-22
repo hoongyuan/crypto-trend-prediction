@@ -19,32 +19,8 @@ from keras.models import Sequential
 from keras.layers import LSTM, Dense
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
-#for saving model
-import pickle
-
 # #for plotting
 import matplotlib.pyplot as plt
-
-# Load your trained deep learning model
-def load_model(data_rows, future_candles):
-    try:
-        with open('model_ep100_bs30_2.pkl', 'rb') as model_file:
-            model = pickle.load(model_file)
-        return model
-
-    except Exception as e:
-        st.error(f"Error loading the model: {str(e)}")
-    return None
-
-# Load target_scaler model
-def load_scaler():
-    try:
-      with open('target_scaler.pkl', 'rb') as model_file:
-                y_scaler = pickle.load(model_file)
-      return y_scaler
-    except Exception as e:
-      st.error(f"Error loading the scaler: {str(e)}")
-    return None
 
 # Load cryptocurrency data
 def load_data(user_uploaded_data):
@@ -357,7 +333,7 @@ def main():
         if crypto_data is not None:
             try:
                 sequence_length = 20
-                epoch = 100
+                epoch = 20
                 batch_size = 32
 
                 # Preprocess user data
@@ -418,20 +394,15 @@ def main():
                 formatted_last_pred_price = "${:,.2f}".format(last_pred_price)
                 formatted_price_diff = "${:,.2f}".format(price_diff)
                 formatted_percentage = "{:.2%}".format(percentage)
-
                 price_direction_symbol = "📈" if last_pred_price > last_row_price else "📉"
                 color = "green" if last_pred_price > last_row_price else "red"
                 st.subheader("Price Difference")
-                # Style the text with color, font-size, and bold
                 st.markdown(f"<p style='color: {color}; font-size: 18px; font-weight: bold;'>{price_direction_symbol} Actual Price:{formatted_last_row_price} ⇒ Predicted Price:{formatted_last_pred_price}</p>", unsafe_allow_html=True)
-                # Style the price difference text with color
                 st.markdown(f"<span style='color: {color}; font-weight: bold;'>Price Difference: {formatted_price_diff}</span>", unsafe_allow_html=True)
-                # Style the percentage change text with color
                 st.markdown(f"<span style='color: {color}; font-weight: bold;'>Percentage Change: {formatted_percentage}</span>", unsafe_allow_html=True)
 
-
+                # Show market trend
                 st.subheader("Trend")
-                # Create a subheader with a specified font color
                 st.markdown(f'<p style="color: {font_color}; font-weight: bold;">{trend}</p>', unsafe_allow_html=True)
 
                 # Calculate evaluation metrics
@@ -450,18 +421,6 @@ def main():
                 st.write("RMSE is the square root of MSE. Like MSE, lower RMSE values indicate better accuracy. It's in the same unit as the target variable, making it easier to interpret.")
                 st.write(f'**R-squared (R2) Score:** {r2:.2f}')
                 st.write("R2 measures the proportion of the variance in the dependent variable (actual values) that is predictable from the independent variables (predictions). An R2 score of 1 indicates a perfect fit, while 0 means the model doesn't explain any variance. Higher values are better.")
-
-                # Evaluate model
-                # st.subheader("Actual vs Predicted Price")
-                # results_df = pd.DataFrame({
-                #     "Actual Result": y_test.flatten(),
-                #     "Predicted Result": prediction.flatten()
-                # })
-                # st.write(results_df)
-                # model.summary()
-                # print(f"Sequence Length = {sequence_length}")
-                # print(f"Epoch = {epoch}")
-                # print(f"Batch Size = {batch_size}")
 
                 # Create a plot
                 time_values = preprocessed_data['time']
