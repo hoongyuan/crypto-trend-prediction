@@ -397,7 +397,7 @@ def main():
                 price_direction_symbol = "📈" if last_pred_price > last_row_price else "📉"
                 color = "green" if last_pred_price > last_row_price else "red"
                 st.subheader("Price Difference")
-                st.markdown(f"<p style='color: {color}; font-size: 18px; font-weight: bold;'>{price_direction_symbol} Latest Price:{formatted_last_row_price} ⇒ Future Price:{formatted_last_pred_price}</p>", unsafe_allow_html=True)
+                st.markdown(f"<p style='color: {color}; font-size: 18px; font-weight: bold;'>{price_direction_symbol} Latest Price: {formatted_last_row_price} → Price after {future_candle} candle(s): {formatted_last_pred_price}</p>", unsafe_allow_html=True)
                 st.markdown(f"<span style='color: {color}; font-weight: bold;'>Price Difference: {formatted_price_diff}</span>", unsafe_allow_html=True)
                 st.markdown(f"<span style='color: {color}; font-weight: bold;'>Percentage Change: {formatted_percentage}</span>", unsafe_allow_html=True)
 
