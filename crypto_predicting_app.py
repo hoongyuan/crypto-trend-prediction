@@ -234,7 +234,7 @@ def train_model(X_train,y_train,epoch_in,batch_size_in,sequence_length_in,featur
     model.fit(X_train, y_train, epochs=epoch_in, batch_size=batch_size_in, validation_split=0.1)
 
     # Notify when training is complete
-    st.success("Model training is complete!")
+    st.success("Price prediction is complete!")
 
     return model
 
