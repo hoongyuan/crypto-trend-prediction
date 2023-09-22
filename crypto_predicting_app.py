@@ -60,28 +60,28 @@ def load_data(user_uploaded_data):
 # Preprocess cryptocurrency data
 def preprocess_data(data,future_candle):
   df = data
+
+  df.drop(columns=['Upper Bollinger Band','Lower Bollinger Band'], inplace=True)
+
+  # Replace NaN values in the 'Up Trend' and 'Down Trend' columns with 0
+  df['Up Trend'].fillna(0, inplace=True)
+  df['Down Trend'].fillna(0, inplace=True)
+
+  # Apply backward fill to fill missing values
+  df['Chikou'].fillna(method='ffill', inplace=True)
+
+  # Convert the 'time' column to a datetime object
+  df['time'] = pd.to_datetime(df['time'])
+
   # Convert the "time" column to datetime format
   df['timestamp'] = pd.to_datetime(df['time'])
-
-  # # Extract date and time components into separate columns
-  # df['date'] = df['time'].dt.date
-  # df['time_of_day'] = df['time'].dt.time
-
-  # date_column = df.pop('date')
-  # time_column = df.pop('time_of_day')
-
-  # df.insert(0,'time_of_day',time_column)
-  # df.insert(0,'date',date_column)
-
-  # Convert the "time" column to datetime format
-  df['time'] = pd.to_datetime(df['time'])
 
   # Extract date and time components into separate columns
   df['day'] = df['time'].dt.dayofweek + 1  # Adding 1 to make Monday start from 1
   df['hour'] = df['time'].dt.hour  # Adding 1 to make 01:00 start from 1
 
-  # Drop the original "time" column
-  df = df.drop(columns=['time'])
+    # Convert datetime to timestamps (datetime64[ns])
+  df['timestamp'] = df['timestamp'].astype('int64') // 10**9  # Convert to seconds
 
   future_candles = future_candle;
   target_col = 'future_candle';
@@ -96,29 +96,32 @@ def preprocess_data(data,future_candle):
           # If there are not enough rows left, fill the 'Close_nth' column with NaN
           df.loc[i, target_col] = None
 
-  # # Use fillna() to replace NaN values with 0
-  df = df.fillna(0)
+  # Apply backward fill to fill missing values
+  df['future_candle'].fillna(method='ffill', inplace=True)
 
-  # # Convert 'date' column to datetime type
-  # df['date'] = pd.to_datetime(df['date'])
+  column_mapping = {
+    'Plot': 'Super Trend Plot',
+    'Plot.1': 'EMA20',
+    'Plot.2': 'EMA50',
+    'Plot.3': 'EMA100',
+    'Plot.4': 'EMA200',
+    'Plot.5': 'RSI Plot'
+  }
 
-  # # Convert 'time_of_day' column to timedelta
-  # df['time_of_day'] = pd.to_timedelta(df['time_of_day'].astype(str))
-
-  # # Combine 'date' and 'time_of_day' columns to create a timestamp
-  # df['timestamp'] = df['date'] + df['time_of_day']
+  # Rename the columns using the mapping
+  df.rename(columns=column_mapping, inplace=True)
 
   # Convert datetime to timestamps (datetime64[ns])
   df['timestamp'] = df['timestamp'].astype('int64') // 10**9  # Convert to seconds
 
-  # df = df.drop(columns=['date'])
-  # df = df.drop(columns=['time_of_day'])
   return df
 
 def extract_features(target_col,future_candle,data,sequence_length_in):
-    feature_columns = ['open', 'high', 'low', 'close', 'Plot', 'Up Trend', 'Down Trend', 'Tenkan', 'Kijun', 'Chikou', 'SenkouA', 'SenkouB',
-                       'Basis', 'Upper', 'Lower', 'Plot.1', 'Plot.2', 'Plot.3', 'Plot.4', 'Volume', 'Volume MA', '%K', '%D', 'Aroon Up', 'Aroon Down',
-                       'RSI', 'RSI-based MA', 'Upper Bollinger Band', 'Lower Bollinger Band', 'Plot.5', 'OnBalanceVolume', 'Smoothing Line', 'Histogram', 'MACD', 'Signal', 'day', 'hour']
+    feature_columns = ['open', 'high', 'low', 'close', 'Super Trend Plot', 'Up Trend', 'Down Trend', 'Tenkan', 'Kijun', 'Chikou', 'SenkouA', 'SenkouB',
+                       'Basis', 'Upper', 'Lower', 'EMA20', 'EMA50', 'EMA100', 'EMA200', 'Volume', 'Volume MA', '%K', '%D', 'Aroon Up', 'Aroon Down',
+                       'RSI', 'RSI-based MA', 'RSI Plot', 'OnBalanceVolume', 'Smoothing Line', 'Histogram',
+                      'MACD', 'Signal', 'DI+', 'DI-', 'ADX', 'day', 'hour']
+
     X = data[feature_columns].values
     x_scaler = MinMaxScaler()
     X_scaled = x_scaler.fit_transform(X)
@@ -172,7 +175,7 @@ def show_dashboard(data):
 
     # Show total data rows
     st.write("**Total Rows:** ", len(df))
-    
+
     # Count number of volume
     total_volume = 0
     for row in data['Volume']:
@@ -241,7 +244,7 @@ def show_dashboard(data):
     st.altair_chart(chart_b)
 
     # Show dataset EDA on each column
-    st.subheader("Summary Statistics")
+    st.subheader("Statistics Report")
     st.dataframe(df.describe())
 
 def make_prediction(model,input):
@@ -342,9 +345,9 @@ def main():
 
         if crypto_data is not None:
             try:
-                sequence_length = random.randint(10, 30)
-                epoch = random.randint(30, 150)
-                batch_size = random.randint(20, 50)
+                sequence_length = 20
+                epoch = 100
+                batch_size = 32
 
                 # Preprocess user data
                 preprocessed_data = preprocess_data(crypto_data,future_candle)
