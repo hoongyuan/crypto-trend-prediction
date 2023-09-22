@@ -357,7 +357,7 @@ def main():
         if crypto_data is not None:
             try:
                 sequence_length = 20
-                epoch = 20
+                epoch = 100
                 batch_size = 32
 
                 # Preprocess user data
@@ -384,9 +384,20 @@ def main():
                 future_prediction = prediction[-future_candle:]
                 pred_without_fc = prediction[:-future_candle]
 
-                # Show prediction of n future candle
+                # Assuming future_prediction is a list of predicted candle prices
+                future_prediction_data = []
+
+                # Prepare the data for the table
+                for i, prediction in enumerate(future_prediction):
+                    future_prediction_data.append([f'Candle {i + 1}', prediction])
+
+                # Create a DataFrame from the data
+                future_prediction_df = pd.DataFrame(future_prediction_data, columns=['Candle', 'Predicted Price'])
+
+                # Display the table
                 st.subheader("Predicted Future Price")
-                st.write(future_prediction)
+                st.table(future_prediction_df)
+                
                 last_pred_price = np.atleast_1d(prediction[-1]).item()
                 last_row_price = np.atleast_1d(y_test_filtered[-1]).item()
                 price_diff = np.round(last_pred_price - last_row_price,4)
@@ -405,14 +416,14 @@ def main():
                 # Show price difference
                 formatted_last_row_price = "${:,.2f}".format(last_row_price)
                 formatted_last_pred_price = "${:,.2f}".format(last_pred_price)
-                formatted_price_diff = "{:,.2f}".format(price_diff)
+                formatted_price_diff = "${:,.2f}".format(price_diff)
                 formatted_percentage = "{:.2%}".format(percentage)
 
                 price_direction_symbol = "📈" if last_pred_price > last_row_price else "📉"
                 color = "green" if last_pred_price > last_row_price else "red"
                 st.subheader("Price Difference")
                 # Style the text with color, font-size, and bold
-                st.markdown(f"<p style='color: {color}; font-size: 18px; font-weight: bold;'>{price_direction_symbol} Actual Price:{formatted_last_row_price}-> Predicted Price:{formatted_last_pred_price}</p>", unsafe_allow_html=True)
+                st.markdown(f"<p style='color: {color}; font-size: 18px; font-weight: bold;'>{price_direction_symbol} Actual Price:{formatted_last_row_price} ⇒ Predicted Price:{formatted_last_pred_price}</p>", unsafe_allow_html=True)
                 # Style the price difference text with color
                 st.markdown(f"<span style='color: {color}; font-weight: bold;'>Price Difference: {formatted_price_diff}</span>", unsafe_allow_html=True)
                 # Style the percentage change text with color
@@ -421,7 +432,7 @@ def main():
 
                 st.subheader("Trend")
                 # Create a subheader with a specified font color
-                st.markdown(f'<p style="color: {font_color};">{trend}</p>', unsafe_allow_html=True)
+                st.markdown(f'<p style="color: {font_color}; font-weight: bold;">{trend}</p>', unsafe_allow_html=True)
 
                 # Calculate evaluation metrics
                 mae = mean_absolute_error(y_test_filtered.flatten(), pred_without_fc.flatten())
@@ -452,9 +463,6 @@ def main():
                 print(f"Epoch = {epoch}")
                 print(f"Batch Size = {batch_size}")
 
-                num_points = 100  # Number of points to display
-                step = 10  # Gap between displayed labels
-
                 # Create a plot
                 time_values = preprocessed_data['time']
                 fig, ax = plt.subplots()
@@ -475,12 +483,6 @@ def main():
                 ax.grid(True)
                 ax.legend()
                 ax.plot(time_values[-future_candle:], y_test[-future_candle:], color='white', alpha=1)
-
-                # Set x-axis tick positions and labels with a gap between
-                xtick_positions = range(0, num_points, step)
-                xtick_labels = time_values[-num_points::step]
-                ax.set_xticks(xtick_positions)
-                ax.set_xticklabels(xtick_labels)
                 fig.tight_layout()
                 st.pyplot(fig)
 
