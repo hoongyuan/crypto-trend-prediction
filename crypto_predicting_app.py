@@ -228,6 +228,7 @@ def show_dashboard(data):
         y='close:Q',
         color=alt.Color('day_str:N', scale=color_scale, legend=None)
     ).properties(
+        title='Total Close by Day',
         width=600,
         height=300
     )
@@ -238,6 +239,7 @@ def show_dashboard(data):
         y='Volume:Q',
         color=alt.Color('day_str:N', scale=color_scale, legend=None)
     ).properties(
+        title='Total Volume by Day',
         width=600,
         height=300
     )
@@ -320,11 +322,11 @@ def main():
         selected_option = st.slider("Select the n-th future you want to predict:", min_value=1, max_value=20, value=1)
 
         # Button to perform modelling with the input
-        submit_button = st.button("Train Model")
+        submit_button = st.button("Predict Market Trend")
 
         # Add an HTML element for the disclaimer
         st.markdown(
-            """<p style="font-size: 12px; text-align: center; margin-top: 20px;">
+            """<p style="font-size: 12px; text-align: left; margin-top: 20px;">
             Please note that this cryptocurrency price prediction tool is for informational purposes only and should not be considered financial advice. Trading cryptocurrencies involves inherent risks, and any losses incurred are the sole responsibility of the user. It is essential to conduct thorough research and consult with a financial advisor before making any trading decisions.
             </p>""",
             unsafe_allow_html=True,
@@ -432,7 +434,7 @@ def main():
                 time_values = preprocessed_data['time']
                 fig, ax = plt.subplots()
                 ax.plot(time_values[-len(y_test):], y_test, label='Actual')
-                ax.plot(time_values[-len(y_result):], y_result, label='Predicted')
+                ax.plot(time_values[-len(prediction):], prediction, label='Predicted')
                 ax.set_xlabel('Time')
                 ax.set_ylabel('Price')
                 ax.legend()
@@ -441,7 +443,7 @@ def main():
                 # Plot last 100 rows
                 fig, ax = plt.subplots()
                 ax.plot(time_values[-100:], y_test[-100:], label='Actual')
-                ax.plot(time_values[-100:], y_result[-100:], label='Predicted')
+                ax.plot(time_values[-100:], prediction[-100:], label='Predicted')
                 ax.set_xlabel('Time')
                 ax.set_ylabel('Price')
                 ax.grid(True)
