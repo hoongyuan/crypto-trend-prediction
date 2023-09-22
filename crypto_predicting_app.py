@@ -392,11 +392,13 @@ def main():
                 price_diff = np.round(last_pred_price - last_row_price,4)
 
                 if price_diff > 0:
-                  percentage = "+" + str(price_diff/last_pred_price * 100) + "%"
+                  # percentage = "+" + str(price_diff/last_pred_price * 100) + "%"
+                  percentage = price_diff/last_pred_price * 100
                   trend = "Up Trend"
                   font_color = 'green'
                 else:
-                  percentage = str(price_diff/last_pred_price * 100) + "%"
+                  # percentage = str(price_diff/last_pred_price * 100) + "%"
+                  percentage = price_diff/last_pred_price * 100
                   trend = "Down Trend"
                   font_color = 'red'
 
@@ -429,10 +431,10 @@ def main():
 
                 # Display evaluation metrics
                 st.subheader("Evaluation Metrics")
-                st.write(f'Mean Absolute Error: {mae:.5f}')
-                st.write(f'Mean Squared Error: {mse:.5f}')
-                st.write(f'Root Mean Squared Error: {rmse:.5f}')
-                st.write(f'R2 Score: {r2:.2f}')
+                st.write(f'**Mean Absolute Error (MAE):**: {mae:.5f}')
+                st.write(f'**Mean Squared Error (MSE):** {mse:.5f}')
+                st.write(f'**Root Mean Squared Error (RMSE):** {rmse:.5f}')
+                st.write(f'**R-squared (R2) Score:** {r2:.2f}')
 
                 # Evaluate model
                 st.subheader("Actual vs Predicted Price")
