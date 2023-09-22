@@ -357,7 +357,7 @@ def main():
         if crypto_data is not None:
             try:
                 sequence_length = 20
-                epoch = 100
+                epoch = 20
                 batch_size = 32
 
                 # Preprocess user data
