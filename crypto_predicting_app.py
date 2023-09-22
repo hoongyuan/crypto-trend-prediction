@@ -207,10 +207,10 @@ def show_dashboard(data):
     st.write("**Total downtrend:** ", downtrend_count)
 
     # Convert numeric days to day names
-    data['day_str'] = data['day'].apply(lambda x: calendar.day_name[x - 1])
+    df['day_str'] = df['day'].apply(lambda x: calendar.day_name[x - 1])
 
     # Calculate the total 'close' for each 'day'
-    total_close_by_day = data.groupby('day_str')['close'].sum().reset_index()
+    total_close_by_day = df.groupby('day_str')['close'].sum().reset_index()
 
     # Calculate the total 'volume' for each 'day'
     total_volume_by_day = data.groupby('day_str')['Volume'].sum().reset_index()
@@ -218,25 +218,31 @@ def show_dashboard(data):
     # Specify the desired order of days
     day_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
-    # Create an Altair bar chart
+    # Define a color scale for your charts (you can customize this)
+    color_scale = alt.Scale(domain=day_order,
+                            range=['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2'])
+
+    # Create a colorful Altair bar chart for 'close' values
     chart_a = alt.Chart(total_close_by_day).mark_bar().encode(
-        x=alt.X('day_str:N',sort=day_order),
-        y='close:Q'
+        x=alt.X('day_str:N', sort=day_order),
+        y='close:Q',
+        color=alt.Color('day_str:N', scale=color_scale)
     ).properties(
         width=600,
         height=300
     )
 
-    # Create an Altair bar chart
+    # Create a colorful Altair bar chart for 'Volume' values
     chart_b = alt.Chart(total_volume_by_day).mark_bar().encode(
-        x=alt.X('day_str:N',sort=day_order),
-        y='Volume:Q'
+        x=alt.X('day_str:N', sort=day_order),
+        y='Volume:Q',
+        color=alt.Color('day_str:N', scale=color_scale)
     ).properties(
         width=600,
         height=300
     )
 
-    # Display the Altair chart using Streamlit
+    # Display the Altair charts using Streamlit
     st.altair_chart(chart_a)
     st.altair_chart(chart_b)
 
