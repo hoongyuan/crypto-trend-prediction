@@ -202,23 +202,13 @@ def show_dashboard(data):
     chart_a = alt.Chart(total_close_by_day).mark_bar().encode(
         x=alt.X('day_str:N', sort=day_order),
         y='close:Q',
-        color=alt.Color('day_str:N', scale=color_scale, legend=None)
-    ).properties(
-        title='Total Close by Day',
-        width=600,
-        height=300
-    )
+        color=alt.Color('day_str:N', scale=color_scale, legend=None)).properties(title='Total Close by Day',width=600,height=300)
 
     # Create a colorful Altair bar chart for 'Volume' values
     chart_b = alt.Chart(total_volume_by_day).mark_bar().encode(
         x=alt.X('day_str:N', sort=day_order),
         y='Volume:Q',
-        color=alt.Color('day_str:N', scale=color_scale, legend=None)
-    ).properties(
-        title='Total Volume by Day',
-        width=600,
-        height=300
-    )
+        color=alt.Color('day_str:N', scale=color_scale, legend=None)).properties(title='Total Volume by Day',width=600,height=300)
 
     # Display the Altair charts using Streamlit
     st.altair_chart(chart_a)
@@ -330,7 +320,7 @@ def main():
         if crypto_data is not None:
             try:
                 sequence_length = 20
-                epoch = 10
+                epoch = 100
                 batch_size = 32
 
                 # Preprocess user data
@@ -357,6 +347,16 @@ def main():
                 future_prediction = prediction[-future_candle:]
                 pred_without_fc = prediction[:-future_candle]
                 pred_table = prediction
+
+                # Visualize feature importance
+                st.subheader("Permutation Feature Importance")
+                perm_importance = permutation_feature_importance(lstm_model, X_test, y_test, feature_columns)
+                sorted_importance = sorted(perm_importance.items(), key=lambda x: x[1], reverse=True)
+                importance_df = pd.DataFrame(sorted_importance, columns=["Feature", "Importance"])
+                importance_df["Log Importance"] = np.log1p(importance_df["Importance"])
+
+                # Create a bar chart
+                st.bar_chart(importance_df.set_index("Feature")["Log Importance"])
 
                 # Create a copy of future_prediction (optional)
                 future_prediction_copy = future_prediction.copy()
@@ -443,15 +443,7 @@ def main():
                 fig.tight_layout()
                 st.pyplot(fig)
 
-                # Visualize feature importance
-                st.subheader("Permutation Feature Importance")
-                perm_importance = permutation_feature_importance(lstm_model, X_test, y_test, feature_columns)
-                sorted_importance = sorted(perm_importance.items(), key=lambda x: x[1], reverse=True)
-                importance_df = pd.DataFrame(sorted_importance, columns=["Feature", "Importance"])
-                importance_df["Log Importance"] = np.log1p(importance_df["Importance"])
-
-                # Create a bar chart
-                st.bar_chart(importance_df.set_index("Feature")["Log Importance"])
+                
 
 
             except Exception as e:
