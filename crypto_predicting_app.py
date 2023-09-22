@@ -401,6 +401,11 @@ def main():
                   font_color = 'red'
 
                 # Show price difference
+                formatted_last_row_price = "${:,.2f}".format(last_row_price)
+                formatted_last_pred_price = "${:,.2f}".format(last_pred_price)
+                formatted_price_diff = "${:,.2f}".format(price_diff)
+                formatted_percentage = "{:.2%}".format(percentage)
+
                 price_direction_symbol = "📈" if last_pred_price > last_row_price else "📉"
                 color = "green" if last_pred_price > last_row_price else "red"
                 st.subheader("Price Difference")
