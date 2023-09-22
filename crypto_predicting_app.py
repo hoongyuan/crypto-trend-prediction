@@ -226,7 +226,7 @@ def show_dashboard(data):
     chart_a = alt.Chart(total_close_by_day).mark_bar().encode(
         x=alt.X('day_str:N', sort=day_order),
         y='close:Q',
-        color=alt.Color('day_str:N', scale=color_scale)
+        color=alt.Color('day_str:N', scale=color_scale, legend=None)
     ).properties(
         width=600,
         height=300
@@ -236,7 +236,7 @@ def show_dashboard(data):
     chart_b = alt.Chart(total_volume_by_day).mark_bar().encode(
         x=alt.X('day_str:N', sort=day_order),
         y='Volume:Q',
-        color=alt.Color('day_str:N', scale=color_scale)
+        color=alt.Color('day_str:N', scale=color_scale, legend=None)
     ).properties(
         width=600,
         height=300
@@ -429,11 +429,22 @@ def main():
                 print(f"Batch Size = {batch_size}")
 
                 # Create a plot
+                time_values = df['time']
                 fig, ax = plt.subplots()
-                ax.plot(y_test_filtered, label='Actual Data', color='red')
-                ax.plot(prediction, label='Predicted Data', color='blue')
+                ax.plot(time_values[-len(y_test):], y_test, label='Actual')
+                ax.plot(time_values[-len(y_result):], y_result, label='Predicted')
                 ax.set_xlabel('Time')
-                ax.set_ylabel('Value')
+                ax.set_ylabel('Price')
+                ax.legend()
+                st.pyplot(fig)
+
+                # Plot last 100 rows
+                fig, ax = plt.subplots()
+                ax.plot(time_values[-100:], y_test[-100:], label='Actual')
+                ax.plot(time_values[-100:], y_result[-100:], label='Predicted')
+                ax.set_xlabel('Time')
+                ax.set_ylabel('Price')
+                ax.grid(True)
                 ax.legend()
                 st.pyplot(fig)
 
