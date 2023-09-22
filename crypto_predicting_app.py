@@ -111,9 +111,6 @@ def preprocess_data(data,future_candle):
   # Rename the columns using the mapping
   df.rename(columns=column_mapping, inplace=True)
 
-  # Convert datetime to timestamps (datetime64[ns])
-  df['timestamp'] = df['timestamp'].astype('int64') // 10**9  # Convert to seconds
-
   return df
 
 def extract_features(target_col,future_candle,data,sequence_length_in):
