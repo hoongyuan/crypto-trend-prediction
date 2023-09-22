@@ -337,7 +337,7 @@ def main():
                 X_train, y_train, X_test, y_test, feature_columns = extract_features(target_col,future_candle,preprocessed_data,sequence_length)
 
                 # Train model and predict
-                with st.spinner("Training the model..."):
+                with st.spinner("Predicting Price..."):
                     lstm_model = train_model(X_train,y_train,epoch,batch_size,sequence_length,feature_columns)
                     prediction = lstm_model.predict(X_test)
 
