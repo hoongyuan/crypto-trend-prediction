@@ -357,7 +357,7 @@ def main():
         if crypto_data is not None:
             try:
                 sequence_length = 20
-                epoch = 100
+                epoch = 20
                 batch_size = 32
 
                 # Preprocess user data
@@ -412,7 +412,7 @@ def main():
                 color = "green" if last_pred_price > last_row_price else "red"
                 st.subheader("Price Difference")
                 # Style the text with color, font-size, and bold
-                st.markdown(f"<span style='color: {color}; font-size: 18px;'>{price_direction_symbol}<strong>Actual Price:{formatted_last_row_price}-> Predicted Price:</strong>{formatted_last_pred_price}</span>", unsafe_allow_html=True)
+                st.markdown(f"<p style='color: {color}; font-size: 18px; font-weight: bold;'>{price_direction_symbol} Actual Price:{formatted_last_row_price}-> Predicted Price:{formatted_last_pred_price}</p>", unsafe_allow_html=True)
                 # Style the price difference text with color
                 st.markdown(f"<span style='color: {color}; font-weight: bold;'>Price Difference: {formatted_price_diff}</span>", unsafe_allow_html=True)
                 # Style the percentage change text with color
@@ -452,6 +452,9 @@ def main():
                 print(f"Epoch = {epoch}")
                 print(f"Batch Size = {batch_size}")
 
+                num_points = 100  # Number of points to display
+                step = 10  # Gap between displayed labels
+
                 # Create a plot
                 time_values = preprocessed_data['time']
                 fig, ax = plt.subplots()
@@ -472,8 +475,12 @@ def main():
                 ax.grid(True)
                 ax.legend()
                 ax.plot(time_values[-future_candle:], y_test[-future_candle:], color='white', alpha=1)
-                # Rotate the x-axis labels vertically
-                ax.xticks(rotation='vertical')
+
+                # Set x-axis tick positions and labels with a gap between
+                xtick_positions = range(0, num_points, step)
+                xtick_labels = time_values[-num_points::step]
+                ax.set_xticks(xtick_positions)
+                ax.set_xticklabels(xtick_labels)
                 fig.tight_layout()
                 st.pyplot(fig)
 
