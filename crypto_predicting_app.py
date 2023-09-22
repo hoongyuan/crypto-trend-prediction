@@ -357,7 +357,7 @@ def main():
         if crypto_data is not None:
             try:
                 sequence_length = 20
-                epoch = 20
+                epoch = 100
                 batch_size = 32
 
                 # Preprocess user data
@@ -460,7 +460,7 @@ def main():
                 ax.set_xlabel('Time')
                 ax.set_ylabel('Price')
                 ax.legend()
-                ax.plot(time_values[-future_candle:], y_test[-future_candle:], color='white', alpha=0)
+                ax.plot(time_values[-future_candle:], y_test[-future_candle:], color='white', alpha=1)
                 st.pyplot(fig)
 
                 # Plot last 100 rows
@@ -471,7 +471,9 @@ def main():
                 ax.set_ylabel('Price')
                 ax.grid(True)
                 ax.legend()
-                ax.plot(time_values[-future_candle:], y_test[-future_candle:], color='white', alpha=0)
+                ax.plot(time_values[-future_candle:], y_test[-future_candle:], color='white', alpha=1)
+                # Rotate the x-axis labels vertically
+                ax.xticks(rotation='vertical')
                 fig.tight_layout()
                 st.pyplot(fig)
 
