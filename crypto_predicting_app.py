@@ -357,7 +357,7 @@ def main():
         if crypto_data is not None:
             try:
                 sequence_length = 20
-                epoch = 100
+                epoch = 50
                 batch_size = 32
 
                 # Preprocess user data
@@ -412,7 +412,7 @@ def main():
                 color = "green" if last_pred_price > last_row_price else "red"
                 st.subheader("Price Difference")
                 # Style the text with color, font-size, and bold
-                st.markdown(f"<span style='color: {color}; font-size: 18px; font-weight: bold;'>{price_direction_symbol} Actual Price: {formatted_last_row_price} -> Predicted Price: {formatted_last_pred_price}</span>", unsafe_allow_html=True)
+                st.markdown(f"<span style='color: {color}; font-size: 18px; font-weight: bold;'>{price_direction_symbol} Actual Price: {formatted_last_row_price} **-> Predicted Price:** {formatted_last_pred_price}</span>", unsafe_allow_html=True)
                 # Style the price difference text with color
                 st.markdown(f"<span style='color: {color}; font-weight: bold;'>Price Difference: {formatted_price_diff}</span>")
                 # Style the percentage change text with color
@@ -432,9 +432,13 @@ def main():
                 # Display evaluation metrics
                 st.subheader("Evaluation Metrics")
                 st.write(f'**Mean Absolute Error (MAE):**: {mae:.5f}')
+                st.write("MAE measures the average absolute difference between the predicted and actual values. Lower values indicate better accuracy. It tells you, on average, how far off the predictions are from the actual values.")
                 st.write(f'**Mean Squared Error (MSE):** {mse:.5f}')
+                st.write("MSE measures the average squared difference between the predicted and actual values. Lower values indicate better accuracy. It penalizes larger errors more than MAE.")
                 st.write(f'**Root Mean Squared Error (RMSE):** {rmse:.5f}')
+                st.write("RMSE is the square root of MSE. Like MSE, lower RMSE values indicate better accuracy. It's in the same unit as the target variable, making it easier to interpret.")
                 st.write(f'**R-squared (R2) Score:** {r2:.2f}')
+                st.write("R2 measures the proportion of the variance in the dependent variable (actual values) that is predictable from the independent variables (predictions). An R2 score of 1 indicates a perfect fit, while 0 means the model doesn't explain any variance. Higher values are better.")
 
                 # Evaluate model
                 st.subheader("Actual vs Predicted Price")
@@ -469,7 +473,7 @@ def main():
                 ax.legend()
                 ax.plot(time_values[-future_candle:], y_test[-future_candle:], color='white', alpha=0)
                 ax.set_xticks(ax.get_xticks())
-                ax.set_xticklabels(time_values[-100:], rotation=45)
+                ax.set_xticklabels(rotation=45)
                 fig.tight_layout()
                 st.pyplot(fig)
 
