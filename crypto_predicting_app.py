@@ -330,7 +330,7 @@ def main():
         if crypto_data is not None:
             try:
                 sequence_length = 20
-                epoch = 10
+                epoch = 100
                 batch_size = 32
 
                 # Preprocess user data
@@ -357,21 +357,21 @@ def main():
                 future_prediction = prediction[-future_candle:]
                 pred_without_fc = prediction[:-future_candle]
 
-                # Create a copy of future_prediction (optional)
-                future_prediction_copy = future_prediction.copy()
+                # # Create a copy of future_prediction (optional)
+                # future_prediction_copy = future_prediction.copy()
 
-                # Prepare the data for the table
-                future_prediction_data = []
+                # # Prepare the data for the table
+                # future_prediction_data = []
 
-                for i, prediction in enumerate(future_prediction_copy):
-                    future_prediction_data.append([f'Candle {i + 1}', prediction])
+                # for i, prediction in enumerate(future_prediction_copy):
+                #     future_prediction_data.append([f'Candle {i + 1}', prediction])
 
-                # Create a DataFrame from the data
-                future_prediction_df = pd.DataFrame(future_prediction_data, columns=['Candle', 'Predicted Price'])
+                # # Create a DataFrame from the data
+                # future_prediction_df = pd.DataFrame(future_prediction_data, columns=['Candle', 'Predicted Price'])
 
-                # Display the table
-                st.subheader("Predicted Future Price")
-                st.table(future_prediction_df)
+                # # Display the table
+                # st.subheader("Predicted Future Price")
+                # st.table(future_prediction_df)
 
                 last_pred_price = np.atleast_1d(prediction[-1]).item()
                 last_row_price = np.atleast_1d(y_test_filtered[-1]).item()
