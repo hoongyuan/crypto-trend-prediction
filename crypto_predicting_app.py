@@ -357,7 +357,7 @@ def main():
         if crypto_data is not None:
             try:
                 sequence_length = 20
-                epoch = 100
+                epoch = 20
                 batch_size = 32
 
                 # Preprocess user data
@@ -405,18 +405,18 @@ def main():
                 # Show price difference
                 formatted_last_row_price = "${:,.2f}".format(last_row_price)
                 formatted_last_pred_price = "${:,.2f}".format(last_pred_price)
-                formatted_price_diff = "${:,.2f}".format(price_diff)
+                formatted_price_diff = "{:,.2f}".format(price_diff)
                 formatted_percentage = "{:.2%}".format(percentage)
 
                 price_direction_symbol = "📈" if last_pred_price > last_row_price else "📉"
                 color = "green" if last_pred_price > last_row_price else "red"
                 st.subheader("Price Difference")
                 # Style the text with color, font-size, and bold
-                st.markdown(f"<span style='color: {color}; font-size: 18px;'>{price_direction_symbol} <strong>Actual Price:</strong> {formatted_last_row_price} <strong>-> Predicted Price:</strong> {formatted_last_pred_price}</span>", unsafe_allow_html=True)
+                st.markdown(f"<span style='color: {color}; font-size: 18px;'>{price_direction_symbol}<strong>Actual Price:{formatted_last_row_price}-> Predicted Price:</strong>{formatted_last_pred_price}</span>", unsafe_allow_html=True)
                 # Style the price difference text with color
                 st.markdown(f"<span style='color: {color}; font-weight: bold;'>Price Difference: {formatted_price_diff}</span>", unsafe_allow_html=True)
                 # Style the percentage change text with color
-                st.markdown(f"<span style='color: {color};'>Percentage Change: {formatted_percentage}</span>", unsafe_allow_html=True)
+                st.markdown(f"<span style='color: {color}; font-weight: bold;'>Percentage Change: {formatted_percentage}</span>", unsafe_allow_html=True)
 
 
                 st.subheader("Trend")
